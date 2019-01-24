@@ -21,6 +21,8 @@ import chai from 'chai';
  * Asset 断言
  * 测试用例根据组件的入参和事件来看
  */
+ import spies from 'chai-spies';
+ chai.use(spies)
 const expect = chai.expect;
 {
     const Constructor = Vue.extend(Button);
@@ -77,11 +79,11 @@ const expect = chai.expect;
         }
     })
     gButton.$mount()
+    let spy = chai.spy(function(){})
     // 如何期望一个函数被执行，函数里面写'expect(1).to.equal(1)'是错误的写法
-    gButton.$on('click',function(){
-      //
-    })
+    gButton.$on('click',spy)
     let button = gButton.$el;
     button.click()
-    
+    // 期望spy里的函数被调用了
+    expect(spy).to.have.been.called()
 }

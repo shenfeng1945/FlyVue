@@ -28,5 +28,8 @@
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
+  },
+  "devDependencies": {
+    "chai-spies": "^1.0.0"
   }
 }
