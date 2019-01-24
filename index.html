@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>gulu-lu</title>
 </head>
-<script src="//at.alicdn.com/t/font_1029433_646gn1o8sy6.js"></script>
+<script src="//at.alicdn.com/t/font_1029433_6vx62jv55wp.js"></script>
 <style>
  *{margin:0;padding:0; box-sizing: border-box;}
  #app{
@@ -22,15 +22,10 @@
     --border-color: #999;
     --border-color-hover: #666;
  }
- .icon{
-   width: 1em;
-   height: 1em;
-   vertical-align: middle;
- }
 </style>
 <body>
    <div id="app">
-       <g-button>
+       <g-button :loading="loading" @click="loading = !loading">
            按钮
        </g-button>
        <g-button icon="settings" icon-position="right">
@@ -39,6 +34,15 @@
        <g-button icon="down" icon-position="left">
            按钮
        </g-button>
+       <g-button-group>
+         <g-button icon="left" icon-position="left">
+           后退
+         </g-button>
+         <g-button>更多</g-button>
+         <g-button icon="right" icon-position="right">
+           前进
+         </g-button>
+       </g-button-group>
    </div> 
 </body>
 <script src="./src/app.js"></script>

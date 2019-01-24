@@ -11457,6 +11457,7 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   props: {
     icon: {},
@@ -11466,6 +11467,10 @@ var _default = {
       validator: function validator(value) {
         return value === 'left' || value === 'right';
       }
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   }
 };
@@ -11486,10 +11491,19 @@ exports.default = _default;
     "button",
     {
       staticClass: "g-button",
-      class: ((_obj = {}), (_obj["icon-" + _vm.iconPosition] = true), _obj)
+      class: ((_obj = {}), (_obj["icon-" + _vm.iconPosition] = true), _obj),
+      on: {
+        click: function($event) {
+          _vm.$emit("click")
+        }
+      }
     },
     [
       _c("g-icon", { attrs: { name: _vm.icon } }),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("g-icon", { staticClass: "loading", attrs: { name: "loading" } })
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "content" }, [_vm._t("default")], 2)
     ],
@@ -11587,6 +11601,67 @@ render._withStripped = true
             api.createRecord('$18cf5e', $18cf5e);
           } else {
             api.reload('$18cf5e', $18cf5e);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.common.js"}],"src/button-group.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+var _default = {};
+exports.default = _default;
+        var $b01c79 = exports.default || module.exports;
+      
+      if (typeof $b01c79 === 'function') {
+        $b01c79 = $b01c79.options;
+      }
+    
+        /* template */
+        Object.assign($b01c79, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "g-button-group" }, [_vm._t("default")], 2)
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-b01c79",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$b01c79', $b01c79);
+          } else {
+            api.reload('$b01c79', $b01c79);
           }
         }
 
@@ -21970,6 +22045,8 @@ var _Button = _interopRequireDefault(require("./Button"));
 
 var _Icon = _interopRequireDefault(require("./Icon"));
 
+var _buttonGroup = _interopRequireDefault(require("./button-group"));
+
 var _chai = _interopRequireDefault(require("chai"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -21978,8 +22055,13 @@ _vue.default.component('g-button', _Button.default);
 
 _vue.default.component('g-icon', _Icon.default);
 
+_vue.default.component('g-button-group', _buttonGroup.default);
+
 new _vue.default({
-  el: '#app'
+  el: '#app',
+  data: {
+    loading: false
+  }
 });
 
 var expect = _chai.default.expect();
@@ -21991,7 +22073,7 @@ var expect = _chai.default.expect();
     propsData: {}
   });
 }
-},{"vue":"node_modules/vue/dist/vue.common.js","./Button":"src/Button.vue","./Icon":"src/Icon.vue","chai":"node_modules/chai/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"vue":"node_modules/vue/dist/vue.common.js","./Button":"src/Button.vue","./Icon":"src/Icon.vue","./button-group":"src/button-group.vue","chai":"node_modules/chai/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

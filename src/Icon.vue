@@ -9,7 +9,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.g-icon{
+.icon{
    width: 1em;
    height: 1em;
    vertical-align: middle;

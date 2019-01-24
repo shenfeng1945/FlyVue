@@ -1,3 +1,11 @@
+@keyframes spin-data-v-e9144a {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
 .g-button[data-v-e9144a] {
   font-size: var(--font-size);
   height: var(--button-height);
@@ -35,8 +43,30 @@
 .g-button.icon-right > .content[data-v-e9144a] {
     order: 1;
 }
-.g-icon[data-v-18cf5e] {
+.g-button > .loading[data-v-e9144a] {
+    animation: spin-data-v-e9144a 1s infinite linear;
+}
+.icon[data-v-18cf5e] {
   width: 1em;
   height: 1em;
   vertical-align: middle;
+}
+.g-button-group[data-v-b01c79] {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+.g-button-group > .g-button[data-v-b01c79] {
+    border-radius: 0;
+}
+.g-button-group > .g-button[data-v-b01c79]:not(:first-child) {
+      border-left: none;
+}
+.g-button-group > .g-button[data-v-b01c79]:first-child {
+      border-top-left-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
+}
+.g-button-group > .g-button[data-v-b01c79]:last-child {
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
 }
