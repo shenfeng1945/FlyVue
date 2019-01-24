@@ -7,7 +7,7 @@
 export default {
     mounted(){
         for(let node of this.$el.children){
-          console.log(node.nodeName)
+          // 用于判断子组件是否是想要的
         }
     }
 }

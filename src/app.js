@@ -15,12 +15,73 @@ new Vue({
 })
 
 import chai from 'chai';
-const expect = chai.expect();
+/**
+ * BDD 行为驱动开发
+ * TDD 测试驱动开发
+ * Asset 断言
+ * 测试用例根据组件的入参和事件来看
+ */
+const expect = chai.expect;
 {
     const Constructor = Vue.extend(Button);
-    const vm = new Constructor({
+    const button = new Constructor({
         propsData: {
-            
+            icon: 'settings'
         }
     })
+    button.$mount()
+    let useElement = button.$el.querySelector('use')
+    let href = useElement.getAttribute('xlink:href')
+    expect(href).to.equal('#i-settings')
+    button.$el.remove()
+    button.$destroy()
+}
+{
+    const Constructor = Vue.extend(Button);
+    const button = new Constructor({
+        propsData: {
+            loading: true
+        }
+    })
+    button.$mount()
+    let useElement = button.$el.querySelector('use')
+    let href = useElement.getAttribute('xlink:href')
+    expect(href).to.equal('#i-loading')
+    button.$el.remove()
+    button.$destroy()
+}
+{
+   // 获取节点样式时，要挂载在页面上才能获取样式
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+    const Constructor = Vue.extend(Button);
+    const button = new Constructor({
+        propsData: {
+            iconPosition: 'right',
+            icon: 'settings'
+        }
+    })
+    button.$mount(div)
+    let svgElement = button.$el.querySelector('svg')
+    let {order} = window.getComputedStyle(svgElement);
+    // css的属性值都是字符串
+    expect(order).to.equal('2')
+    button.$el.remove()
+    button.$destroy()
+}
+{
+    const Constructor = Vue.extend(Button);
+    const gButton = new Constructor({
+        propsData: {
+            loading: true
+        }
+    })
+    gButton.$mount()
+    // 如何期望一个函数被执行，函数里面写'expect(1).to.equal(1)'是错误的写法
+    gButton.$on('click',function(){
+      //
+    })
+    let button = gButton.$el;
+    button.click()
+    
 }

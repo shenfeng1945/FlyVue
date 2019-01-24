@@ -11630,9 +11630,9 @@ var _default = {
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = this.$el.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      for (var _iterator = this.$el.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {// 用于判断子组件是否是想要的
+
         var node = _step.value;
-        console.log(node.nodeName);
       }
     } catch (err) {
       _didIteratorError = true;
@@ -22090,14 +22090,92 @@ new _vue.default({
   }
 });
 
-var expect = _chai.default.expect();
-
+/**
+ * BDD 行为驱动开发
+ * TDD 测试驱动开发
+ * Asset 断言
+ * 测试用例根据组件的入参和事件来看
+ */
+var expect = _chai.default.expect;
 {
   var Constructor = _vue.default.extend(_Button.default);
 
-  var vm = new Constructor({
-    propsData: {}
+  var button = new Constructor({
+    propsData: {
+      icon: 'settings'
+    }
   });
+  button.$mount();
+  var useElement = button.$el.querySelector('use');
+  var href = useElement.getAttribute('xlink:href');
+  expect(href).to.equal('#i-settings');
+  button.$el.remove();
+  button.$destroy();
+}
+{
+  var _Constructor = _vue.default.extend(_Button.default);
+
+  var _button = new _Constructor({
+    propsData: {
+      loading: true
+    }
+  });
+
+  _button.$mount();
+
+  var _useElement = _button.$el.querySelector('use');
+
+  var _href = _useElement.getAttribute('xlink:href');
+
+  expect(_href).to.equal('#i-loading');
+
+  _button.$el.remove();
+
+  _button.$destroy();
+}
+{
+  // 获取节点样式时，要挂载在页面上才能获取样式
+  var div = document.createElement('div');
+  document.body.appendChild(div);
+
+  var _Constructor2 = _vue.default.extend(_Button.default);
+
+  var _button2 = new _Constructor2({
+    propsData: {
+      iconPosition: 'right',
+      icon: 'settings'
+    }
+  });
+
+  _button2.$mount(div);
+
+  var svgElement = _button2.$el.querySelector('svg');
+
+  var _window$getComputedSt = window.getComputedStyle(svgElement),
+      order = _window$getComputedSt.order; // css的属性值都是字符串
+
+
+  expect(order).to.equal('2');
+
+  _button2.$el.remove();
+
+  _button2.$destroy();
+}
+{
+  var _Constructor3 = _vue.default.extend(_Button.default);
+
+  var gButton = new _Constructor3({
+    propsData: {
+      loading: true
+    }
+  });
+  gButton.$mount(); // 如何期望一个函数被执行，函数里面写'expect(1).to.equal(1)'是错误的写法
+
+  gButton.$on('click', function () {//
+  });
+  var _button3 = gButton.$el;
+
+  _button3.click();
 }
 },{"vue":"node_modules/vue/dist/vue.common.js","./Button":"src/Button.vue","./Icon":"src/Icon.vue","./button-group":"src/button-group.vue","chai":"node_modules/chai/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -22126,7 +22204,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60107" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49552" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
