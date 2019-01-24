@@ -8,6 +8,7 @@
     </button>
 </template>
 <script>
+import Icon from './Icon';
 export default {
    props: {
        icon: {},
@@ -22,6 +23,9 @@ export default {
            type: Boolean,
            default: false
        }
+   },
+   components: {
+       'g-icon': Icon
    }
 }
 </script>
