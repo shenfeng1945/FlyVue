@@ -5,7 +5,10 @@ const expect = chai.expect;
  Vue.config.productionTip = false
  Vue.config.devtools = false
 
+// describe,it来自mocha，挂载window上
  describe('Button', () => {
+     // 行为驱动测试
+     // 描述Button的行为
      it('存在.', () => {
          expect(Button).to.be.ok
      })
@@ -70,6 +73,7 @@ const expect = chai.expect;
          }
          }).$mount()
 
+         // sinon提供的一个假函数，它知道自己被调用了
          const callback = sinon.fake();
          vm.$on('click', callback)
          vm.$el.click()
