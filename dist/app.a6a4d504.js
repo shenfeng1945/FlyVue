@@ -11775,6 +11775,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
 var _default = {
   name: 'GuluInput',
   props: {
@@ -11817,7 +11822,21 @@ exports.default = _default;
     [
       _c("input", {
         attrs: { type: "text", disabled: _vm.disabled, readonly: _vm.readonly },
-        domProps: { value: _vm.value }
+        domProps: { value: _vm.value },
+        on: {
+          input: function($event) {
+            _vm.$emit("input", $event)
+          },
+          focus: function($event) {
+            _vm.$emit("focus", $event)
+          },
+          blur: function($event) {
+            _vm.$emit("blur", $event)
+          },
+          change: function($event) {
+            _vm.$emit("change", $event)
+          }
+        }
       }),
       _vm._v(" "),
       _vm.error
@@ -22957,6 +22976,9 @@ new _vue.default({
   el: '#app',
   data: {
     loading: false
+  },
+  methods: {
+    inputChange: function inputChange(e) {}
   }
 });
 
