@@ -12,7 +12,8 @@ Vue.component('g-input',Input)
 new Vue({
     el: '#app',
     data: {
-        loading: false
+        loading: false,
+        message: 'hello'
     },
     methods: {
         inputChange(e){

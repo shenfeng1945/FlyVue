@@ -11825,16 +11825,16 @@ exports.default = _default;
         domProps: { value: _vm.value },
         on: {
           input: function($event) {
-            _vm.$emit("input", $event)
+            _vm.$emit("input", $event.target.value)
           },
           focus: function($event) {
-            _vm.$emit("focus", $event)
+            _vm.$emit("focus", $event.target.value)
           },
           blur: function($event) {
-            _vm.$emit("blur", $event)
+            _vm.$emit("blur", $event.target.value)
           },
           change: function($event) {
-            _vm.$emit("change", $event)
+            _vm.$emit("change", $event.target.value)
           }
         }
       }),
@@ -22975,7 +22975,8 @@ _vue.default.component('g-input', _Input.default);
 new _vue.default({
   el: '#app',
   data: {
-    loading: false
+    loading: false,
+    message: 'hello'
   },
   methods: {
     inputChange: function inputChange(e) {}

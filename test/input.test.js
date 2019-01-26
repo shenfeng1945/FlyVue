@@ -66,11 +66,15 @@ describe('Input', () => {
                 const callback = sinon.fake()
                 vm.$on(eventName, callback)
                 let event = new Event(eventName)
+                Object.defineProperty(event,'target',{
+                    value: {value: 'hello'},
+                    enumerable: true
+                })
                 let inputElement = vm.$el.querySelector('input')
                 // 向指定的事件目标派发一个事件
                 inputElement.dispatchEvent(event);
                 // 测callback被触发，同时传的第一个值为event
-                expect(callback).to.have.been.calledWith(event);
+                expect(callback).to.have.been.calledWith('hello');
             })
         })
 
