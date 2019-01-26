@@ -1,12 +1,14 @@
 {
-  "name": "gulu-lu",
-  "version": "0.0.1",
+  "name": "gulu-hulu",
+  "version": "0.0.2",
   "description": "这是一个UI框架",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "parcel index.html -p 8080 --no-cache",
-    "dev-test": "parcel watch test/* --no-cache ; karma start",
-    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run"
+    "dev-test": "parcel watch test/* --no-cache",
+    "dev-test1": "karma start",
+    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run",
+    "build": "parcel build index.js --no-cache --no-minify"
   },
   "repository": {
     "type": "git",

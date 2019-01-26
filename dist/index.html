@@ -19,9 +19,21 @@
     --color: #333;
     --border-color: #999;
     --border-color-hover: #666;
+ }
+ .box{
+     margin: 20px;
  }</style>
 <body>
    <div id="app">
+       <div class="box">
+         <g-input value="hello" error="失败了"></g-input>
+       </div>
+       <div class="box">
+         <g-input value="hello" disabled=""></g-input>
+       </div>
+       <div class="box">
+         <g-input value="hello" readonly=""></g-input>
+       </div>
        <g-button :loading="loading" @click="loading = !loading">
            按钮
        </g-button>
