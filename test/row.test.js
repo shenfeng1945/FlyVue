@@ -13,6 +13,7 @@ describe('Row', () => {
         expect(Row).to.be.ok
     })
     it('接受 gutter 属性', (done) => {
+        // 默认代码是同步的，只要加了done，才表示可为异步。异步代码结束后，调用done表示异步执行完了
         Vue.component('g-row',Row)
         Vue.component('g-col',Col)
         const div = document.createElement('div')
@@ -26,7 +27,7 @@ describe('Row', () => {
         vm = new Vue({
           el: div
         })
-        setTimeout(() => {
+        Promise.resolve().then(() => {
             const row = vm.$el.querySelector('.row')
             expect(getComputedStyle(row).marginLeft).to.eq('-10px')
             expect(getComputedStyle(row).marginRight).to.eq('-10px')
