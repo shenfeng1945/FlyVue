@@ -14,4 +14,10 @@
   <g-col span="8"></g-col>
   <g-col span="8"></g-col>
 </g-row>
+// 响应式，当手机屏幕到ipad设定的px时，优先使用ipad提供的span
+<g-row>
+  <g-col span="8" :ipad={span:24}></g-col>
+  <g-col span="8" :ipad={span:24}></g-col>
+  <g-col span="8" :ipad={span:24}></g-col>
+</g-row>
 ```

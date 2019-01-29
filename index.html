@@ -13,11 +13,6 @@
         padding: 0;
         box-sizing: border-box;
     }
-
-    #app {
-        margin: 20px;
-    }
-
     :root {
         --button-height: 32px;
         --font-size: 14px;
@@ -28,52 +23,22 @@
         --border-color: #999;
         --border-color-hover: #666;
     }
-
-    .box {
-        margin: 20px;
-    }
-    .colStyle{
+    .demo{
         border: 1px solid black;
+        min-height: 100px;
     }
 </style>
 
 <body>
     <div id="app">
-        <g-row>
-          <g-col class="colStyle" span="12" :ipad="{span: 8,offset:10}" :narrow-pc="{span:4}">1</g-col>
-          <g-col class="colStyle" span="12" :ipad="{span: 16,offset:10}" :narrow-pc="{span: 20}">2</g-col>
-        </g-row>
-        <div class="box">
-        </g-row>
-        <div class="box">
-        </g-row>
-        <div class="box">
-            <g-input v-model="message"></g-input>
-        </div>
-        <div class="box">
-            <g-input value="hello" disabled></g-input>
-        </div>
-        <div class="box">
-            <g-input value="hello" readonly></g-input>
-        </div>
-        <g-button :loading="loading" @click="loading = !loading">
-            按钮
-        </g-button>
-        <g-button icon="settings" icon-position="right">
-            按钮
-        </g-button>
-        <g-button icon="down" icon-position="left">
-            按钮
-        </g-button>
-        <g-button-group>
-            <g-button icon="left" icon-position="left">
-                后退
-            </g-button>
-            <g-button>更多</g-button>
-            <g-button icon="right" icon-position="right">
-                前进
-            </g-button>
-        </g-button-group>
+       <g-layout style="height:100vh">
+           <g-sider class="demo">sider</g-sider>
+           <g-layout>
+             <g-header class="demo">header</g-header>
+             <g-content class="demo">content</g-content>
+             <g-footer class="demo">footer</g-footer>
+           </g-layout>
+       </g-layout>
     </div>
 </body>
 <script src="./src/app.js"></script>
