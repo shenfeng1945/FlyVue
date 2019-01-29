@@ -3,6 +3,37 @@
        <slot></slot>
     </div>
 </template>
+<script>
+export default {
+    name: 'GuluToast',
+    props: {
+        autoClose: {
+            type: Boolean,
+            default: true
+        },
+        autoCloseDelay: {
+            type: Number,
+            default: 5
+        }
+    },
+    mounted(){
+        if(this.autoClose){
+            setTimeout(() => {
+              this.close()
+            },this.autoCloseDelay * 1000)
+        }
+    },
+    methods: {
+        close(){
+            // dom元素remove
+            this.$el.remove()
+            // 组件死掉，注销绑定的事件
+            this.$destroy()
+        }
+    }
+}
+</script>
+
 <style lang="scss" scoped>
   $font-size: 14px;
   $height: 40px;
