@@ -15,12 +15,11 @@ export default {
   name: "GuluToast",
   props: {
     autoClose: {
-      type: Boolean,
-      default: false
-    },
-    autoCloseDelay: {
-      type: Number,
-      default: 50
+      type: [Boolean,Number],
+      default: 5,
+      validator(value){
+        return value === false || typeof value === 'number'
+      }
     },
     buttonClose: {
       type: Object,
@@ -42,10 +41,6 @@ export default {
       validator(value) {
         return ["top", "bottom", "middle"].indexOf(value) > -1;
       }
-    },
-    OnlyOneToast: {
-      type: Boolean,
-      default: true
     }
   },
   mounted() {
@@ -66,13 +61,13 @@ export default {
           this.$refs.toast.getBoundingClientRect().height
         }px`;
         // this.$refs.toast.style.height >>> undefined 无法获取外联样式
-      }, 1000);
+      });
     },
     handerAutoClose() {
       if (this.autoClose) {
         setTimeout(() => {
           this.close();
-        }, this.autoCloseDelay * 1000);
+        }, this.autoClose * 1000);
       }
     },
     close() {

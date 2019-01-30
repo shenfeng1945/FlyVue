@@ -34,22 +34,35 @@ new Vue({
         message: 'hello'
     },
     created(){
-        this.$toast('hello world',{
-            buttonClose: {
-                text: '你好',
-                callback(){
-                    console.log('关闭了')
-                }
-            },
-            enableHtml: false,
-            position: 'middle'
-        })
+       
     },
     methods: {
         inputChange(e){
         },
         click(){
-            this.$toast('你好，我是message')
+            this.$toast(`hello world ${parseInt(Math.random() * 100)}`,{
+                buttonClose: {
+                    text: '你好',
+                    callback(){
+                        console.log('关闭了')
+                    }
+                },
+                enableHtml: false,
+                position: 'bottom',
+            })
+        },
+        click1(){
+            this.$toast(`hello world ${parseInt(Math.random() * 100)}`,{
+                buttonClose: {
+                    text: '你好',
+                    callback(){
+                        console.log('关闭了')
+                    }
+                },
+                enableHtml: false,
+                position: 'top',
+                autoClose: 1
+            })
         }
     }
 })
