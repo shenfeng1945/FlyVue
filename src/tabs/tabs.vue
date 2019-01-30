@@ -22,11 +22,15 @@ export default {
    },
    data(){
      return {
+         // new Vue() 有$emit,$on,$off所以用它做事件总线
          eventBus: new Vue()
      }
    },
    created(){
     //    this.$emit('update:selected','sdf')
+   },
+   mounted(){
+     this.eventBus.$emit('update:selected',this.selected)
    },
    provide(){
        return {

@@ -1,5 +1,5 @@
 <template>
-    <div class="tabs-panel">
+    <div class="tabs-panel" v-if="active">
        <slot><slot>
     </div>
 </template>
@@ -7,9 +7,18 @@
 export default {
    name: 'GuluTabsPanel',
    inject: ['eventBus'],
+   data(){
+       return {
+           active: false
+       }
+   },
+   props: {
+       name: String | Number,
+       required: true
+   },
    created(){
        this.eventBus.$on('update:selected',(name) => {
-           console.log(name,'panel')
+           this.active = name === this.name
        })
    }
 }
