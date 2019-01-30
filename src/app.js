@@ -41,7 +41,7 @@ Vue.use(plugin)
 new Vue({
     el: '#app',
     data: {
-       
+        selectedTab: 'tab3'
     },
     created(){
        

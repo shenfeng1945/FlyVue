@@ -13,6 +13,7 @@
         padding: 0;
         box-sizing: border-box;
     }
+
     :root {
         --button-height: 32px;
         --font-size: 14px;
@@ -23,7 +24,8 @@
         --border-color: #999;
         --border-color-hover: #666;
     }
-    .demo{
+
+    .demo {
         border: 1px solid black;
         min-height: 100px;
     }
@@ -31,18 +33,21 @@
 
 <body>
     <div id="app">
-       <g-tabs selected="tab3">
-           <g-tabs-nav>
-               <g-tabs-item name="tab1">NBA</g-tabs-item>
-               <g-tabs-item name="tab2">美女</g-tabs-item>
-               <g-tabs-item name="tab3">财经</g-tabs-item>
-           </g-tabs-nav>
-           <g-tabs-content>
-               <g-tabs-panel name="tab1">这是NBA的内容</g-tabs-panel>
-               <g-tabs-panel name="tab3">这是财经的内容</g-tabs-panel>
-               <g-tabs-panel name="tab2">这是美女的内容</g-tabs-panel>
-           </g-tabs-content>
-       </g-tabs>
+        <g-tabs :selected.sync="selectedTab">
+            <g-tabs-nav>
+                <template slot="actions">
+                    <button>添加</button>
+                </template>
+                <g-tabs-item name="tab1">NBA</g-tabs-item>
+                <g-tabs-item name="tab2">美女</g-tabs-item>
+                <g-tabs-item name="tab3">财经</g-tabs-item>
+            </g-tabs-nav>
+            <g-tabs-content>
+                <g-tabs-panel name="tab1">这是NBA的内容</g-tabs-panel>
+                <g-tabs-panel name="tab3">这是财经的内容</g-tabs-panel>
+                <g-tabs-panel name="tab2">这是美女的内容</g-tabs-panel>
+            </g-tabs-content>
+        </g-tabs>
     </div>
 </body>
 <script src="./src/app.js"></script>
