@@ -42,11 +42,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  $active-color: blue;
   .tabs-item{
      flex-shrink: 0;
-     padding: 0 1em;
+     padding: .5em 1em;
+     cursor: pointer;
      &.active{
-         background: red;
+         color: $active-color;
+         .icon{
+             fill: $active-color;
+         }
      }
   }
 </style>
