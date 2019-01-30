@@ -13,7 +13,7 @@ let validator = value => {
   let colKeys = Object.keys(value);
   let valid = true;
   colKeys.forEach(key => {
-    if (!["span", "offset"].includes(key)) {
+    if (!["span", "offset"].indexOf(key) > -1) {
       valid = false;
     }
   });

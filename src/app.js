@@ -41,7 +41,8 @@ new Vue({
                     console.log('关闭了')
                 }
             },
-            enableHtml: false
+            enableHtml: false,
+            position: 'middle'
         })
     },
     methods: {
