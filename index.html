@@ -31,8 +31,18 @@
 
 <body>
     <div id="app">
-       <button @click="click">点我</button>
-       <button @click="click1">点我1</button>
+       <g-tabs selected="tab3">
+           <g-tabs-nav>
+               <g-tabs-item name="tab1">NBA</g-tabs-item>
+               <g-tabs-item name="tab2">美女</g-tabs-item>
+               <g-tabs-item name="tab3">财经</g-tabs-item>
+           </g-tabs-nav>
+           <g-tabs-content>
+               <g-tabs-panel name="tab1">这是NBA的内容</g-tabs-panel>
+               <g-tabs-panel name="tab3">这是财经的内容</g-tabs-panel>
+               <g-tabs-panel name="tab2">这是美女的内容</g-tabs-panel>
+           </g-tabs-content>
+       </g-tabs>
     </div>
 </body>
 <script src="./src/app.js"></script>
