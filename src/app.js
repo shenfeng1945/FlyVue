@@ -33,6 +33,17 @@ new Vue({
         loading: false,
         message: 'hello'
     },
+    created(){
+        this.$toast('hello world',{
+            buttonClose: {
+                text: '你好',
+                callback(){
+                    console.log('关闭了')
+                }
+            },
+            enableHtml: false
+        })
+    },
     methods: {
         inputChange(e){
         },
