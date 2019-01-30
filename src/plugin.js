@@ -1,14 +1,32 @@
 import Toast from './toast'
+
+let curToast 
 export default {
   install(Vue, options) {
-    Vue.prototype.$toast = (message,toastOptions) => {
-      const Constructor = Vue.extend(Toast);
-      const toast = new Constructor({
-        propsData: toastOptions
+    Vue.prototype.$toast = (message, toastOptions) => {
+      if(curToast){
+        curToast.close()
+      }
+      curToast = createToast({ 
+        Vue,
+        message,
+        toastOptions,
+        onClose: () => {
+          curToast = null
+        }
       })
-      toast.$slots.default = [message]
-      toast.$mount()
-      document.body.appendChild(toast.$el)
     }
   }
+}
+
+function createToast({ Vue, message, toastOptions, onClose }) {
+  const Constructor = Vue.extend(Toast);
+  const toast = new Constructor({
+    propsData: toastOptions
+  })
+  toast.$slots.default = [message]
+  toast.$on('close', onClose)
+  toast.$mount()
+  document.body.appendChild(toast.$el)
+  return toast
 }
