@@ -15,7 +15,8 @@ export default {
    computed:{
      itemclass(){
          return {
-             active: this.active
+             active: this.active,
+             disabled: this.disabled
          }
      }
    },
@@ -31,7 +32,8 @@ export default {
    },
    methods: {
        tabClick(){
-           this.eventBus.$emit('update:selected',this.name)
+           if(this.disabled){return}
+           this.eventBus.$emit('update:selected',this.name,this)
        }
    },
    created(){
@@ -43,15 +45,21 @@ export default {
 </script>
 <style lang="scss" scoped>
   $active-color: blue;
+  $disabled-color: #ddd;
   .tabs-item{
      flex-shrink: 0;
      padding: .5em 1em;
      cursor: pointer;
+     display: flex;
+     align-items: center;
      &.active{
          color: $active-color;
          .icon{
              fill: $active-color;
          }
+     }
+     &.disabled{
+         color: $disabled-color;
      }
   }
 </style>
