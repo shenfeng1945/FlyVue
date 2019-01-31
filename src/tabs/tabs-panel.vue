@@ -13,8 +13,10 @@ export default {
        }
    },
    props: {
-       name: String | Number,
-       required: true
+       name: {
+          type: String | Number,
+          required: true
+       } ,
    },
    created(){
        this.eventBus.$on('update:selected',(name) => {

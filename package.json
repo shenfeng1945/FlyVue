@@ -7,7 +7,7 @@
     "dev": "parcel index.html -p 8080 --no-cache",
     "dev-test": "parcel watch test/* --no-cache",
     "dev-test1": "karma start",
-    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run",
+    "test": "parcel build test/**/* --no-cache --no-minify && karma start --single-run",
     "build": "parcel build index.js --no-cache --no-minify"
   },
   "repository": {

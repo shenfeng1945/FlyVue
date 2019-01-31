@@ -1,5 +1,5 @@
 <template>
-    <div class="tabs-item" @click="tabClick" :class="itemclass">
+    <div class="tabs-item" @click="tabClick" :class="itemclass" :data-name="name">
        <slot><slot>
     </div>
 </template>
@@ -37,7 +37,7 @@ export default {
        }
    },
    created(){
-       this.eventBus.$on('update:selected',(name) => {
+       this.eventBus && this.eventBus.$on('update:selected',(name) => {
            this.active = name === this.name
        })
    }
@@ -60,6 +60,7 @@ export default {
      }
      &.disabled{
          color: $disabled-color;
+         cursor: not-allowed;
      }
   }
 </style>

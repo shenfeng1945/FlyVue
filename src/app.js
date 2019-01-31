@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Button from './Button';
+import Button from './button';
 import Icon from './Icon';
 import ButtonGroup from './button-group';
 import Input from './Input'

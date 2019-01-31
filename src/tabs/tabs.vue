@@ -26,10 +26,10 @@ export default {
       eventBus: new Vue()
     };
   },
-  created() {
-    //    this.$emit('update:selected','sdf')
-  },
   mounted() {
+    if(!this.$children.length){
+      throw new Error('期待tabs组件里包含tabs-nav和tabs-content，但没有')
+    }
     this.$children.forEach(vm => {
       if (vm.$options.name === "GuluTabsNav") {
         vm.$children.forEach(childVm => {
