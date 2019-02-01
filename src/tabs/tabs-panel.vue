@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-   name: 'GuluTabsPanel',
+   name: 'FlyTabsPanel',
    inject: ['eventBus'],
    data(){
        return {

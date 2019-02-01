@@ -20,7 +20,7 @@ let validator = value => {
   return valid;
 };
 export default {
-  name: "GuluCol",
+  name: "FlyCol",
   props: {
     span: [Number, String],
     offset: {

@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-   name: 'GuluTabsNav',
+   name: 'FlyTabsNav',
    inject: ['eventBus'],
    data(){
      return {

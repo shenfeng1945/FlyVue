@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>gulu-lu</title>
+    <title>FlyVue UI</title>
 </head>
 <style>
     * {
@@ -33,24 +33,24 @@
 
 <body>
     <div id="app">
-        <g-tabs :selected.sync="selectedTab">
-            <g-tabs-nav>
+        <f-tabs :selected.sync="selectedTab">
+            <f-tabs-nav>
                 <template slot="actions">
                     <button>添加</button>
                 </template>
-                <g-tabs-item name="tab1">
-                    <g-icon name="settings"></g-icon>
+                <f-tabs-item name="tab1">
+                    <f-icon name="settings"></f-icon>
                     NBA
-                </g-tabs-item>
-                <g-tabs-item name="tab2" disabled>美女</g-tabs-item>
-                <g-tabs-item name="tab3">财经</g-tabs-item>
-            </g-tabs-nav>
-            <g-tabs-content>
-                <g-tabs-panel name="tab1">这是NBA的内容</g-tabs-panel>
-                <g-tabs-panel name="tab3">这是财经的内容</g-tabs-panel>
-                <g-tabs-panel name="tab2">这是美女的内容</g-tabs-panel>
-            </g-tabs-content>
-        </g-tabs>
+                </f-tabs-item>
+                <f-tabs-item name="tab2" disabled>美女</f-tabs-item>
+                <f-tabs-item name="tab3">财经</f-tabs-item>
+            </f-tabs-nav>
+            <f-tabs-content>
+                <f-tabs-panel name="tab1">这是NBA的内容</f-tabs-panel>
+                <f-tabs-panel name="tab3">这是财经的内容</f-tabs-panel>
+                <f-tabs-panel name="tab2">这是美女的内容</f-tabs-panel>
+            </f-tabs-content>
+        </f-tabs>
     </div>
 </body>
 <script src="./src/app.js"></script>

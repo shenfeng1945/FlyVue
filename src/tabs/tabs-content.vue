@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-   name: 'GuluTabsContent'
+   name: 'FlyTabsContent'
 }
 </script>
 <style lang="scss" scoped>

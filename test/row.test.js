@@ -14,15 +14,15 @@ describe('Row', () => {
     })
     it('接受 gutter 属性', (done) => {
         // 默认代码是同步的，只要加了done，才表示可为异步。异步代码结束后，调用done表示异步执行完了
-        Vue.component('g-row',Row)
-        Vue.component('g-col',Col)
+        Vue.component('f-row',Row)
+        Vue.component('f-col',Col)
         const div = document.createElement('div')
         document.body.appendChild(div)
         div.innerHTML = `
-          <g-row gutter="20">
-            <g-col span="12"></g-col>
-            <g-col span="12"></g-col>
-          </g-row>
+          <f-row gutter="20">
+            <f-col span="12"></f-col>
+            <f-col span="12"></f-col>
+          </f-row>
         `
         vm = new Vue({
           el: div

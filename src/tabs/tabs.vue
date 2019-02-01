@@ -6,7 +6,7 @@
 <script>
 import Vue from "vue";
 export default {
-  name: "GuluTabs",
+  name: "FlyTabs",
   props: {
     selected: {
       type: String,
@@ -31,9 +31,9 @@ export default {
       throw new Error('期待tabs组件里包含tabs-nav和tabs-content，但没有')
     }
     this.$children.forEach(vm => {
-      if (vm.$options.name === "GuluTabsNav") {
+      if (vm.$options.name === "FlyTabsNav") {
         vm.$children.forEach(childVm => {
-          if (childVm.name === this.selected && childVm.$options.name === 'GuluTabsItem') {
+          if (childVm.name === this.selected && childVm.$options.name === 'FlyTabsItem') {
             this.eventBus.$emit("update:selected", this.selected, childVm);
           }
         });

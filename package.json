@@ -1,6 +1,6 @@
 {
-  "name": "gulu-hulu",
-  "version": "0.0.2",
+  "name": "FlyVue",
+  "version": "0.0.1",
   "description": "这是一个UI框架",
   "main": "dist/index.js",
   "scripts": {
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shenfeng1945/gulu-lu.git"
+    "url": "git+https://github.com/shenfeng1945/FlyVue.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shenfeng1945/gulu-lu/issues"
+    "url": "https://github.com/shenfeng1945/FlyVue/issues"
   },
-  "homepage": "https://github.com/shenfeng1945/gulu-lu#readme",
+  "homepage": "https://github.com/shenfeng1945/FlyVue#readme",
   "dependencies": {
     "@vue/component-compiler-utils": "^2.5.0",
     "chai": "^4.2.0",

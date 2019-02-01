@@ -1,7 +1,7 @@
 <template>
-    <button class="g-button" :class="{[`icon-${iconPosition}`]: true}" @click="$emit('click')">
-        <g-icon :name="icon"></g-icon>
-        <g-icon class="loading" name="loading" v-if="loading"></g-icon>
+    <button class="f-button" :class="{[`icon-${iconPosition}`]: true}" @click="$emit('click')">
+        <f-icon :name="icon"></f-icon>
+        <f-icon class="loading" name="loading" v-if="loading"></f-icon>
         <div class="content">
           <slot></slot>
         </div>
@@ -25,7 +25,7 @@ export default {
        }
    },
    components: {
-       'g-icon': Icon
+       'f-icon': Icon
    }
 }
 </script>
@@ -34,7 +34,7 @@ export default {
       0% {transform: rotate(0deg)}
       100% {transform: rotate(360deg)}
   }
- .g-button{
+ .f-button{
      font-size: var(--font-size);
      height: var(--button-height);
      padding: 0 1em;
