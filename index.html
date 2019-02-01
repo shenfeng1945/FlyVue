@@ -39,7 +39,12 @@
                 <f-tabs-panel name="tab2">这是美女的内容</f-tabs-panel>
             </f-tabs-content>
         </f-tabs> -->
-        <f-button icon="settings" type="primary">你好</f-button>
+        <f-popover>
+            <template slot="content">
+               <p>这是弹出内容</p>
+            </template>
+            <f-button>popover</f-button>
+        </f-popover>
     </div>
 </body>
 <script src="./src/app.js"></script>
