@@ -1,5 +1,10 @@
 <template>
    <div class="wrapper" :class="{error}">
+        <template v-if="showClear">
+          <div class="close-icon">
+            <f-icon name="close"></f-icon>
+          </div>
+       </template>
        <input type="text" :value="value" :disabled="disabled" 
               :readonly="readonly"
               @input="$emit('input',$event.target.value)"
@@ -10,6 +15,7 @@
          <f-icon name="error" class="error-icon"></f-icon>
          <span class="error-message">{{error}}</span>
        </template>
+      
     </div> 
 </template>
 <script>
@@ -31,17 +37,27 @@ export default {
         error: {
             type: String,
             default: ''
+        },
+        clearable: {
+            type: Boolean,
+            default: false
         }
     },
-    components: { 'f-icon': Icon }
+    components: { 'f-icon': Icon },
+    computed: {
+        showClear(){
+            return this.clearable && this.value
+        }
+    }
    
 }
 </script>
 <style lang="scss" scoped>
    $height: 32px;
    $border-color: #999;
-   $border-color-erro: #999;
+   $border-color-error: #999;
    $border-color-hover: #666;
+   $border-color-focus: #409EFF;
    $font-size: 14px;
    $box-shadow-color: rgba(0,0,0,.5);
    $red: #F1453D;
@@ -49,25 +65,21 @@ export default {
        font-size: $font-size;
        display: inline-flex;
        align-items: center;
+       position: relative;
        > :not(:last-child){
            margin-right: .2em;
-       }
-       &.error{
-           > input{
-             border-color: $red;
-           }
        }
        > input {
            height: $height;
            border: 1px solid $border-color;
            border-radius: 4px;
-           padding: 0 8px;
+           padding: 0 1em;
            font-size: inherit;
            &:hover{
                border-color: $border-color-hover;
            }
            &:focus{
-               box-shadow: inset 0 1px 3px $box-shadow-color;
+               border-color: $border-color-focus;
                outline: none;
            }
            &[disabled], &[readonly]{
@@ -76,11 +88,34 @@ export default {
                cursor: not-allowed;
            }
        }
+       >.close-icon ~ input{
+           padding-right: 2em;
+       }
+        &.error{
+           > input{
+             border-color: $red;
+             &:hover{
+                 border-color: $red;
+             }
+             &:focus{
+                 border-color: $red;
+             }
+           }
+       }
        .error-icon{
            fill: $red;
        }
        .error-message{
            color: $red;
+       }
+       
+       > .close-icon{
+           position: absolute;
+           right: .5em;
+           top: 50%;
+           transform: translateY(-50%);
+           display: flex;
+           align-items: center;
        }
    }
 </style>

@@ -43,12 +43,12 @@ Vue.use(plugin)
 new Vue({
     el: '#app',
     data: {
-        selectedTab: 'tab3'
+        selectedTab: 'tab3',
+        input: 'dd'
     },
     created(){
        
     },
     methods: {
-       
     }
 })
