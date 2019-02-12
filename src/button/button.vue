@@ -1,6 +1,6 @@
 <template>
-    <button class="f-button" :class="[iconPosition && `icon-${iconPosition}`, `${type}`]" @click="$emit('click')">
-        <f-icon :name="icon"></f-icon>
+    <button class="f-button" :class="[iconPosition && `icon-${iconPosition}`, `${type}`, circle && `circle`, loading && `is-loading` ]" @click="$emit('click')">
+        <f-icon :name="icon" :style="noMargin"></f-icon>
         <f-icon class="loading" name="loading" v-if="loading"></f-icon>
         <div class="content">
           <slot></slot>
@@ -29,11 +29,29 @@ export default {
            validator(value){
                return ['default','primary','warn'].indexOf(value) > -1
            }
+       },
+       circle: {
+           type: Boolean,
+           default: false
+       }
+   },
+   data(){
+       return {
+           noMargin: null
        }
    },
    components: {
        'f-icon': Icon
-   }
+   },
+   mounted(){
+       const text = this.$el.querySelector('.content').textContent;
+       if(!text){
+           this.noMargin = {
+               marginLeft: 0,
+               marginRight: 0,
+           }
+       }
+   },
 }
 </script>
 <style lang="scss" scoped>
@@ -71,10 +89,10 @@ export default {
        color: $button-bg;
        border-color: $button-primary-bg;
      }
-     &.primary:active{
+     &.primary:active, &.primary.is-loading{
        background: $button-primary-active-bg;
      }
-     &.primary:hover{
+     &.primary:hover,  &.primary.is-loading{
        border-color: $button-primary-active-bg;
      }
      &.warn{
@@ -82,10 +100,10 @@ export default {
        color: $button-bg;
        border-color: $button-warn-bg;
      }
-     &.warn:active{
+     &.warn:active,&.warn.is-loading{
        background: $button-warn-active-bg;
      }
-     &.warn:hover{
+     &.warn:hover,&.warn.is-loading{
        border-color: $button-warn-active-bg;
      }
      > .icon {
@@ -96,13 +114,13 @@ export default {
      > .content{
          order: 2;
      }
-     &:hover{
+     &:hover,&.is-loading{
        border-color: $border-color-hover;
      }
-     &:focus{
+     &:focus,&.is-loading{
        outline: none;
      }
-     &:active{
+     &:active,&.is-loading{
          background-color: $button-active-bg;
      }
      &.icon-right{
@@ -116,7 +134,10 @@ export default {
         }
      }
      > .loading{
-       animation: spin 1s infinite linear;
+       animation: spin 1.2s infinite linear;
+     }
+     &.circle{
+         border-radius: 50%;
      }
      
  }
