@@ -1,10 +1,6 @@
 <template>
    <div class="wrapper" :class="{error}">
-        <template v-if="showClear">
-          <div class="close-icon">
-            <f-icon name="close"></f-icon>
-          </div>
-       </template>
+        
        <input type="text" :value="value" :disabled="disabled" 
               :readonly="readonly"
               @input="$emit('input',$event.target.value)"
@@ -15,7 +11,11 @@
          <f-icon name="error" class="error-icon"></f-icon>
          <span class="error-message">{{error}}</span>
        </template>
-      
+      <template v-if="showClear">
+          <div class="close-icon" @click="clearValue">
+            <f-icon name="close"></f-icon>
+          </div>
+       </template>
     </div> 
 </template>
 <script>
@@ -48,6 +48,12 @@ export default {
         showClear(){
             return this.clearable && this.value
         }
+    },
+    methods: {
+        clearValue(){
+            this.$emit('input','')
+            this.$emit('change','')
+        }
     }
    
 }
@@ -73,7 +79,8 @@ export default {
            height: $height;
            border: 1px solid $border-color;
            border-radius: 4px;
-           padding: 0 1em;
+           padding-left: 1em;
+           padding-right: 1.2em;
            font-size: inherit;
            &:hover{
                border-color: $border-color-hover;
@@ -87,9 +94,6 @@ export default {
                color: #aaa;
                cursor: not-allowed;
            }
-       }
-       >.close-icon ~ input{
-           padding-right: 2em;
        }
         &.error{
            > input{
@@ -111,7 +115,7 @@ export default {
        
        > .close-icon{
            position: absolute;
-           right: .5em;
+           right: .4em;
            top: 50%;
            transform: translateY(-50%);
            display: flex;
