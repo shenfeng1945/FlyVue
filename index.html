@@ -21,32 +21,13 @@
 
 <body>
     <div id="app">
-        <!-- <f-tabs :selected.sync="selectedTab">
-            <f-tabs-nav>
-                <template slot="actions">
-                    <button>添加</button>
-                </template>
-                <f-tabs-item name="tab1">
-                    <f-icon name="settings"></f-icon>
-                    NBA
-                </f-tabs-item>
-                <f-tabs-item name="tab2" disabled>美女</f-tabs-item>
-                <f-tabs-item name="tab3">财经</f-tabs-item>
-            </f-tabs-nav>
-            <f-tabs-content>
-                <f-tabs-panel name="tab1">这是NBA的内容</f-tabs-panel>
-                <f-tabs-panel name="tab3">这是财经的内容</f-tabs-panel>
-                <f-tabs-panel name="tab2">这是美女的内容</f-tabs-panel>
-            </f-tabs-content>
-        </f-tabs> -->
-        
-        <!-- <f-popover>
-            <template slot="content">
-               <p>这是弹出内容</p>
-            </template>
-            <f-button>popover</f-button>
-        </f-popover> -->
-        <f-input v-model="input"></f-input>
+       <div style="height: 400px;"></div>
+       <f-popover>
+          <template slot="content">
+            <p>只是popover内容</p>
+          </template>
+          <f-button>点我</f-button>
+       </f-popover>
     </div>
 </body>
 <script src="./src/app.js"></script>
