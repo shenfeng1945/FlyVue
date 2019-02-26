@@ -21,7 +21,7 @@ export default {
       type: String,
       default: "click",
       validator(val) {
-        return ["click", "mouse"].indexOf(val) > -1;
+        return ["click", "hover"].indexOf(val) > -1;
       }
     },
     position: {
@@ -41,8 +41,24 @@ export default {
     this.addTriggerEvent();
   },
   beforeDestroy() {
-    this.removeContentWrapper();
+    this.putBackContent();
     this.removeTriggerEvent();
+  },
+  computed: {
+    openEvent(){
+      if(this.trigger === 'click'){
+        return 'click'
+      }else{
+        return 'mouseenter'
+      }
+    },
+    closeEvent(){
+      if(this.trigger === 'click'){
+        return 'click'
+      }else{
+        return 'mouseleave'
+      }
+    }
   },
   methods: {
     putBackContent() {
@@ -92,20 +108,20 @@ export default {
     },
     addTriggerEvent() {
       const { triggerWrapper } = this.$refs;
-      if (this.trigger === "click") {
-        triggerWrapper.addEventListener("click", this.onClick);
-      } else {
-        triggerWrapper.addEventListener("mouseenter", this.open);
-        triggerWrapper.addEventListener("mouseover", this.close);
+      if(this.trigger === 'click'){
+        triggerWrapper.addEventListener('click',this.onClick)
+      }else {
+        triggerWrapper.addEventListener('mouseenter',this.open)
+        triggerWrapper.addEventListener('mouseleave',this.close)
       }
     },
     removeTriggerEvent() {
       const { triggerWrapper } = this.$refs;
-      if (this.trigger === "click") {
-        triggerWrapper.removeEventListener("click", this.onClick);
-      } else {
-        triggerWrapper.removeEventListener("mouseenter", this.open);
-        triggerWrapper.removeEventListener("mouseover", this.close);
+      if(this.trigger === 'click'){
+        triggerWrapper.removeEventListener('click',this.onClick)
+      }else {
+        triggerWrapper.removeEventListener('mouseenter',this.open)
+        triggerWrapper.removeEventListener('mouseleave',this.close)
       }
     },
     onClick(e) {
