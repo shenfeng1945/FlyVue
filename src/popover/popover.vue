@@ -6,7 +6,7 @@
       ref="contentWrapper"
       v-if="visiable"
     >
-      <slot name="content"></slot>
+      <slot name="content" :close="close"></slot>
     </div>
     <span ref="triggerWrapper" style="display:inline-block;">
       <slot></slot>
@@ -153,6 +153,7 @@ $border-color: #333;
 $border-radius: 4px;
 .popover {
   position: relative;
+  display: inline-block;
 }
 .content-wrapper {
   position: absolute;
@@ -178,11 +179,13 @@ $border-radius: 4px;
     margin-top: -10px;
     &::before {
       border-top-color: $border-color;
+      border-bottom: none;
       top: 100%;
       left: 10px;
     }
     &::after {
       border-top-color: white;
+      border-bottom: none;
       top: calc(100% - 1px);
       left: 10px;
     }
@@ -191,11 +194,13 @@ $border-radius: 4px;
     margin-top: 10px;
     &::before {
       border-bottom-color: $border-color;
+      border-top: none;
       bottom: 100%;
       left: 10px;
     }
     &::after {
       border-bottom-color: white;
+      border-top: none;
       bottom: calc(100% - 1px);
       left: 10px;
     }
@@ -204,11 +209,13 @@ $border-radius: 4px;
     margin-left: -10px;
     &::before {
       border-left-color: $border-color;
+      border-right: none;
       left: 100%;
       top: 10px;
     }
     &::after {
       border-left-color: white;
+      border-right: none;
       left: calc(100% - 1px);
       top: 10px;
     }
@@ -217,11 +224,13 @@ $border-radius: 4px;
     margin-left: 10px;
     &::before {
       border-right-color: $border-color;
+      border-left: none;
       right: 100%;
       top: 10px;
     }
     &::after {
       border-right-color: white;
+      border-left: none;
       right: calc(100% - 1px);
       top: 10px;
     }
