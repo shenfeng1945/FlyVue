@@ -13,21 +13,15 @@
         padding: 0;
         box-sizing: border-box;
     }
-    .demo {
-        border: 1px solid black;
-        min-height: 100px;
-    }
 </style>
 
 <body>
-    <div id="app">
-       <div style="height: 400px;"></div>
-       <f-popover>
-          <template slot="content">
-            <p>只是popover内容</p>
-          </template>
-          <f-button>点我</f-button>
-       </f-popover>
+    <div id="app" style="padding: 100px;">
+       <f-collapse single>
+           <f-collapse-item title="标题1">内容1</f-collapse-item>
+           <f-collapse-item title="标题2">内容2</f-collapse-item>
+           <f-collapse-item title="标题3">内容3</f-collapse-item>
+       </f-collapse>
     </div>
 </body>
 <script src="./src/app.js"></script>

@@ -45,18 +45,18 @@ export default {
     this.removeTriggerEvent();
   },
   computed: {
-    openEvent(){
-      if(this.trigger === 'click'){
-        return 'click'
-      }else{
-        return 'mouseenter'
+    openEvent() {
+      if (this.trigger === "click") {
+        return "click";
+      } else {
+        return "mouseenter";
       }
     },
-    closeEvent(){
-      if(this.trigger === 'click'){
-        return 'click'
-      }else{
-        return 'mouseleave'
+    closeEvent() {
+      if (this.trigger === "click") {
+        return "click";
+      } else {
+        return "mouseleave";
       }
     }
   },
@@ -95,33 +95,33 @@ export default {
           left: left + window.scrollX
         },
         left: {
-          top: top + (height - height2)/2 +  window.scrollY,
+          top: top + (height - height2) / 2 + window.scrollY,
           left: left - width2 + window.scrollX
         },
         right: {
-          top: top + (height - height2)/2 +  window.scrollY,
+          top: top + (height - height2) / 2 + window.scrollY,
           left: left + width + window.scrollX
         }
-      }
+      };
       contentWrapper.style.left = positions[this.position].left + "px";
       contentWrapper.style.top = positions[this.position].top + "px";
     },
     addTriggerEvent() {
       const { triggerWrapper } = this.$refs;
-      if(this.trigger === 'click'){
-        triggerWrapper.addEventListener('click',this.onClick)
-      }else {
-        triggerWrapper.addEventListener('mouseenter',this.open)
-        triggerWrapper.addEventListener('mouseleave',this.close)
+      if (this.trigger === "click") {
+        triggerWrapper.addEventListener("click", this.onClick);
+      } else {
+        triggerWrapper.addEventListener("mouseenter", this.open);
+        triggerWrapper.addEventListener("mouseleave", this.delayClose);
       }
     },
     removeTriggerEvent() {
       const { triggerWrapper } = this.$refs;
-      if(this.trigger === 'click'){
-        triggerWrapper.removeEventListener('click',this.onClick)
-      }else {
-        triggerWrapper.removeEventListener('mouseenter',this.open)
-        triggerWrapper.removeEventListener('mouseleave',this.close)
+      if (this.trigger === "click") {
+        triggerWrapper.removeEventListener("click", this.onClick);
+      } else {
+        triggerWrapper.removeEventListener("mouseenter", this.open);
+        triggerWrapper.removeEventListener("mouseleave", this.delayClose);
       }
     },
     onClick(e) {
@@ -133,6 +133,19 @@ export default {
           this.open();
         }
       }
+    },
+    onHover(e) {
+      const { contentWrapper } = this.$refs;
+      if (contentWrapper.contains(e.target)) {
+        if (this.visiable) {
+          this.open();
+        } else {
+          this.close();
+        }
+      }
+    },
+    delayClose() {
+      setTimeout(this.close, 200);
     },
     close() {
       this.visiable = false;
@@ -205,7 +218,7 @@ $border-radius: 4px;
       left: 10px;
     }
   }
-   &.position-left {
+  &.position-left {
     margin-left: -10px;
     &::before {
       border-left-color: $border-color;
