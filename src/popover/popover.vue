@@ -1,14 +1,23 @@
 <template>
-  <div class="popover" ref="popover">
+  <div
+    class="popover"
+    ref="popover"
+  >
     <div
       class="content-wrapper"
       :class="[`position-${this.position}`]"
       ref="contentWrapper"
       v-if="visiable"
     >
-      <slot name="content" :close="close"></slot>
+      <slot
+        name="content"
+        :close="close"
+      ></slot>
     </div>
-    <span ref="triggerWrapper" style="display:inline-block;">
+    <span
+      ref="triggerWrapper"
+      style="display:inline-block;"
+    >
       <slot></slot>
     </span>
   </div>
@@ -34,7 +43,8 @@ export default {
   },
   data() {
     return {
-      visiable: false
+      visiable: false,
+      colck: null
     };
   },
   mounted() {
@@ -111,17 +121,19 @@ export default {
       if (this.trigger === "click") {
         triggerWrapper.addEventListener("click", this.onClick);
       } else {
-        triggerWrapper.addEventListener("mouseenter", this.open);
+        triggerWrapper.addEventListener("mouseenter", this.hoverOpen);
         triggerWrapper.addEventListener("mouseleave", this.delayClose);
       }
     },
     removeTriggerEvent() {
-      const { triggerWrapper } = this.$refs;
+      const { triggerWrapper,contentWrapper } = this.$refs;
       if (this.trigger === "click") {
         triggerWrapper.removeEventListener("click", this.onClick);
       } else {
-        triggerWrapper.removeEventListener("mouseenter", this.open);
+        triggerWrapper.removeEventListener("mouseenter", this.hoverOpen);
         triggerWrapper.removeEventListener("mouseleave", this.delayClose);
+        contentWrapper.addEventListener('mouseenter', this.clearColck)
+        contentWrapper.addEventListener('mouseleave', this.delayClose)
       }
     },
     onClick(e) {
@@ -134,18 +146,11 @@ export default {
         }
       }
     },
-    onHover(e) {
-      const { contentWrapper } = this.$refs;
-      if (contentWrapper.contains(e.target)) {
-        if (this.visiable) {
-          this.open();
-        } else {
-          this.close();
-        }
-      }
-    },
     delayClose() {
-      setTimeout(this.close, 200);
+      this.colck = setTimeout(this.close, 200);
+    },
+    clearColck(){
+        clearTimeout(this.colck)
     },
     close() {
       this.visiable = false;
@@ -155,6 +160,16 @@ export default {
       this.visiable = true;
       this.$nextTick(() => {
         this.computePosition();
+        document.addEventListener("click", this.onClickDocument);
+      });
+    },
+    hoverOpen() {
+      this.visiable = true;
+      this.$nextTick(() => {
+        const { contentWrapper, triggerWrapper} = this.$refs;
+        this.computePosition();
+        contentWrapper.addEventListener('mouseenter', this.clearColck)
+        contentWrapper.addEventListener('mouseleave', this.delayClose)
         document.addEventListener("click", this.onClickDocument);
       });
     }
