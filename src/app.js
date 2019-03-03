@@ -20,6 +20,8 @@ import TabsPanel from './tabs/tabs-panel'
 import Popover from './popover/popover'
 import Collapse from './collapse/collapse'
 import CollapseItem from './collapse/collapseItem'
+import Cascader from './cascader/cascader'
+import CascaderItem from './cascader/cascaderItem'
 
 
 Vue.component('f-button',Button)
@@ -42,17 +44,34 @@ Vue.component('f-tabs-panel',TabsPanel)
 Vue.component('f-popover', Popover)
 Vue.component('f-collapse', Collapse)
 Vue.component('f-collapse-item', CollapseItem)
+Vue.component('f-cascader', Cascader)
+Vue.component('f-cascader-item', Cascader)
 Vue.use(plugin)
 
 new Vue({
     el: '#app',
     data: {
-        selectedTab: 'tab3',
-        input: 'dd'
+        sources: [
+            {name: '广东省',children: [
+                {name: '广州市',children: [
+                    {name: '天河区'},
+                ]},
+                {name: '深圳市',children: [
+                    {name: '南山区'},
+                    {name: '宝安区'},
+                    {name: '罗湖区'}
+                ]},
+            ]},
+            {name: '湖北省',children: [
+                {name: '武汉市',children:[
+                    {name: '武昌区'},
+                    {name: '江岸区'},
+                ]},
+                {name: '荆州市',children:[
+                    {name: '石首市'},
+                    {name: '监利县'}
+                ]},
+            ]}
+        ]
     },
-    created(){
-       
-    },
-    methods: {
-    }
 })
