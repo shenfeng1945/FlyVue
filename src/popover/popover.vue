@@ -126,14 +126,14 @@ export default {
       }
     },
     removeTriggerEvent() {
-      const { triggerWrapper,contentWrapper } = this.$refs;
+      const { triggerWrapper, contentWrapper } = this.$refs;
       if (this.trigger === "click") {
         triggerWrapper.removeEventListener("click", this.onClick);
       } else {
         triggerWrapper.removeEventListener("mouseenter", this.hoverOpen);
         triggerWrapper.removeEventListener("mouseleave", this.delayClose);
-        contentWrapper.addEventListener('mouseenter', this.clearColck)
-        contentWrapper.addEventListener('mouseleave', this.delayClose)
+        contentWrapper.addEventListener("mouseenter", this.clearColck);
+        contentWrapper.addEventListener("mouseleave", this.delayClose);
       }
     },
     onClick(e) {
@@ -149,8 +149,8 @@ export default {
     delayClose() {
       this.colck = setTimeout(this.close, 200);
     },
-    clearColck(){
-        clearTimeout(this.colck)
+    clearColck() {
+      clearTimeout(this.colck);
     },
     close() {
       this.visiable = false;
@@ -166,10 +166,10 @@ export default {
     hoverOpen() {
       this.visiable = true;
       this.$nextTick(() => {
-        const { contentWrapper, triggerWrapper} = this.$refs;
+        const { contentWrapper, triggerWrapper } = this.$refs;
         this.computePosition();
-        contentWrapper.addEventListener('mouseenter', this.clearColck)
-        contentWrapper.addEventListener('mouseleave', this.delayClose)
+        contentWrapper.addEventListener("mouseenter", this.clearColck);
+        contentWrapper.addEventListener("mouseleave", this.delayClose);
         document.addEventListener("click", this.onClickDocument);
       });
     }
