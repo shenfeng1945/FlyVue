@@ -2,7 +2,7 @@
     <button class="f-button" :class="[iconPosition && `icon-${iconPosition}`, `${type}`, circle && `circle`, loading && `is-loading` ]" @click="$emit('click')">
         <f-icon :name="icon" :style="noMargin"></f-icon>
         <f-icon class="loading" name="loading" v-if="loading"></f-icon>
-        <div class="content">
+        <div class="button-content">
           <slot></slot>
         </div>
     </button>
@@ -44,7 +44,7 @@ export default {
        'f-icon': Icon
    },
    mounted(){
-       const text = this.$el.querySelector('.content').textContent;
+       const text = this.$el.querySelector('.button-content').textContent;
        if(!text){
            this.noMargin = {
                marginLeft: 0,
@@ -111,7 +111,7 @@ export default {
          margin-left: 0;
          margin-right: .3em;
      }
-     > .content{
+     > .button-content{
          order: 2;
      }
      &:hover,&.is-loading{
@@ -129,7 +129,7 @@ export default {
             margin-right: 0;
             margin-left: .3em;
         }
-        > .content{
+        > .button-content{
             order: 1;
         }
      }
