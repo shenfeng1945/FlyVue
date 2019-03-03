@@ -13,13 +13,22 @@ describe('Popover', () => {
         expect(Popover).to.be.ok
     })
 
-    it('可以设置position', () => {
-        const Constructor = Vue.extend(Popover)
-        const vm = new Constructor({
-            propsData: {
-                position: 'left'
-            }
-        }).$mount()
-        console.log(vm.$el)
+    it('可以设置position', (done) => {
+        Vue.component('f-popover', Popover)
+        const div = document.createElement('div')
+        document.body.appendChild(div)
+        div.innerHTML = `
+        <f-popover trigger="click" position="left">
+          <template slot="content">
+             弹出内容
+          </template>
+          <button>button</button>
+        </f-popover>
+        `
+        let vm = new Vue({el: div})
+        Promise.resolve().then(() => {
+            console.log(vm.$el)
+            done()
+        })
     })
 })
