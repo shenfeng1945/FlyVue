@@ -21,7 +21,7 @@ import Popover from './popover/popover'
 import Collapse from './collapse/collapse'
 import CollapseItem from './collapse/collapseItem'
 import Cascader from './cascader/cascader'
-import CascaderItem from './cascader/cascaderItem'
+import CascaderItems from './cascader/cascaderItems'
 
 
 Vue.component('f-button',Button)
@@ -45,7 +45,7 @@ Vue.component('f-popover', Popover)
 Vue.component('f-collapse', Collapse)
 Vue.component('f-collapse-item', CollapseItem)
 Vue.component('f-cascader', Cascader)
-Vue.component('f-cascader-item', Cascader)
+Vue.component('f-cascader-items', CascaderItems)
 Vue.use(plugin)
 
 new Vue({
