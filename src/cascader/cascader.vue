@@ -1,37 +1,47 @@
 <template>
   <div class="cascader">
-    <div class="trriger" @click="popoverVisiable = !popoverVisiable">
+    <div
+      class="trriger"
+      @click="popoverVisiable = !popoverVisiable"
+    >
       <slot></slot>
     </div>
-    <div class="popover" v-if="popoverVisiable">
-      <cascader-items :items="sources"></cascader-items>
+    <div
+      class="popover-wrapper"
+      v-if="popoverVisiable"
+    >
+      <cascader-items :items="sources" :height="popoverHeight"></cascader-items>
     </div>
   </div>
 </template>
 
 <script>
 import CascaderItems from "./cascaderItems";
-console.log(CascaderItems)
 export default {
   name: "FlyCascader",
   props: {
-    sources: Array
+    sources: Array,
+    popoverHeight: String,
   },
-  components:{'cascader-items':CascaderItems},
-  data(){
+  components: { "cascader-items": CascaderItems },
+  data() {
     return {
-      popoverVisiable: false,
-    }
-  },
+      popoverVisiable: false
+    };
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/variable';
 .cascader {
-  padding: 100px;
   position: relative;
-  .popover{
-    border: 1px solid black;
+  .popover-wrapper {
+    @extend .box-shadow;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
   }
 }
 </style>
