@@ -1,10 +1,9 @@
 <template>
   <div id="app" style="margin: 100px;">
-    2
-    <f-cascader :sources="sources" popover-height="200px">
+    <div v-for="item in hasSelected" :key="item.name">{{item.name}}</div>
+    <f-cascader :sources="sources" popover-height="200px" @update:selected="OutwardSelected($event)">
       <f-input></f-input>
     </f-cascader>
-    2
   </div>
 </template>
 <script>
@@ -18,6 +17,7 @@ export default {
     },
     data(){
         return {
+            hasSelected: [],
             sources: [
             {name: '广东省',children: [
                 {name: '广州市',children: [
@@ -40,6 +40,11 @@ export default {
                 ]},
             ]}
         ]
+        }
+    },
+    methods: {
+        OutwardSelected(selected){
+            this.hasSelected = selected;
         }
     }
 }

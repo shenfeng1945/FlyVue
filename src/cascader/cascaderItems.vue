@@ -8,7 +8,7 @@
         class="label"
         v-for="leftItem in items"
         :key="leftItem.name"
-        @click="leftSelected = leftItem"
+        @click="onClickLabel(leftItem)"
       >
         {{leftItem.name}}
         <f-icon
@@ -20,11 +20,14 @@
     </div>
     <div
       class="right"
-      v-if="leftSelected"
+      v-if="rightItems"
     >
       <FlyCascaderItems
         :items="rightItems"
         :height="height"
+        :level="level + 1"
+        :selected="selected"
+        @update:selected="onUpdateSelect($event)"
       ></FlyCascaderItems>
     </div>
   </div>
@@ -36,21 +39,30 @@ export default {
   name: "FlyCascaderItems",
   props: {
     items: Array,
-    height: String
+    height: String,
+    level: Number,
+    selected: Array
   },
   components: { "f-icon": Icon },
-  data() {
-    return {
-      leftSelected: null
-    };
-  },
   computed: {
     rightItems() {
-      if (this.leftSelected && this.leftSelected.children) {
-        return this.leftSelected.children;
-      } else {
-        return null;
+      const currentSelected = this.selected[this.level];
+      if(currentSelected && currentSelected.children){
+         return currentSelected.children
+      }else{
+        return null
       }
+    }
+  },
+  methods: {
+    onClickLabel(item){
+      const selectedCopy = JSON.parse(JSON.stringify(this.selected));
+      selectedCopy[this.level] = item;
+      selectedCopy.splice(this.level + 1);
+      this.$emit('update:selected',selectedCopy)
+    },
+    onUpdateSelect(newSelect){
+      this.$emit('update:selected',newSelect);
     }
   }
 };
