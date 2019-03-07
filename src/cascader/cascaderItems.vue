@@ -73,6 +73,10 @@ export default {
 .cascader-items {
   display: flex;
   height: 100px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .label {
     padding: 0.3em 0.8em;
     display: flex;
