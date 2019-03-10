@@ -10,7 +10,7 @@
       class="popover-wrapper"
       v-if="popoverVisiable"
     >
-      <cascader-items :items="sources" :height="popoverHeight" :level="level" :selected.sync="selected"></cascader-items>
+      <cascader-items :items="sources" :height="popoverHeight" :level="level" :selected="selected" @update:selected="onUpdateSelected($event)"></cascader-items>
     </div>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
     level: {
       type: Number,
       default: 0
-    }
+    },
+    loadData: Function
   },
   
   components: { "cascader-items": CascaderItems },
@@ -35,6 +36,17 @@ export default {
       selected: [],
     };
   },
+  methods:{
+      onUpdateSelected(selected){
+          this.$emit('update:selected',selected)
+          this.selected = selected;
+          const lastItem = selected[selected.length - 1];
+          let updateSource = (result) => {
+            console.log(result,'result')
+          }
+          this.loadData(lastItem,updateSource)
+      }
+  }
 };
 </script>
 

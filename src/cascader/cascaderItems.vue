@@ -26,7 +26,7 @@
         :items="rightItems"
         :height="height"
         :level="level + 1"
-        :selected="selected"
+        :selected.sync="selected"
         @update:selected="onUpdateSelect($event)"
       ></FlyCascaderItems>
     </div>
