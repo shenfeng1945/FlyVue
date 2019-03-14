@@ -46,6 +46,7 @@ export default {
   components: { "f-icon": Icon },
   computed: {
     rightItems() {
+      console.log('computed',this.selected)
       const currentSelected = this.selected[this.level];
       if(currentSelected && currentSelected.children){
          return currentSelected.children

@@ -4,7 +4,7 @@
     style="margin: 100px;"
   >
     <f-cascader
-      :sources="sources"
+      :sources.sync="sources"
       popover-height="200px"
       :selected.sync="selected"
       :load-data="loadData"
@@ -35,32 +35,36 @@ export default {
       sources: []
     };
   },
-  created(){
-     ajax(0).then((data) => {
-         this.sources = data;
-     })
+  created() {
+    ajax(0).then(data => {
+      this.sources = data;
+    });
   },
-  computed:{
-    getValue(){
-      if(this.selected.length){
-         return this.selected.map(item => item.name).join('/')
-      }else{
-          return ''
+  computed: {
+    getValue() {
+      if (this.selected.length) {
+        return this.selected.map(item => item.name).join("/");
+      } else {
+        return "";
       }
     }
   },
   methods: {
-    loadData(lastItem,callback){
-      ajax(lastItem.id).then(result => {
-         callback(result)
-      })
+    loadData(lastItem, callback) {
+      setTimeout(() => {
+        ajax(lastItem.id).then(result => {
+          callback(result);
+        });
+      }, 100);
     },
     OutwardSelected() {
       ajax(this.selected[0].id).then(result => {
-        const lastLevelSelected = this.sources.filter(item => item.id === this.selected[0].id)[0];
-        this.$set(lastLevelSelected,'children',result)
-      })
-    }
+        const lastLevelSelected = this.sources.filter(
+          item => item.id === this.selected[0].id
+        )[0];
+        this.$set(lastLevelSelected, "children", result);
+      });
+    },
   }
 };
 </script>
