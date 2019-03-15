@@ -14,7 +14,8 @@
         :items="sources"
         :height="popoverHeight"
         :level="level"
-        :selected="selected"
+        :selected.sync="selected"
+        :loadData="loadData"
         @update:selected="onUpdateSelected($event)"
       ></cascader-items>
     </div>
@@ -84,9 +85,10 @@ export default {
         let toUpdate = complexCompare(deepSources, lastItem.id);
         toUpdate.children = result;
         this.$emit('update:sources', deepSources)
-        console.log('found')
       };
-      this.loadData(lastItem, updateSource);
+      if(!lastItem.isLeaf){
+        this.loadData && this.loadData(lastItem, updateSource);
+      }
     }
   }
 };
