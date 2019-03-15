@@ -10,9 +10,9 @@
         :key="leftItem.name"
         @click="onClickLabel(leftItem)"
       >
-        {{leftItem.name}}
+        <span class="name">{{leftItem.name}}</span>
         <f-icon
-          v-if="leftItem.children"
+          v-if="rightArrayVisiable(leftItem)"
           name="right"
           class="cas-icon"
         ></f-icon>
@@ -41,40 +41,47 @@ export default {
     items: Array,
     height: String,
     level: Number,
-    selected: Array
+    selected: Array,
+    loadData: Function
   },
   components: { "f-icon": Icon },
   computed: {
     rightItems() {
-      console.log('computed',this.selected)
-      const currentSelected = this.selected[this.level];
-      if(currentSelected && currentSelected.children){
-         return currentSelected.children
-      }else{
-        return null
+      if (this.selected && this.selected[this.level]) {
+        let items = this.items.filter(
+          item => item.name === this.selected[this.level].name
+        )[0];
+        if (items && items.children && items.children.length) {
+          return items.children;
+        }
       }
     }
   },
   methods: {
-    onClickLabel(item){
-      const selectedCopy = JSON.parse(JSON.stringify(this.selected));
+    rightArrayVisiable(leftItem){
+      return this.loadData ? !leftItem.isLeaf : leftItem.children
+    },
+    onClickLabel(item) {
+      let selectedCopy = JSON.parse(JSON.stringify(this.selected));
       selectedCopy[this.level] = item;
       selectedCopy.splice(this.level + 1);
-      this.$emit('update:selected',selectedCopy)
+      this.$emit("update:selected",selectedCopy);
     },
-    onUpdateSelect(newSelect){
-      this.$emit('update:selected',newSelect);
+    onUpdateSelect(newSelect) {
+      this.$emit("update:selected", newSelect);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../style/variable';
+@import "../../style/variable";
 .cascader-items {
   display: flex;
   height: 100px;
-  overflow: auto;
+  & .left {
+    overflow: auto;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
@@ -84,11 +91,15 @@ export default {
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    &:hover {
-      background: green;
+    > .name{
+        margin-right: 1.5em;
+        user-select: none;
     }
-    .cas-icon{
-      margin-left: 0.8em;
+    &:hover {
+      background: $grey;
+    }
+    .cas-icon {
+      margin-left: auto;
       transform: scale(0.5);
     }
   }
