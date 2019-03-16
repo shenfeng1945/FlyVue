@@ -1,8 +1,11 @@
 <template>
-  <div class="cascader">
+  <div
+    class="cascader"
+    ref="cascader"
+  >
     <div
       class="trriger"
-      @click="popoverVisiable = !popoverVisiable"
+      @click="onTrriger"
     >
       <slot></slot>
     </div>
@@ -44,6 +47,30 @@ export default {
     };
   },
   methods: {
+    onClickDocument(e) {
+      const { cascader } = this.$refs;
+      if (cascader === e.target || cascader.contains(e.target)) {
+        return;
+      }
+      this.close();
+    },
+    onTrriger() {
+      if (this.popoverVisiable) {
+        this.close();
+      } else {
+        this.open();
+      }
+    },
+    open() {
+      this.popoverVisiable = true;
+      this.$nextTick(() => {
+        document.addEventListener("click", this.onClickDocument);
+      });
+    },
+    close() {
+      this.popoverVisiable = false;
+      document.removeEventListener("click", this.onClickDocument);
+    },
     onUpdateSelected(selected) {
       this.$emit("update:selected", selected);
       const lastItem = selected[selected.length - 1];
@@ -84,9 +111,9 @@ export default {
         let deepSources = JSON.parse(JSON.stringify(this.sources));
         let toUpdate = complexCompare(deepSources, lastItem.id);
         toUpdate.children = result;
-        this.$emit('update:sources', deepSources)
+        this.$emit("update:sources", deepSources);
       };
-      if(!lastItem.isLeaf){
+      if (!lastItem.isLeaf) {
         this.loadData && this.loadData(lastItem, updateSource);
       }
     }
@@ -98,6 +125,7 @@ export default {
 @import "../../style/variable";
 .cascader {
   position: relative;
+  display: inline-block;
   .popover-wrapper {
     @extend .box-shadow;
     position: absolute;
