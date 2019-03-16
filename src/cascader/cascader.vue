@@ -1,7 +1,7 @@
 <template>
   <div
     class="cascader"
-    ref="cascader"
+    v-click-outside="close"
   >
     <div
       class="trriger"
@@ -27,6 +27,7 @@
 
 <script>
 import CascaderItems from "./cascaderItems";
+import ClickOutside from './cascader-click-outside'
 export default {
   name: "FlyCascader",
   props: {
@@ -38,7 +39,7 @@ export default {
     },
     loadData: Function
   },
-
+  directives: {'click-outside': ClickOutside},
   components: { "cascader-items": CascaderItems },
   data() {
     return {
@@ -47,13 +48,6 @@ export default {
     };
   },
   methods: {
-    onClickDocument(e) {
-      const { cascader } = this.$refs;
-      if (cascader === e.target || cascader.contains(e.target)) {
-        return;
-      }
-      this.close();
-    },
     onTrriger() {
       if (this.popoverVisiable) {
         this.close();
@@ -63,13 +57,9 @@ export default {
     },
     open() {
       this.popoverVisiable = true;
-      this.$nextTick(() => {
-        document.addEventListener("click", this.onClickDocument);
-      });
     },
     close() {
       this.popoverVisiable = false;
-      document.removeEventListener("click", this.onClickDocument);
     },
     onUpdateSelected(selected) {
       this.$emit("update:selected", selected);
