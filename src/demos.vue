@@ -11,11 +11,19 @@
     >
       <f-input :value="getValue"></f-input>
     </f-cascader>
+    <br>
+    <f-popover trigger="hover">
+        <template slot="content">
+            <div>弹出内容</div>
+        </template>
+        <button>点我</button>
+    </f-popover>
   </div>
 </template>
 <script>
 import Input from "./Input";
 import Cascader from "./cascader/cascader";
+import Popover from './popover/popover'
 import db from "./db";
 function ajax(parent_id = 0) {
   return new Promise((resolve, reject) => {
@@ -34,7 +42,8 @@ export default {
   name: "Demos",
   components: {
     "f-input": Input,
-    "f-cascader": Cascader
+    "f-cascader": Cascader,
+    'f-popover': Popover
   },
   data() {
     return {

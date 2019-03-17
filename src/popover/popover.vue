@@ -15,6 +15,7 @@
       ></slot>
     </div>
     <span
+      class="trigger-wrapper"
       ref="triggerWrapper"
       style="display:inline-block;"
     >
