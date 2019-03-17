@@ -1,6 +1,27 @@
+$button-height: 32px;
+$font-size: 14px;
+$button-bg: white;
+$button-active-bg: #eee;
+$button-primary-active-bg: #006EFF;
+$button-primary-bg: rgba(24, 144, 255, 1);
+$button-warn-active-bg: #f28f00;
+$button-warn-bg: #FF9700;
+$border-radius: 4px;
+$border-circle-radius: 50%;
+$color: #333;
 $border-color: #999;
+$border-color-hover: #666;
 $border-color-light: lighten($border-color, 30%);
 .box-shadow {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+
 $grey: #999;
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}

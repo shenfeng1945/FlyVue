@@ -20,6 +20,7 @@
         :selected.sync="selected"
         :loadData="loadData"
         @update:selected="onUpdateSelected($event)"
+        :loading-item="loadingItem"
       ></cascader-items>
     </div>
   </div>
@@ -27,7 +28,7 @@
 
 <script>
 import CascaderItems from "./cascaderItems";
-import ClickOutside from './cascader-click-outside'
+import ClickOutside from "./cascader-click-outside";
 export default {
   name: "FlyCascader",
   props: {
@@ -39,12 +40,13 @@ export default {
     },
     loadData: Function
   },
-  directives: {'click-outside': ClickOutside},
+  directives: { "click-outside": ClickOutside },
   components: { "cascader-items": CascaderItems },
   data() {
     return {
       popoverVisiable: false,
-      selected: []
+      selected: [],
+      loadingItem: {}
     };
   },
   methods: {
@@ -102,9 +104,11 @@ export default {
         let toUpdate = complexCompare(deepSources, lastItem.id);
         toUpdate.children = result;
         this.$emit("update:sources", deepSources);
+        this.loadingItem = {};
       };
-      if (!lastItem.isLeaf) {
-        this.loadData && this.loadData(lastItem, updateSource);
+      if (!lastItem.isLeaf && this.loadData) {
+        this.loadData(lastItem, updateSource);
+        this.loadingItem = lastItem;
       }
     }
   }
@@ -122,6 +126,8 @@ export default {
     top: 100%;
     left: 0;
     background: white;
+    z-index: 1;
+    margin-top: 5px;
   }
 }
 </style>

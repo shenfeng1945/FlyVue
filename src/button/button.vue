@@ -55,23 +55,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  $button-height: 32px;
-  $font-size: 14px;
-  $button-bg: white;
-  $button-active-bg: #eee;
-  $button-primary-active-bg: #006EFF;
-  $button-primary-bg: rgba(24, 144, 255, 1);
-  $button-warn-active-bg: #f28f00;
-  $button-warn-bg: #FF9700;
-  $border-radius: 4px;
-  $border-circle-radius: 50%;
-  $color: #333;
-  $border-color: #999;
-  $border-color-hover: #666;
-  @keyframes spin {
-      0% {transform: rotate(0deg)}
-      100% {transform: rotate(360deg)}
-  }
+  @import '../../style/variable'; 
  .f-button{
      font-size: $font-size;
      height: $button-height;

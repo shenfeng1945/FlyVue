@@ -7,6 +7,7 @@
       :sources.sync="sources"
       popover-height="200px"
       :selected.sync="selected"
+      :load-data="loadData"
     >
       <f-input :value="getValue"></f-input>
     </f-cascader>
@@ -38,34 +39,13 @@ export default {
   data() {
     return {
       selected: [],
-      sources: [
-            {name: '广东省',children: [
-                {name: '广州市',children: [
-                    {name: '天河区'},
-                ]},
-                {name: '深圳市',children: [
-                    {name: '南山区'},
-                    {name: '宝安区'},
-                    {name: '罗湖区'}
-                ]},
-            ]},
-            {name: '湖北省',children: [
-                {name: '武汉市',children:[
-                    {name: '武昌区'},
-                    {name: '江岸区'},
-                ]},
-                {name: '荆州市',children:[
-                    {name: '石首市'},
-                    {name: '监利县'}
-                ]},
-            ]}
-        ]
+      sources: []
     };
   },
   created() {
-    // ajax(0).then(data => {
-    //   this.sources = data;
-    // });
+    ajax(0).then(data => {
+      this.sources = data;
+    });
   },
   computed: {
     getValue() {
@@ -82,7 +62,7 @@ export default {
         ajax(lastItem.id).then(result => {
           callback(result);
         });
-      }, 100);
+      }, 1000);
     },
     OutwardSelected() {
       ajax(this.selected[0].id).then(result => {

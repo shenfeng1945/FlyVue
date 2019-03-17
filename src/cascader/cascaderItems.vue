@@ -9,13 +9,18 @@
         v-for="leftItem in items"
         :key="leftItem.name"
         @click="onClickLabel(leftItem)"
+        :class="selectedItems(leftItem)"
       >
         <span class="name">{{leftItem.name}}</span>
-        <f-icon
-          v-if="rightArrayVisiable(leftItem)"
-          name="right"
-          class="cas-icon"
-        ></f-icon>
+        <span class="icons">
+          <template v-if="leftItem.name === loadingItem.name"> 
+           <f-icon name="loading" class="loading"></f-icon>
+          </template> 
+          <template v-else>
+            <f-icon v-if="rightArrayVisiable(leftItem)" class="next" name="right"></f-icon>
+          </template>
+        </span>
+
       </div>
     </div>
     <div
@@ -26,8 +31,10 @@
         :items="rightItems"
         :height="height"
         :level="level + 1"
-        :selected.sync="selected"
-        @update:selected="onUpdateSelect($event)"
+        :selected="selected"
+        :load-data="loadData"
+        @update:selected="onUpdateSelect"
+        :loading-item="loadingItem"
       ></FlyCascaderItems>
     </div>
   </div>
@@ -42,7 +49,16 @@ export default {
     height: String,
     level: Number,
     selected: Array,
-    loadData: Function
+    loadData: Function,
+    loadingItem: {
+        type: Object,
+        default: () => ({})
+    }
+  },
+  data(){
+      return {
+          selectedCopy: this.selected
+      }
   },
   components: { "f-icon": Icon },
   computed: {
@@ -55,17 +71,28 @@ export default {
           return items.children;
         }
       }
-    }
+    },
+    
   },
   methods: {
-    rightArrayVisiable(leftItem){
-      return this.loadData ? !leftItem.isLeaf : leftItem.children
+    selectedItems(curItem){
+      let result = false;
+      this.selectedCopy.forEach(item => {
+          if(item.name === curItem.name){
+              result = true;
+          }
+      })
+      return result ? 'isSelected' : '';
+    },
+    rightArrayVisiable(leftItem) {
+      return this.loadData ? !leftItem.isLeaf : leftItem.children;
     },
     onClickLabel(item) {
       let selectedCopy = JSON.parse(JSON.stringify(this.selected));
       selectedCopy[this.level] = item;
       selectedCopy.splice(this.level + 1);
-      this.$emit("update:selected",selectedCopy);
+      this.$emit("update:selected", selectedCopy);
+      this.selectedCopy = selectedCopy;
     },
     onUpdateSelect(newSelect) {
       this.$emit("update:selected", newSelect);
@@ -85,6 +112,9 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
+  .isSelected{
+      background: $grey;
+  }
   .label {
     padding: 0.3em 0.8em;
     display: flex;
@@ -92,16 +122,24 @@ export default {
     justify-content: space-between;
     white-space: nowrap;
     cursor: pointer;
-    > .name{
-        margin-right: 1.5em;
-        user-select: none;
+    > .name {
+      margin-right: 1.5em;
+      user-select: none;
     }
     &:hover {
+      background: #e6f7ff;
+    }
+    &.isSelected:hover{
       background: $grey;
     }
-    .cas-icon {
+    .icons {
       margin-left: auto;
-      transform: scale(0.5);
+      .loading{
+        animation: spin 1.2s infinite linear;
+      }
+      .next{
+        transform: scale(0.5);
+      }
     }
   }
   .right {
