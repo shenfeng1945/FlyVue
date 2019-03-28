@@ -1,12 +1,28 @@
 <template>
-  <div class="wrapper" :class="toastClass">
-    <div class="toast" ref="toast">
+  <div
+    class="wrapper"
+    :class="toastClass"
+  >
+    <div
+      class="toast"
+      ref="toast"
+    >
       <div class="message">
         <slot v-if="!enableHtml"></slot>
-        <div v-else v-html="$slots.default[0]"></div>
+        <div
+          v-else
+          v-html="$slots.default[0]"
+        ></div>
       </div>
-      <div class="line" ref="line"></div>
-      <div class="close" v-if="buttonClose" @click="onButtonClose">{{buttonClose.text}}</div>
+      <div
+        class="line"
+        ref="line"
+      ></div>
+      <div
+        class="close"
+        v-if="buttonClose"
+        @click="onButtonClose"
+      >{{buttonClose.text}}</div>
     </div>
   </div>
 </template>
@@ -15,10 +31,10 @@ export default {
   name: "FlyToast",
   props: {
     autoClose: {
-      type: [Boolean,Number],
+      type: [Boolean, Number],
       default: 5,
-      validator(value){
-        return value === false || typeof value === 'number'
+      validator(value) {
+        return value === false || typeof value === "number";
       }
     },
     buttonClose: {
@@ -57,9 +73,11 @@ export default {
   methods: {
     initStyles() {
       this.$nextTick(() => {
-        this.$refs.line.style.height = `${
-          this.$refs.toast.getBoundingClientRect().height
-        }px`;
+        if (this.$refs.line) {
+          this.$refs.line.style.height = `${
+            this.$refs.toast.getBoundingClientRect().height
+          }px`;
+        }
         // this.$refs.toast.style.height >>> undefined 无法获取外联样式
       });
     },
@@ -94,11 +112,11 @@ export default {
 $font-size: 14px;
 $height: 40px;
 $toast-bg: rgba(0, 0, 0, 0.75);
-.wrapper{
+.wrapper {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-   &.position-top {
+  &.position-top {
     top: 0;
     .toast {
       animation: fade-down-in 0.8s;
@@ -109,7 +127,7 @@ $toast-bg: rgba(0, 0, 0, 0.75);
   &.position-middle {
     top: 50%;
     animation: fade-in 0.8s;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
   }
   &.position-bottom {
     top: inherit;
@@ -125,21 +143,21 @@ $toast-bg: rgba(0, 0, 0, 0.75);
   @keyframes fade-up-in {
     0% {
       opacity: 0;
-      transform: translateY(100%)
+      transform: translateY(100%);
     }
     100% {
       opacity: 1;
-      transform: translateY(0%)
+      transform: translateY(0%);
     }
   }
   @keyframes fade-down-in {
     0% {
       opacity: 0;
-      transform: translateY(-100%)
+      transform: translateY(-100%);
     }
     100% {
       opacity: 1;
-      transform: translateY(0%)
+      transform: translateY(0%);
     }
   }
   @keyframes fade-in {
@@ -161,7 +179,7 @@ $toast-bg: rgba(0, 0, 0, 0.75);
   padding: 0 16px;
   border-radius: 4px;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
- 
+
   .message {
     padding: 8px 0;
   }

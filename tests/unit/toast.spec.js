@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Toast from '@/toast'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import { mount } from '@vue/test-utils'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+chai.use(sinonChai)
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
@@ -23,6 +26,7 @@ describe('Toast', () => {
       },1500)
   })
   it('接受 buttonClose 属性', () => {
+    const callback = sinon.fake()
     const wrapper = mount(Toast, {
         propsData: {
             buttonClose: {
@@ -32,7 +36,6 @@ describe('Toast', () => {
         }
     })
     const vm = wrapper.vm
-    const callback = sinon.fake()
     wrapper.find('.close').trigger('click')
     const closeButton = vm.$el.querySelector('.close')
     closeButton.click()
