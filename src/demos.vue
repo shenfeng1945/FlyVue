@@ -1,87 +1,33 @@
 <template>
-  <div
-    id="app"
-    style="margin: 100px;"
-  >
-    <f-cascader
-      :sources.sync="sources"
-      popover-height="200px"
-      :selected.sync="selected"
-      :load-data="loadData"
-    >
-      <f-input :value="getValue"></f-input>
-    </f-cascader>
-    <br>
-    <f-popover trigger="hover">
-        <template slot="content">
-            <div>弹出内容</div>
-        </template>
-        <button>点我</button>
-    </f-popover>
+  <div id="app">
+    <f-slides width="400" height="300" :selected.sync="selected" :reverse="false">
+      <f-slides-item name="1">
+        <div class="box box1">1</div>
+      </f-slides-item>
+      <f-slides-item name="2">
+        <div class="box box2">2</div>
+      </f-slides-item>
+      <f-slides-item name="3">
+        <div class="box box3">3</div>
+      </f-slides-item>
+    </f-slides>
   </div>
 </template>
 <script>
-import Input from "./Input";
-import Cascader from "./cascader/cascader";
-import Popover from './popover/popover'
-import db from "./db";
-function ajax(parent_id = 0) {
-  return new Promise((resolve, reject) => {
-    let data = db.filter(item => item.parent === parent_id);
-    data.forEach(node => {
-      if (db.filter(item => item.parent === node.id).length > 0) {
-        node.isLeaf = false;
-      } else {
-        node.isLeaf = true;
-      }
-    });
-    resolve(data);
-  });
-}
+import Slides from "./carousel/slides";
+import SlidesItem from "./carousel/slides-item";
+
 export default {
   name: "Demos",
   components: {
-    "f-input": Input,
-    "f-cascader": Cascader,
-    'f-popover': Popover
+    "f-slides": Slides,
+    "f-slides-item": SlidesItem
   },
-  data() {
+  data(){
     return {
-      selected: [],
-      sources: []
-    };
-  },
-  created() {
-    ajax(0).then(data => {
-      this.sources = data;
-    });
-  },
-  computed: {
-    getValue() {
-      if (this.selected.length) {
-        return this.selected.map(item => item.name).join("/");
-      } else {
-        return "";
-      }
+      selected: '1' 
     }
   },
-  methods: {
-    loadData(lastItem, callback) {
-      setTimeout(() => {
-        ajax(lastItem.id).then(result => {
-          callback(result);
-        });
-      }, 1000);
-    },
-    OutwardSelected() {
-      ajax(this.selected[0].id).then(result => {
-        const lastLevelSelected = this.sources.filter(
-          item => item.id === this.selected[0].id
-        )[0];
-        this.$set(lastLevelSelected, "children", result);
-      });
-    }
-  }
 };
 </script>
 <style lang="scss" scoped>
@@ -89,6 +35,20 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.box{
+  width: 100%;
+  height: 350px;
+  border: 1px solid red;
+}
+.box1{
+  background: red;
+}
+.box2{
+  background: gray;
+}
+.box3{
+  background: green;
 }
 </style>
 
