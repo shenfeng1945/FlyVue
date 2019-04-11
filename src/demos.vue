@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <f-slides width="400" height="300" :selected.sync="selected" :reverse="false">
+    <f-slides width="400" height="300" :selected.sync="selected" :reverse="false" :autoPlay="false">
       <f-slides-item name="1">
         <div class="box box1">1</div>
       </f-slides-item>
@@ -39,7 +39,10 @@ export default {
 .box{
   width: 100%;
   height: 350px;
-  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
 }
 .box1{
   background: red;

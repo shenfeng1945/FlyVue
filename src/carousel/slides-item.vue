@@ -32,17 +32,15 @@ export default {
 <style lang="scss" scoped>
 .slide-enter {
   transform: translateX(100%);
-  opacity: 0;
 }
 .slide-enter.reverse {
   transform: translateX(-100%);
-  opacity: 0;
 }
 .slide-enter-active {
-  transition: all 1s;
+  transition: all .8s;
 }
 .slide-leave-active {
-  transition: all 1s;
+  transition: all .8s;
   position: absolute;
   left: 0;
   top: 0;
@@ -51,11 +49,11 @@ export default {
 }
 .slide-leave-to {
   opacity: 0;
-  transform: translateX(-100%) scale(.5);
+  transform: translateX(-100%);
 }
 .slide-leave-to.reverse {
   opacity: 0;
-  transform: translateX(100%) scale(.5);
+  transform: translateX(100%);
 }
 </style>
 
