@@ -60,7 +60,14 @@ export default {
     updateChildren() {
       let selected = this.getSelected();
       this.$children.forEach(vm => {
-        vm.reverse = this.selectedIndex > this.lastSelectedIndex ? false : true;
+        let reverse = this.selectedIndex > this.lastSelectedIndex ? false : true;
+        if(this.lastSelectedIndex === this.names.length - 1 && this.selectedIndex === 0){
+            reverse = false;
+        }
+        if(this.lastSelectedIndex === 0 && this.selectedIndex === this.names.length - 1){
+            reverse = true;
+        }
+        vm.reverse = reverse;
         this.$nextTick(() => {
           // 确保执行动画前，reverse已经生效
           vm.selected = selected;
