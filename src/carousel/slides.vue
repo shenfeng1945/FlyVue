@@ -1,5 +1,5 @@
 <template>
-  <div class="f-slides">
+  <div class="f-slides" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
     <div class="f-slides-window">
       <div class="f-slides-wrapper">
         <slot></slot>
@@ -37,6 +37,7 @@ export default {
     return {
       childrenLength: 0,
       lastSelectedIndex: -1,
+      timerId: null
     };
   },
   computed: {
@@ -49,7 +50,7 @@ export default {
   },
   mounted() {
     this.updateChildren();
-    // this.playAutomatically();
+    this.autoPlay && this.playAutomatically();
     this.childrenLength = this.$children.length;
   },
   updated() {
@@ -61,9 +62,9 @@ export default {
       this.$children.forEach(vm => {
         vm.reverse = this.selectedIndex > this.lastSelectedIndex ? false : true;
         this.$nextTick(() => {
-         // 确保执行动画前，reverse已经生效
-         vm.selected = selected;
-        })
+          // 确保执行动画前，reverse已经生效
+          vm.selected = selected;
+        });
       });
     },
     select(index) {
@@ -74,10 +75,23 @@ export default {
     getSelected() {
       return this.selected || this.$children[0].name;
     },
+    onMouseEnter() {
+      this.pause();
+    },
+    onMouseLeave() {
+      this.autoPlay && this.playAutomatically();
+    },
+    pause() {
+      window.clearTimeout(this.timerId);
+      this.timerId = null;
+    },
     playAutomatically() {
+      if (this.timerId) {
+        return;
+      }
       const names = this.names;
-      let index = names.indexOf(this.getSelected());
       const run = () => {
+        let index = names.indexOf(this.getSelected());
         this.reverse ? index-- : index++;
         if (index === -1) {
           index = names.length - 1;
@@ -86,9 +100,9 @@ export default {
           index = 0;
         }
         this.select(index);
-        setTimeout(run, 2000);
+        this.timerId = setTimeout(run, 2000);
       };
-      setTimeout(run, 2000);
+      this.timerId = setTimeout(run, 2000);
     }
   }
 };
