@@ -51,11 +51,11 @@ export default {
 }
 .slide-leave-to {
   opacity: 0;
-  transform: translateX(-100%);
+  transform: translateX(-100%) scale(.5);
 }
 .slide-leave-to.reverse {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateX(100%) scale(.5);
 }
 </style>
 

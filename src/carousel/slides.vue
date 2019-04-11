@@ -1,8 +1,21 @@
 <template>
   <div class="f-slides">
     <div class="f-slides-window">
-      <slot></slot>
+      <div class="f-slides-wrapper">
+        <slot></slot>
+      </div>
+      <div>
+        <span
+          v-for="index in childrenLength"
+          :key="index"
+          :class="{isSelected: selectedIndex === (index - 1)}"
+          @click="select(index-1)"
+        >
+          {{index}}
+        </span>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -20,9 +33,24 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      childrenLength: 0,
+      lastSelectedIndex: -1,
+    };
+  },
+  computed: {
+    selectedIndex() {
+      return this.names.indexOf(this.selected);
+    },
+    names() {
+      return this.$children.map(vm => vm.name);
+    }
+  },
   mounted() {
     this.updateChildren();
-    this.playAutomatically();
+    // this.playAutomatically();
+    this.childrenLength = this.$children.length;
   },
   updated() {
     this.updateChildren();
@@ -32,14 +60,19 @@ export default {
       let selected = this.getSelected();
       this.$children.forEach(vm => {
         vm.selected = selected;
-        vm.reverse = this.reverse;
+        vm.reverse = this.selectedIndex > this.lastSelectedIndex ? false : true;
       });
+    },
+    select(index) {
+      // 加载时记录上一次的index
+      this.lastSelectedIndex = this.selectedIndex;
+      this.$emit("update:selected", this.names[index]);
     },
     getSelected() {
       return this.selected || this.$children[0].name;
     },
     playAutomatically() {
-      const names = this.$children.map(vm => vm.name);
+      const names = this.names;
       let index = names.indexOf(this.getSelected());
       const run = () => {
         this.reverse ? index-- : index++;
@@ -49,7 +82,7 @@ export default {
         if (index === names.length) {
           index = 0;
         }
-        this.$emit("update:selected", names[index]);
+        this.select(index);
         setTimeout(run, 2000);
       };
       setTimeout(run, 2000);
@@ -63,6 +96,9 @@ export default {
   &-window {
     position: relative;
     overflow: hidden;
+    .isSelected {
+      background: red;
+    }
   }
 }
 </style>
