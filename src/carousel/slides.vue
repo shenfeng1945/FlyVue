@@ -59,8 +59,11 @@ export default {
     updateChildren() {
       let selected = this.getSelected();
       this.$children.forEach(vm => {
-        vm.selected = selected;
         vm.reverse = this.selectedIndex > this.lastSelectedIndex ? false : true;
+        this.$nextTick(() => {
+         // 确保执行动画前，reverse已经生效
+         vm.selected = selected;
+        })
       });
     },
     select(index) {
