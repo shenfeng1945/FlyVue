@@ -17,6 +17,7 @@
           :key="index"
           :class="{active: selectedIndex === (index - 1)}"
           @click="select(index-1)"
+          :data-index="index-1"
         >
           {{index}}
         </span>
@@ -46,6 +47,10 @@ export default {
     reverse: {
       type: Boolean,
       default: false
+    },
+    autoPlayDelay: {
+      type: Number,
+      default: 3000
     }
   },
   components:{
@@ -182,9 +187,9 @@ export default {
           index = 0;
         }
         this.select(index);
-        this.timerId = setTimeout(run, 2000);
+        this.timerId = setTimeout(run, this.autoPlayDelay);
       };
-      this.timerId = setTimeout(run, 2000);
+      this.timerId = setTimeout(run, this.autoPlayDelay);
     }
   }
 };
