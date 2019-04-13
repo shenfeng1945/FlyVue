@@ -226,16 +226,14 @@ export default {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 1em;
-      height: 1em;
-      border: 1px solid;
     }
     .f-slides-control-left{
-      left: 0;
-      
+      left: 1em;
+      cursor: pointer;
     }
     .f-slides-control-right{
-      right: 0;
+      right: 1em;
+      cursor: pointer;
     }
   }
 }

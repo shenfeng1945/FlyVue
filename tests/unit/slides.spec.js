@@ -96,7 +96,7 @@ describe('Slides', () => {
             wrapper.find('span[data-index="1"]').trigger('click');
         })
     })
-    
+
     // --watch 仍存在bug，timerId没有clear掉，待解决
     it('会自动播放', (done) => {
         Vue.component('FSlidesItem', SlidesItem)
@@ -126,9 +126,38 @@ describe('Slides', () => {
             expect(callback).to.have.been.called;
             expect(callback).to.have.been.calledWith('2');
             done()
-        },600)
+        }, 600)
     })
-    xit('点击前进去下一张', () => {
+    it('点击前进去下一张', (done) => {
+        Vue.component('FSlidesItem', SlidesItem)
+        const wrapper = mount(Slides, {
+            slots: {
+                default: `
+                 <f-slides-item name="1">
+                   <div class="box1">1</div>
+                 </f-slides-item>
+                 <f-slides-item name="2">
+                   <div class="box2">2</div>
+                 </f-slides-item>
+                 <f-slides-item name="3">
+                   <div class="box3">3</div>
+                 </f-slides-item>
+                `
+            },
+            propsData: {
+                autoPlay: false,
+                selected: '3'
+            },
+            listeners: {
+                'update:selected': (index) => {
+                    expect(index).to.eq('1')
+                    done()
+                }
+            }
+        })
+        setTimeout(() => {
+            wrapper.find('.f-slides-control-right').trigger('click')
+        })
     })
 
 })
