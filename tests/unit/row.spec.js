@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import Row from '@/row'
-import Col from '@/col'
+import Row from '@/grid/row'
+import Col from '@/grid/col'
 import { expect } from 'chai'
 import { mount } from '@vue/test-utils'
 

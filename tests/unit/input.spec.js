@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Input from '@/Input'
+import Input from '@/input/Input'
 import chai, { expect } from 'chai'
 import { mount } from '@vue/test-utils'
 import sinon from 'sinon'

@@ -19,7 +19,7 @@
     </div> 
 </template>
 <script>
-import Icon from './Icon'
+import Icon from '../icon/Icon'
 export default {
     name: 'FlyInput',
     props: {

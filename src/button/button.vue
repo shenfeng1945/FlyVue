@@ -19,7 +19,7 @@
   </button>
 </template>
 <script>
-import Icon from "../Icon";
+import Icon from "../icon/Icon";
 export default {
   props: {
     icon: {},

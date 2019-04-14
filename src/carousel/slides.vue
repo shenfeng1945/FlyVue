@@ -35,7 +35,7 @@
 
 <script>
 // 待完善部分: 样式，前进后退到头不能再点
-import Icon from '../Icon'
+import Icon from '../icon/Icon'
 export default {
   name: "FlySlides",
   props: {
