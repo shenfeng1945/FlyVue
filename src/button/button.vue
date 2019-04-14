@@ -1,130 +1,187 @@
 <template>
-    <button class="f-button" :class="[iconPosition && `icon-${iconPosition}`, `${type}`, circle && `circle`, loading && `is-loading` ]" @click="$emit('click')">
-        <f-icon :name="icon" :style="noMargin"></f-icon>
-        <f-icon class="loading" name="loading" v-if="loading"></f-icon>
-        <div class="button-content">
-          <slot></slot>
-        </div>
-    </button>
+  <button
+    class="f-button"
+    :class="[iconPosition && `icon-${iconPosition}`, `${type}`, circle && `circle`, loading && `is-loading`,disabled && `f-disabled`]"
+    @click="$emit('click')"
+  >
+    <f-icon
+      :name="icon"
+      :style="noMargin"
+    ></f-icon>
+    <f-icon
+      class="loading"
+      name="loading"
+      v-if="loading"
+    ></f-icon>
+    <div class="button-content">
+      <slot></slot>
+    </div>
+  </button>
 </template>
 <script>
-import Icon from '../Icon';
+import Icon from "../Icon";
 export default {
-   props: {
-       icon: {},
-       iconPosition: {
-           type: String,
-           default: 'left',
-           validator(value){
-              return value === 'left' || value === 'right';
-           }
-       },
-       loading: {
-           type: Boolean,
-           default: false
-       },
-       type: {
-           type: String,
-           default: 'default',
-           validator(value){
-               return ['default','primary','warn'].indexOf(value) > -1
-           }
-       },
-       circle: {
-           type: Boolean,
-           default: false
-       }
-   },
-   data(){
-       return {
-           noMargin: null
-       }
-   },
-   components: {
-       'f-icon': Icon
-   },
-   mounted(){
-       const text = this.$el.querySelector('.button-content').textContent;
-       if(!text){
-           this.noMargin = {
-               marginLeft: 0,
-               marginRight: 0,
-           }
-       }
-   },
-}
+  props: {
+    icon: {},
+    iconPosition: {
+      type: String,
+      default: "left",
+      validator(value) {
+        return value === "left" || value === "right";
+      }
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: "default",
+      validator(value) {
+        return (
+          ["default", "primary", "warn", "success", "danger"].indexOf(value) >
+          -1
+        );
+      }
+    },
+    circle: {
+      type: Boolean,
+      default: false
+    },
+    disabled: Boolean
+  },
+  data() {
+    return {
+      noMargin: null
+    };
+  },
+  components: {
+    "f-icon": Icon
+  },
+  mounted() {
+    const text = this.$el.querySelector(".button-content").textContent;
+    if (!text) {
+      this.noMargin = {
+        marginLeft: 0,
+        marginRight: 0
+      };
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
-  @import '../../style/variable'; 
- .f-button{
-     font-size: $font-size;
-     height: $button-height;
-     padding: 0 1em;
-     border-radius: $border-radius;
-     border: 1px solid $border-color;
-     display: inline-flex;
-     justify-content: center;
-     align-items: center;
-     vertical-align: middle;
-     background-color: $button-bg;
-     cursor: pointer;
-     &.primary{
-       background: $button-primary-bg;
-       color: $button-bg;
-       border-color: $button-primary-bg;
-     }
-     &.primary:active, &.primary.is-loading{
-       background: $button-primary-active-bg;
-     }
-     &.primary:hover,  &.primary.is-loading{
-       border-color: $button-primary-active-bg;
-     }
-     &.warn{
-       background: $button-warn-bg;
-       color: $button-bg;
-       border-color: $button-warn-bg;
-     }
-     &.warn:active,&.warn.is-loading{
-       background: $button-warn-active-bg;
-     }
-     &.warn:hover,&.warn.is-loading{
-       border-color: $button-warn-active-bg;
-     }
-     > .icon {
-         order: 1;
-         margin-left: 0;
-         margin-right: .3em;
-     }
-     > .button-content{
-         order: 2;
-     }
-     &:hover,&.is-loading{
-       border-color: $border-color-hover;
-     }
-     &:focus,&.is-loading{
-       outline: none;
-     }
-     &:active,&.is-loading{
-         background-color: $button-active-bg;
-     }
-     &.icon-right{
-        > .icon {
-            order: 2;
-            margin-right: 0;
-            margin-left: .3em;
-        }
-        > .button-content{
-            order: 1;
-        }
-     }
-     > .loading{
-       animation: spin 1.2s infinite linear;
-     }
-     &.circle{
-         border-radius: 50%;
-     }
-     
- }
+@import "../../style/variable";
+.f-button {
+  font-size: $font-size;
+  height: $button-height;
+  padding: 0 1em;
+  border-radius: $border-radius;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  background-color: $button-bg;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2),
+    inset 0 -1px 0 rgba(16, 22, 26, 0.1);
+  border: none;
+
+  &.primary {
+    background-color: $button-primary-bg;
+    color: $button-intent-color;
+  }
+  &.primary:hover,
+  &.primary.is-loading:hover {
+    background-color: $button-primary-hover-bg;
+  }
+  &.primary:active,
+  &.primary.is-loading:active {
+    background-color: $button-primary-active-bg;
+  }
+  &.primary.f-disabled,
+  &.primary.is-loading.disabled {
+    background-color: $button-primary-disabled-bg;
+    cursor: not-allowed;
+    color: $button-intent-disabled-color;
+  }
+
+  &.success {
+    background-color: $button-success-bg;
+    color: $button-intent-color;
+  }
+  &.success:hover,
+  &.success.is-loading:hover {
+    background-color: $button-success-hover-bg;
+  }
+  &.success:active,
+  &.success.is-loading:active {
+    background-color: $button-success-active-bg;
+  }
+
+  &.warn {
+    background: $button-warn-bg;
+    color: $button-intent-color;
+  }
+  &.warn:hover,
+  &.warn.is-loading {
+    background: $button-warn-hover-bg;
+  }
+  &.warn:active,
+  &.warn.is-loading {
+    background: $button-warn-active-bg;
+  }
+
+  &.danger {
+    background: $button-danger-bg;
+    color: $button-intent-color;
+  }
+  &.danger:hover,
+  &.danger.is-loading {
+    background: $button-danger-hover-bg;
+  }
+  &.danger:active,
+  &.danger.is-loading {
+    background: $button-danger-active-bg;
+  }
+
+  > .icon {
+    order: 1;
+    margin-left: 0;
+    margin-right: 0.3em;
+  }
+  > .button-content {
+    order: 2;
+  }
+  &:hover,
+  &.is-loading {
+    background-color: #ebf1f5;
+  }
+  &:focus,
+  &.is-loading {
+    outline: none;
+  }
+  &:active,
+  &.is-loading {
+    background-color: $button-active-bg;
+  }
+  &.icon-right {
+    > .icon {
+      order: 2;
+      margin-right: 0;
+      margin-left: 0.3em;
+    }
+    > .button-content {
+      order: 1;
+    }
+  }
+  > .loading {
+    animation: spin 1.2s infinite linear;
+  }
+  &.circle {
+    border-radius: 50%;
+  }
+  
+}
 </style>
 
 

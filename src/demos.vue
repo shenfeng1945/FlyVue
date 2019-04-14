@@ -1,31 +1,21 @@
 <template>
   <div id="app">
-    <f-slides width="400" height="300" :selected.sync="selected" :reverse="false" :autoPlay="false">
-      <f-slides-item name="1">
-        <div class="box box1">1</div>
-      </f-slides-item>
-      <f-slides-item name="2">
-        <div class="box box2">2</div>
-      </f-slides-item>
-      <f-slides-item name="3">
-        <div class="box box3">3</div>
-      </f-slides-item>
-    </f-slides>
+    <f-button type="default">Click</f-button>
+    <f-button type="primary" disabled>Click</f-button>
+    <f-button type="success">Click</f-button>
+    <f-button type="warn">Click</f-button>
+    <f-button type="danger">Click</f-button>
   </div>
 </template>
 <script>
-import Slides from "./carousel/slides";
-import SlidesItem from "./carousel/slides-item";
-
+import Button from './button/button'
 export default {
   name: "Demos",
   components: {
-    "f-slides": Slides,
-    "f-slides-item": SlidesItem
+    'f-button': Button
   },
   data(){
     return {
-      selected: '1' 
     }
   },
 };
@@ -43,15 +33,6 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 32px;
-}
-.box1{
-  background: red;
-}
-.box2{
-  background: gray;
-}
-.box3{
-  background: green;
 }
 </style>
 
