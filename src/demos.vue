@@ -1,21 +1,26 @@
 <template>
   <div id="app">
-    <f-button type="default">Click</f-button>
-    <f-button type="primary" disabled>Click</f-button>
-    <f-button type="success">Click</f-button>
-    <f-button type="warn">Click</f-button>
-    <f-button type="danger">Click</f-button>
+    <f-nav :selected.sync="selected" :multiple="false">
+        <f-nav-item name="home">首页</f-nav-item>
+        <f-nav-item name="about">关于</f-nav-item>
+        <f-nav-item name="hire">招聘</f-nav-item>
+    </f-nav>
   </div>
 </template>
 <script>
-import Button from './button/button'
+import Nav from './nav/nav'
+import NavItem from './nav/nav-item'
+import SubNav from './nav/sub-nav'
 export default {
   name: "Demos",
   components: {
-    'f-button': Button
+      'f-nav': Nav,
+      'f-nav-item': NavItem,
+      'f-sub-nav': SubNav
   },
   data(){
     return {
+      selected: ['home']
     }
   },
 };
@@ -26,14 +31,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-.box{
-  width: 100%;
-  height: 350px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-}
+
 </style>
 
 
