@@ -12,10 +12,15 @@ export default {
             required: true
         }
     },
+    inject: ['root'],
     data(){
         return {
             selected: false
         }
+    },
+    created(){
+      // 获取顶级组件的实例
+      this.root.addItems(this);
     },
     methods:{
         onClick(){

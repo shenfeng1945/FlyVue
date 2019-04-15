@@ -2,7 +2,12 @@
   <div id="app">
     <f-nav :selected.sync="selected" :multiple="false">
         <f-nav-item name="home">首页</f-nav-item>
-        <f-nav-item name="about">关于</f-nav-item>
+        <f-sub-nav name="about">
+          <template slot="title">关于</template>
+          <f-nav-item name="culture">企业文化</f-nav-item>
+          <f-nav-item name="company">公司规模</f-nav-item>
+          <f-nav-item name="contacts">联系电话</f-nav-item>
+        </f-sub-nav>
         <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
   </div>
