@@ -6,7 +6,7 @@
         <template slot="title">关于</template>
         <f-nav-item name="culture">企业文化</f-nav-item>
         <f-nav-item name="company">公司规模</f-nav-item>
-        <f-sub-nav>
+        <f-sub-nav name="contacts">
           <template slot="title">联系电话</template>
           <f-nav-item name="wechat">微信</f-nav-item>
           <f-nav-item name="qq">QQ</f-nav-item>
