@@ -40,11 +40,7 @@ export default {
     },
     updateChildren() {
       this.items.forEach(vm => {
-        if (this.selected.indexOf(vm.name) > -1) {
-          vm.selected = true;
-        } else {
-          vm.selected = false;
-        }
+        vm.selected = this.selected.indexOf(vm.name) > -1;
       });
     },
     listenToChildren() {
@@ -69,6 +65,7 @@ export default {
 .f-nav {
   display: flex;
   border: 1px solid;
+  user-select: none;
 }
 </style>
 
