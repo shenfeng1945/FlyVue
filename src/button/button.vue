@@ -1,7 +1,8 @@
 <template>
   <button
     class="f-button"
-    :class="[iconPosition && `icon-${iconPosition}`, `${type}`, circle && `circle`, loading && `is-loading`,disabled && `f-disabled`]"
+    :type="type"
+    :class="[iconPosition && `icon-${iconPosition}`, `${intent}`, circle && `circle`, loading && `is-loading`,disabled && `f-disabled`]"
     @click="$emit('click')"
   >
     <f-icon
@@ -34,7 +35,7 @@ export default {
       type: Boolean,
       default: false
     },
-    type: {
+    intent: {
       type: String,
       default: "default",
       validator(value) {
@@ -48,7 +49,14 @@ export default {
       type: Boolean,
       default: false
     },
-    disabled: Boolean
+    disabled: Boolean,
+    type: {
+      type: String,
+      default: 'button',
+      validator(value){
+        return ['button','submit'].indexOf(value) > -1;
+      }
+    }
   },
   data() {
     return {
@@ -179,6 +187,9 @@ export default {
   }
   &.circle {
     border-radius: 50%;
+  }
+  > svg{
+    fill: currentColor;
   }
   
 }

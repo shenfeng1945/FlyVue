@@ -15,24 +15,27 @@
       </f-sub-nav>
       <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
+    <f-button icon="settings" icon-position="right" intent="warn">点我</f-button>
   </div>
 </template>
 <script>
 import Nav from "./nav/nav";
 import NavItem from "./nav/nav-item";
 import SubNav from "./nav/sub-nav";
+import Button from "./button/button";
 export default {
   name: "Demos",
   components: {
     "f-nav": Nav,
     "f-nav-item": NavItem,
-    "f-sub-nav": SubNav
+    "f-sub-nav": SubNav,
+    "f-button": Button
   },
   data() {
     return {
       selected: ["home"]
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
