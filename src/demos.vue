@@ -15,6 +15,7 @@
       </f-sub-nav>
       <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
+    <f-pager :total-page="10" :current-page="1"></f-pager>
   </div>
 </template>
 <script>
@@ -22,13 +23,15 @@ import Nav from "./nav/nav";
 import NavItem from "./nav/nav-item";
 import SubNav from "./nav/sub-nav";
 import Button from "./button/button";
+import Pager from "./pager/pager";
 export default {
   name: "Demos",
   components: {
     "f-nav": Nav,
     "f-nav-item": NavItem,
     "f-sub-nav": SubNav,
-    "f-button": Button
+    "f-button": Button,
+    "f-pager": Pager
   },
   data() {
     return {

@@ -6,9 +6,11 @@
         <f-icon name="right" :class="{open}"></f-icon>
       </span>
     </span>
-    <div class="f-sub-nav-popover" v-show="open" :class="{'f-vertical': vertical}">
-      <slot></slot>
-    </div>
+    <transition name="expand" @enter="enter" @leave="leave" @after-leave="afterLeave" @after-enter="afterEnter">
+      <div class="f-sub-nav-popover" v-show="open" :class="{'f-vertical': vertical}">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -46,7 +48,32 @@ export default {
     },
     close() {
       this.open = false;
-    }
+    },
+    enter(el, done){
+      el.style.height = `auto`;
+      const {height} = el.getBoundingClientRect();
+      el.style.height = '0px';
+      el.getBoundingClientRect();
+      el.style.height = `${height}px`;
+      el.addEventListener('transitionend',() =>{
+        done()
+      })
+    },
+    afterEnter(el){
+      el.style.height = 'auto';
+    },
+    leave(el, done){
+      const {height} = el.getBoundingClientRect();
+      el.style.height = `${height}px`;
+      el.getBoundingClientRect();
+      el.style.height = '0px';
+      el.addEventListener('transitionend',() =>{
+        done()
+      })
+    },
+    afterLeave(el){
+      el.style.height = 'auto';
+    },
   }
 };
 </script>
@@ -71,6 +98,7 @@ export default {
     &.f-vertical {
       position: static;
       border: none;
+      overflow: hidden;
     }
   }
 
@@ -113,6 +141,13 @@ export default {
     border-bottom: 2px solid blue;
     width: 100%;
   }
+}
+
+.expand-enter-active, .expand-leave-active {
+   transition: height .3s;
+}
+.expand-enter, .expand-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  height: auto;
 }
 </style>
 
