@@ -1,5 +1,5 @@
 <template>
-  <div class="f-nav">
+  <div class="f-nav" :class="{'f-vertical': vertical}">
     <slot></slot>
   </div>
 </template>
@@ -14,11 +14,16 @@ export default {
     multiple: {
       type: Boolean,
       default: false
+    },
+    vertical: {
+      type: Boolean,
+      default: false
     }
   },
   provide(){
     return {
-      root: this
+      root: this,
+      vertical: this.vertical
     }
   },
   data(){
@@ -62,10 +67,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import '../../style/variable';
 .f-nav {
   display: flex;
-  border: 1px solid;
   user-select: none;
+  border-bottom: 1px solid $grey;
+  &.f-vertical{
+    flex-direction: column;
+    border: 1px solid $grey;
+  }
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <f-nav :selected.sync="selected" :multiple="false">
+    <f-nav :selected.sync="selected" :multiple="false" vertical style="width: 100px;">
       <f-nav-item name="home">首页</f-nav-item>
       <f-sub-nav name="about">
         <template slot="title">关于</template>
@@ -15,7 +15,6 @@
       </f-sub-nav>
       <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
-    <f-button icon="settings" icon-position="right" intent="warn">点我</f-button>
   </div>
 </template>
 <script>
