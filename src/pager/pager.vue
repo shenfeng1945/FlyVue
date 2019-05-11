@@ -1,6 +1,6 @@
 <template>
   <div class="f-pager">
-      <span class="f-pager-nav" :class="{disabled: currentPage === 1}">
+      <span class="f-pager-nav" :class="{disabled: currentPage === 1}" @click="onClickPage(currentPage-1)">
         <f-icon name="left"></f-icon>
       </span>
     <template v-for="page in pages">
@@ -11,10 +11,10 @@
         <f-icon class="f-pager-separator" name="dots">{{page}}</f-icon>
       </template>
       <template v-else>
-        <span class="f-pager-item">{{page}}</span>
+        <span class="f-pager-item" @click="onClickPage(page)">{{page}}</span>
       </template>
     </template>
-    <span class="f-pager-nav" :class="{disabled: currentPage === totalPage}">
+    <span class="f-pager-nav" :class="{disabled: currentPage === totalPage}" @click="onClickPage(currentPage+1)">
         <f-icon name="right"></f-icon>
       </span>
   </div>
@@ -36,12 +36,14 @@ export default {
     hideIfOnePage: {
       type: Boolean,
       default: true
+    },
+    onChange: {
     }
   },
-  data() {
-    return {
-      pages: this.NumberToPager()
-    };
+  computed: {
+      pages(){
+        return this.NumberToPager();
+      }
   },
   components: {
     'f-icon': Icon
@@ -67,6 +69,11 @@ export default {
         return prev;
       },[]);
       return result;
+    },
+    onClickPage(page){
+      if(page < 1 || page > this.totalPage)return;
+      this.$emit('update:currentPage', page);
+      // this.onChange(page);
     }
   }
 };
@@ -79,6 +86,7 @@ export default {
   $font-size: 12px;
   .f-pager{
       display: flex;align-items: center;
+      user-select: none;
       &-nav{
         margin: 0 4px; display: inline-flex;justify-content: center;align-items: center; background: $grey;
         height: $height; width: $height; border-radius: $border-radius; font-size: $font-size;

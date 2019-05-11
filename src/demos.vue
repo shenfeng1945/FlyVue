@@ -15,7 +15,7 @@
       </f-sub-nav>
       <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
-    <f-pager :total-page="10" :current-page="1"></f-pager>
+    <f-pager :total-page="10" :current-page.sync="currentPage" onChange="onChange($event)"></f-pager>
   </div>
 </template>
 <script>
@@ -35,9 +35,15 @@ export default {
   },
   data() {
     return {
-      selected: ["home"]
+      selected: ["home"],
+      currentPage: 1
     };
   },
+  methods: {
+    onChange(page){
+      console.log('请求第' + page + '页');
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
