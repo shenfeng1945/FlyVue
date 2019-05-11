@@ -15,7 +15,7 @@
       </f-sub-nav>
       <f-nav-item name="hire">招聘</f-nav-item>
     </f-nav>
-    <f-pager :total-page="10" :current-page="5"></f-pager>
+    <f-pager :total-page="10" :current-page="1"></f-pager>
   </div>
 </template>
 <script>
