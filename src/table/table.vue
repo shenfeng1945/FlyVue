@@ -14,7 +14,13 @@
           </th>
           <th v-if="numberVisible">#</th>
           <th v-for="column in columns" :key="column.field">
-            {{ column.text }}
+            <div class="f-table-column">
+              {{ column.text }}
+              <span v-if="column.field in orderBy" class="f-table-sorter" @click="changeOrderBy(column.field)">
+                <f-icon name="esc" :class="{active: orderBy[column.field] === 'esc'}"></f-icon>
+                <f-icon name="desc" :class="{active: orderBy[column.field] === 'desc'}"></f-icon>
+              </span>
+            </div>
           </th>
         </tr>
       </thead>
@@ -39,6 +45,8 @@
 </template>
 
 <script>
+import Icon from "../icon/Icon";
+
 export default {
   name: "FlyTable",
   props: {
@@ -74,7 +82,14 @@ export default {
     selectedItems: {
       type: Array,
       default: () => []
+    },
+    orderBy: {
+      type: Object,
+      default: () => ({})
     }
+  },
+  components: {
+    "f-icon": Icon
   },
   methods: {
     onChangeItem(item, index, e) {
@@ -97,6 +112,18 @@ export default {
         this.selectedItems.filter(selectedItem => selectedItem.id === item.id)
           .length > 0
       );
+    },
+    changeOrderBy(key){
+      let copyOrderBy = JSON.parse(JSON.stringify(this.orderBy));
+      const oldValue = copyOrderBy[key];
+      if(oldValue === 'esc'){
+        copyOrderBy[key] = 'desc'
+      }else if(oldValue === 'desc'){
+        copyOrderBy[key] = true
+      }else{
+        copyOrderBy[key] = 'esc'
+      }
+      this.$emit('update:orderBy', copyOrderBy)
     }
   },
   computed: {
@@ -156,6 +183,25 @@ $grey: darken($grey, 20%);
         }
         &:nth-child(even) {
           background: lighten($grey, 35%);
+        }
+      }
+    }
+  }
+  &-column {
+    display: flex;
+    align-items: center;
+    .f-table-sorter {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 3px;
+      svg {
+        width: 10px;
+        height: 10px;
+        fill: $grey;
+        cursor: pointer;
+        &.active{
+          fill: $button-primary-active-bg;
         }
       }
     }

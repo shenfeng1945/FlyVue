@@ -5,8 +5,10 @@
       :dataSource="dataSource"
       bordered
       :selected-items.sync="selected"
+      :order-by.sync="orderBy"
+      @update:orderBy="updateDataSource"
     ></f-table>
-    {{selected}}
+    {{ selected }}
     <f-pager
       :total-page="10"
       :current-page.sync="currentPage"
@@ -44,10 +46,17 @@ export default {
         { id: 2, name: "james", score: 80 },
         { id: 3, name: "kobe", score: 99 },
         { id: 4, name: "allen", score: 95 }
-      ]
+      ],
+      orderBy: {
+        name: true,
+        score: "esc"
+      }
     };
   },
   methods: {
+    updateDataSource(e){
+      console.log(e);
+    }
   }
 };
 </script>
