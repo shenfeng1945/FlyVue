@@ -1,21 +1,17 @@
 <template>
   <div id="app">
-    <f-nav :selected.sync="selected" :multiple="false" vertical style="width: 100px;">
-      <f-nav-item name="home">首页</f-nav-item>
-      <f-sub-nav name="about">
-        <template slot="title">关于</template>
-        <f-nav-item name="culture">企业文化</f-nav-item>
-        <f-nav-item name="company">公司规模</f-nav-item>
-        <f-sub-nav name="contacts">
-          <template slot="title">联系电话</template>
-          <f-nav-item name="wechat">微信</f-nav-item>
-          <f-nav-item name="qq">QQ</f-nav-item>
-          <f-nav-item name="phone">电话</f-nav-item>
-        </f-sub-nav>
-      </f-sub-nav>
-      <f-nav-item name="hire">招聘</f-nav-item>
-    </f-nav>
-    <f-pager :total-page="10" :current-page.sync="currentPage" onChange="onChange($event)"></f-pager>
+    <f-table
+      :columns="columns"
+      :dataSource="dataSource"
+      bordered
+      :selected-items.sync="selected"
+    ></f-table>
+    {{selected}}
+    <f-pager
+      :total-page="10"
+      :current-page.sync="currentPage"
+      onChange="onChange($event)"
+    ></f-pager>
   </div>
 </template>
 <script>
@@ -24,6 +20,7 @@ import NavItem from "./nav/nav-item";
 import SubNav from "./nav/sub-nav";
 import Button from "./button/button";
 import Pager from "./pager/pager";
+import Table from "./table/table";
 export default {
   name: "Demos",
   components: {
@@ -31,18 +28,26 @@ export default {
     "f-nav-item": NavItem,
     "f-sub-nav": SubNav,
     "f-button": Button,
-    "f-pager": Pager
+    "f-pager": Pager,
+    "f-table": Table
   },
   data() {
     return {
-      selected: ["home"],
-      currentPage: 1
+      selected: [],
+      currentPage: 1,
+      columns: [
+        { text: "姓名", field: "name" },
+        { text: "分数", field: "score" }
+      ],
+      dataSource: [
+        { id: 1, name: "curry", score: 100 },
+        { id: 2, name: "james", score: 80 },
+        { id: 3, name: "kobe", score: 99 },
+        { id: 4, name: "allen", score: 95 }
+      ]
     };
   },
   methods: {
-    onChange(page){
-      console.log('请求第' + page + '页');
-    }
   }
 };
 </script>
@@ -53,5 +58,3 @@ export default {
   box-sizing: border-box;
 }
 </style>
-
-
