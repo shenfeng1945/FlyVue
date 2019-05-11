@@ -8,7 +8,7 @@
               ><input
                 type="checkbox"
                 @change="onChangeAllItems"
-                :checked="inAllSelectedItems"
+                :checked="isAllSelectedItems"
                 ref="allSelected"
             /></label>
           </th>
@@ -100,8 +100,20 @@ export default {
     }
   },
   computed: {
-    inAllSelectedItems() {
-      return this.selectedItems.length === this.dataSource.length;
+    isAllSelectedItems() {
+      if (this.selectedItems.length !== this.dataSource.length) {
+        return false;
+      }
+      let equal = true;
+      const array1 = this.selectedItems.map(item => item.id).sort();
+      const array2 = this.dataSource.map(item => item.id).sort();
+      for (let i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+          equal = false;
+          break;
+        }
+      }
+      return equal;
     }
   },
   watch: {
