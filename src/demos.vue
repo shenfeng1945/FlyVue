@@ -39,14 +39,26 @@ export default {
       selected: [],
       currentPage: 1,
       columns: [
-        { text: "姓名", field: "name" },
+        { text: "姓名", field: "name", width: 200 },
         { text: "分数", field: "score" }
       ],
       dataSource: [
         { id: 1, name: "curry", score: 100 },
         { id: 2, name: "james", score: 80 },
         { id: 3, name: "kobe", score: 99 },
-        { id: 4, name: "allen", score: 95 }
+        { id: 4, name: "allen", score: 95 },
+        { id: 5, name: "allen", score: 95 },
+        { id: 6, name: "curry", score: 100 },
+        { id: 7, name: "james", score: 80 },
+        { id: 8, name: "kobe", score: 99 },
+        { id: 9, name: "allen", score: 95 },
+        { id: 10, name: "curry", score: 100 },
+        { id: 11, name: "james", score: 80 },
+        { id: 12, name: "kobe", score: 99 },
+        { id: 13, name: "allen", score: 95 },
+        { id: 14, name: "curry", score: 100 },
+        { id: 15, name: "james", score: 80 },
+        { id: 16, name: "kobe", score: 99 },
       ],
       orderBy: {
         name: true,

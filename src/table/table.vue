@@ -1,9 +1,9 @@
 <template>
-  <div class="f-table-wrapper">
-    <table class="f-table" :class="{ bordered, compact, striped }">
+  <div class="f-table-wrapper" ref="tableWrapper">
+    <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
       <thead>
         <tr>
-          <th>
+          <th style="width: 50px">
             <label
               ><input
                 type="checkbox"
@@ -12,8 +12,8 @@
                 ref="allSelected"
             /></label>
           </th>
-          <th v-if="numberVisible">#</th>
-          <th v-for="column in columns" :key="column.field">
+          <th v-if="numberVisible" style="width: 50px">#</th>
+          <th v-for="column in columns" :key="column.field" :style="{width: column.width + 'px'}">
             <div class="f-table-column">
               {{ column.text }}
               <span
@@ -35,8 +35,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in dataSource" :key="item.id">
-          <th>
+        <tr v-for="(item, index) in dataSource" :key="item.id" >
+          <th style="width: 50px">
             <label
               ><input
                 type="checkbox"
@@ -44,9 +44,9 @@
                 :checked="inSelectedItems(item)"
             /></label>
           </th>
-          <td v-if="numberVisible">{{ index + 1 }}</td>
-          <template v-for="column in columns">
-            <td>{{ item[column.field] }}</td>
+          <td v-if="numberVisible" style="width: 50px">{{ index + 1 }}</td>
+          <template v-for="column in columns" >
+            <td :style="{width: column.width + 'px'}">{{ item[column.field] }}</td>
           </template>
         </tr>
       </tbody>
@@ -160,6 +160,15 @@ export default {
       return equal;
     }
   },
+  mounted(){
+    let cloneTable = this.$refs.table.cloneNode(false);
+    cloneTable.classList.add('f-table-copy');
+    let tHead = this.$refs.table.children[0];
+    // let {height} = tHead.getBoundingClientRect();
+    cloneTable.appendChild(tHead);
+    this.$refs.tableWrapper.appendChild(cloneTable);
+    console.log(this.$refs.table);
+  },
   watch: {
     selectedItems() {
       // 半选与全选
@@ -225,6 +234,12 @@ $grey: darken($grey, 20%);
         }
       }
     }
+  }
+  .f-table-copy{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
   .f-table-loading {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;
