@@ -16,9 +16,19 @@
           <th v-for="column in columns" :key="column.field">
             <div class="f-table-column">
               {{ column.text }}
-              <span v-if="column.field in orderBy" class="f-table-sorter" @click="changeOrderBy(column.field)">
-                <f-icon name="esc" :class="{active: orderBy[column.field] === 'esc'}"></f-icon>
-                <f-icon name="desc" :class="{active: orderBy[column.field] === 'desc'}"></f-icon>
+              <span
+                v-if="column.field in orderBy"
+                class="f-table-sorter"
+                @click="changeOrderBy(column.field)"
+              >
+                <f-icon
+                  name="esc"
+                  :class="{ active: orderBy[column.field] === 'esc' }"
+                ></f-icon>
+                <f-icon
+                  name="desc"
+                  :class="{ active: orderBy[column.field] === 'desc' }"
+                ></f-icon>
               </span>
             </div>
           </th>
@@ -41,6 +51,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="f-table-loading" v-if="loading">
+      <f-icon name="loading"></f-icon>
+    </div>
   </div>
 </template>
 
@@ -86,6 +99,10 @@ export default {
     orderBy: {
       type: Object,
       default: () => ({})
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -113,17 +130,17 @@ export default {
           .length > 0
       );
     },
-    changeOrderBy(key){
+    changeOrderBy(key) {
       let copyOrderBy = JSON.parse(JSON.stringify(this.orderBy));
       const oldValue = copyOrderBy[key];
-      if(oldValue === 'esc'){
-        copyOrderBy[key] = 'desc'
-      }else if(oldValue === 'desc'){
-        copyOrderBy[key] = true
-      }else{
-        copyOrderBy[key] = 'esc'
+      if (oldValue === "esc") {
+        copyOrderBy[key] = "desc";
+      } else if (oldValue === "desc") {
+        copyOrderBy[key] = true;
+      } else {
+        copyOrderBy[key] = "esc";
       }
-      this.$emit('update:orderBy', copyOrderBy)
+      this.$emit("update:orderBy", copyOrderBy);
     }
   },
   computed: {
@@ -157,54 +174,62 @@ export default {
 <style scoped lang="scss">
 @import "../../style/variable";
 $grey: darken($grey, 20%);
-.f-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  border-bottom: 1px solid $grey;
-  width: 100%;
-  &.bordered {
-    border: 1px solid $grey;
+.f-table-wrapper {
+  position: relative;
+  .f-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-bottom: 1px solid $grey;
+    width: 100%;
+    &.bordered {
+      border: 1px solid $grey;
+      td,
+      th {
+        border: 1px solid $grey;
+      }
+    }
     td,
     th {
-      border: 1px solid $grey;
+      border-bottom: 1px solid $grey;
+      text-align: left;
+      padding: 8px;
     }
-  }
-  td,
-  th {
-    border-bottom: 1px solid $grey;
-    text-align: left;
-    padding: 8px;
-  }
-  &.striped {
-    tbody {
-      > tr {
-        &:nth-child(odd) {
-          background: white;
+    &.striped {
+      tbody {
+        > tr {
+          &:nth-child(odd) {
+            background: white;
+          }
+          &:nth-child(even) {
+            background: lighten($grey, 35%);
+          }
         }
-        &:nth-child(even) {
-          background: lighten($grey, 35%);
+      }
+    }
+    &-column {
+      display: flex;
+      align-items: center;
+      .f-table-sorter {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 3px;
+        svg {
+          width: 10px;
+          height: 10px;
+          fill: $grey;
+          cursor: pointer;
+          &.active {
+            fill: $button-primary-active-bg;
+          }
         }
       }
     }
   }
-  &-column {
-    display: flex;
-    align-items: center;
-    .f-table-sorter {
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      margin: 0 3px;
-      svg {
-        width: 10px;
-        height: 10px;
-        fill: $grey;
-        cursor: pointer;
-        &.active{
-          fill: $button-primary-active-bg;
-        }
-      }
-    }
+  .f-table-loading {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;
+    align-items: center; background: rgba(255, 255, 255, 0.8);
+    svg { @include spin; width: 50px; height: 50px; }
   }
 }
 </style>

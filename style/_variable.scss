@@ -38,3 +38,6 @@ $grey: #999;
         transform: rotate(360deg)
     }
 }
+@mixin spin{
+  animation: spin 1s infinite linear;
+}

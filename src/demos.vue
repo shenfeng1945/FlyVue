@@ -7,6 +7,7 @@
       :selected-items.sync="selected"
       :order-by.sync="orderBy"
       @update:orderBy="updateDataSource"
+      :loading="loading"
     ></f-table>
     {{ selected }}
     <f-pager
@@ -50,12 +51,17 @@ export default {
       orderBy: {
         name: true,
         score: "esc"
-      }
+      },
+      loading: false
     };
   },
   methods: {
-    updateDataSource(e){
-      console.log(e);
+    updateDataSource(){
+      this.loading = true;
+      setTimeout(() => {
+        this.dataSource = this.dataSource.sort((a,b) => a.score - b.score);
+        this.loading = false
+      }, 1000)
     }
   }
 };
