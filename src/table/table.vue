@@ -1,7 +1,9 @@
 <template>
-  <div class="f-table-wrapper" ref="tableWrapper">
+  <div class="f-table-wrapper" ref="wrapper">
+    <div :style="{height: height + 'px',overflow: 'auto'}" ref="tableWrapper">
+
     <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
-      <thead>
+      <thead class="f-table-thead">
         <tr>
           <th style="width: 50px">
             <label
@@ -46,11 +48,12 @@
           </th>
           <td v-if="numberVisible" style="width: 50px">{{ index + 1 }}</td>
           <template v-for="column in columns" >
-            <td :style="{width: column.width + 'px'}">{{ item[column.field] }}</td>
+            <td :style="{width: column.width + 'px'}" :key="column.field">{{ item[column.field] }}</td>
           </template>
         </tr>
       </tbody>
     </table>
+    </div>
     <div class="f-table-loading" v-if="loading">
       <f-icon name="loading"></f-icon>
     </div>
@@ -103,6 +106,9 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    height: {
+      type: Number,
     }
   },
   components: {
@@ -164,10 +170,11 @@ export default {
     let cloneTable = this.$refs.table.cloneNode(false);
     cloneTable.classList.add('f-table-copy');
     let tHead = this.$refs.table.children[0];
-    // let {height} = tHead.getBoundingClientRect();
+    let {height} = tHead.getBoundingClientRect();
+    this.$refs.tableWrapper.style.marginTop = height + 'px';
+    cloneTable.style.marginTop = `-${height}px`;
     cloneTable.appendChild(tHead);
-    this.$refs.tableWrapper.appendChild(cloneTable);
-    console.log(this.$refs.table);
+    this.$refs.wrapper.appendChild(cloneTable);
   },
   watch: {
     selectedItems() {
@@ -190,6 +197,7 @@ $grey: darken($grey, 20%);
     border-spacing: 0;
     border-bottom: 1px solid $grey;
     width: 100%;
+    
     &.bordered {
       border: 1px solid $grey;
       td,
@@ -240,6 +248,9 @@ $grey: darken($grey, 20%);
     top: 0;
     left: 0;
     width: 100%;
+    > .f-table-thead{
+      background: white;
+    }
   }
   .f-table-loading {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;

@@ -8,6 +8,7 @@
       :order-by.sync="orderBy"
       @update:orderBy="updateDataSource"
       :loading="loading"
+      :height="400"
     ></f-table>
     {{ selected }}
     <f-pager
