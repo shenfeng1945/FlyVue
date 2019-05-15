@@ -9,6 +9,7 @@
       @update:orderBy="updateDataSource"
       :loading="loading"
       :height="400"
+      :expand="expand"
     ></f-table>
     {{ selected }}
     <f-pager
@@ -44,8 +45,8 @@ export default {
         { text: "分数", field: "score" }
       ],
       dataSource: [
-        { id: 1, name: "curry", score: 100 },
-        { id: 2, name: "james", score: 80 },
+        { id: 1, name: "curry", score: 100, description: 'xxxx'},
+        { id: 2, name: "james", score: 80 , description: 'yyyy'},
         { id: 3, name: "kobe", score: 99 },
         { id: 4, name: "allen", score: 95 },
         { id: 5, name: "allen", score: 95 },
@@ -65,7 +66,8 @@ export default {
         name: true,
         score: "esc"
       },
-      loading: false
+      loading: false,
+      expand: 'description'
     };
   },
   methods: {
