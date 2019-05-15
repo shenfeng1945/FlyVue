@@ -4,8 +4,8 @@
       <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
         <thead class="f-table-thead">
           <tr>
-            <th style="width:50px"></th>
-            <th style="width: 50px" class="f-table-center">
+            <th v-if="expandField" style="width:50px"></th>
+            <th v-if="checkable" style="width: 50px" class="f-table-center">
               <label>
                 <input
                   type="checkbox"
@@ -29,16 +29,17 @@
                 </span>
               </div>
             </th>
+            <th v-if="$scopedSlots.default" ref="actionHeader"></th>
           </tr>
         </thead>
         <tbody>
           <template v-for="(item, index) in dataSource">
             <tr :key="item.id">
-              <td style="width: 50px">
-                <f-icon name="down" v-if="inExpendedIds(item.id) && !!item[expand]" @click="insertItem(item.id)"></f-icon>
+              <td style="width: 50px" v-if="expandField">
+                <f-icon name="down" v-if="inExpendedIds(item.id) && !!item[expandField]" @click="insertItem(item.id)"></f-icon>
                 <f-icon name="right" v-else @click="insertItem(item.id)"></f-icon>
               </td>
-              <td style="width: 50px" class="f-table-center">
+              <td v-if="checkable" style="width: 50px" class="f-table-center">
                 <label>
                   <input
                     type="checkbox"
@@ -54,10 +55,14 @@
                   :key="column.field"
                 >{{ item[column.field] }}</td>
               </template>
+              <td v-if="$scopedSlots.default">
+                <div ref="actions" style="display:inline-block;">
+                  <slot :item="item"></slot>
+                </div>
+              </td>
             </tr>
-            <tr :key="`${item.id}-expand`" v-if="inExpendedIds(item.id) && !!item[expand]">
-               <td style="border: none;"></td>
-               <td :colspan="columns.length + 1" style="border-left: none;">{{item[expand]}}</td>
+            <tr :key="`${item.id}-expandField`" v-if="inExpendedIds(item.id) && !!item[expandField]">
+               <td :colspan="columns.length + expandedColSpan">{{item[expandField]}}</td>
             </tr>
           </template>
         </tbody>
@@ -120,8 +125,13 @@ export default {
       type: Number
     },
     // 展开的Key
-    expand: {
+    expandField: {
       type: String
+    },
+    // 是否可选中
+    checkable: {
+      type: Boolean,
+      default: true
     }
   },
   components: {
@@ -129,7 +139,7 @@ export default {
   },
   data(){
     return {
-      expandedIds: []
+      expandedIds: [],
     }
   },
   methods: {
@@ -179,6 +189,22 @@ export default {
     },
     inExpendedIds(id){
       return this.expandedIds.indexOf(id) >= 0;
+    },
+    setActionsWidth(){
+      const actionsEle = this.$refs.actions;
+      let {width} = actionsEle[0].getBoundingClientRect();
+      let actionsParentEle = actionsEle[0].parentNode;
+      let borderLeft = this.getStyleValue(actionsParentEle,'border-left-width');
+      let borderRight = this.getStyleValue(actionsParentEle,'border-right-width');
+      let paddingLeft = this.getStyleValue(actionsParentEle,'padding-left');
+      let paddingRight = this.getStyleValue(actionsParentEle,'padding-right');
+      let actionHeaderWidth = width + parseInt(borderLeft,10) +  parseInt(borderRight,10) +  parseInt(paddingLeft,10) +  parseInt(paddingRight,10) + 'px'
+      this.$refs.actionHeader.style.width = actionHeaderWidth;
+      actionsEle.forEach(div => div.parentNode.style.width = actionHeaderWidth);
+      
+    },
+    getStyleValue(el,val){
+       return getComputedStyle(el).getPropertyValue(val)
     }
   },
   computed: {
@@ -196,6 +222,12 @@ export default {
         }
       }
       return equal;
+    },
+    expandedColSpan(){
+      let num = 0;
+      if(this.checkable){num ++};
+      if(this.expandField){num ++}
+      return num
     }
   },
   mounted() {
@@ -207,6 +239,8 @@ export default {
     cloneTable.style.marginTop = `-${height}px`;
     cloneTable.appendChild(tHead);
     this.$refs.wrapper.appendChild(cloneTable);
+    
+    this.setActionsWidth();
   },
   watch: {
     selectedItems() {

@@ -9,8 +9,14 @@
       @update:orderBy="updateDataSource"
       :loading="loading"
       :height="400"
-      :expand="expand"
-    ></f-table>
+      :expandField="expandField"
+      :checkable="true"
+    >
+      <template slot-scope="data">
+        <button @click="edit(data.item)">编辑</button>
+        <button @click="check(data.item)">查看</button>
+      </template>
+    </f-table>
     {{ selected }}
     <f-pager
       :total-page="10"
@@ -42,7 +48,7 @@ export default {
       currentPage: 1,
       columns: [
         { text: "姓名", field: "name", width: 200 },
-        { text: "分数", field: "score" }
+        { text: "分数", field: "score"}
       ],
       dataSource: [
         { id: 1, name: "curry", score: 100, description: 'xxxx'},
@@ -67,7 +73,7 @@ export default {
         score: "esc"
       },
       loading: false,
-      expand: 'description'
+      expandField: 'description'
     };
   },
   methods: {
@@ -77,6 +83,12 @@ export default {
         this.dataSource = this.dataSource.sort((a,b) => a.score - b.score);
         this.loading = false
       }, 1000)
+    },
+    edit(id){
+      console.log(id)
+    },
+    check(id){
+      console.log(id)
     }
   }
 };
