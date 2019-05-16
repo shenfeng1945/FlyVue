@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <f-upload name="avatar" action="http://localhost:3000/upload">
-      <input type="file">
+    <f-upload name="avatar" action="http://localhost:3000/upload" :fileList.sync="fileList" :parse-response="parseResponse">
+      <f-button>上传</f-button>
+      <template slot="tips">
+        <div>只能上传 300kb 以内的png、jpeg 文件</div>
+      </template>
     </f-upload>
+    <img :src="fileList" alt="">
   </div>
 </template>
 <script>
@@ -26,11 +30,14 @@ export default {
   },
   data() {
     return {
-      
+      fileList: ''
     };
   },
   methods: {
-   
+   parseResponse(res){
+     const id = JSON.parse(res).key;
+     return `http://localhost:3000/preview/${id}`;
+   }
   }
 };
 </script>
