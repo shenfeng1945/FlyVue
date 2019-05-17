@@ -6,7 +6,6 @@
         <div>只能上传 300kb 以内的png、jpeg 文件</div>
       </template>
     </f-upload>
-    <img :src="fileList" alt="">
   </div>
 </template>
 <script>
@@ -26,11 +25,11 @@ export default {
     "f-button": Button,
     "f-pager": Pager,
     "f-table": Table,
-    "f-upload": Upload
+    "f-upload": Upload,
   },
   data() {
     return {
-      fileList: ''
+      fileList: []
     };
   },
   methods: {
