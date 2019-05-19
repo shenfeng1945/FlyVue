@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>只能上传 300kb 以内的png、jpeg 文件</div>
-    <f-upload name="avatar" action="http://localhost:3000/upload" :fileList.sync="fileList" :parse-response="parseResponse" @error="alertError" :size-limit="10*1024">
+    <f-upload name="avatar" action="http://localhost:3000/upload" :fileList.sync="fileList" :parse-response="parseResponse" @error="alertError" :size-limit="10*1024" multiple>
       <f-button icon="upload">上传</f-button>
     </f-upload>
   </div>

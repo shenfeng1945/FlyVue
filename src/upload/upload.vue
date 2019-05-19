@@ -48,16 +48,20 @@ export default {
     method: { type: String, default: "POST" },
     parseResponse: { type: Function, required: true },
     removeFile: { type: Function },
-    sizeLimit: {type: Number}
+    sizeLimit: { type: Number },
+    multiple: { type: Boolean, default: false },
   },
   components: { "f-icon": Icon },
   methods: {
     onUploadTrigger() {
       let input = this.createInput();
+      this.$refs.files.childNodes.forEach(node => node.remove());
       this.$refs.files.appendChild(input);
-      input.addEventListener("change", () => this.uploadFile(input.files[0]));
+      input.addEventListener("change", () => {
+        this.uploadFiles(Array.from(input.files));
+        input.remove();
+      });
       input.click();
-      input.remove();
     },
     onRemoveFile(name) {
       let findIndex = this.fileList.findIndex(item => item.name === name);
@@ -65,29 +69,35 @@ export default {
       spliceList.splice(findIndex, 1);
       this.$emit("update:fileList", spliceList);
     },
-    uploadFile(pureFile) {
-      let formData = new FormData();
-      let { name, type, size } = pureFile;
-      let newName = this.generateName(name);
-      formData.append(this.name, pureFile);
-      if(!this.beforeUploadFile(pureFile, newName)){return}
-      this.doUploadFile(
-        formData,
-        res => {
-          const imgUrl = this.parseResponse(res);
-          const file = {
-            name: newName,
-            url: imgUrl,
-            type,
-            size,
-            status: "resolve"
-          };
-          this.afterUploadFile(file);
-        },
-        xhr => {
-          this.uploadError(xhr, newName);
-        }
+    uploadFiles(pureFiles) {
+      let newNames = pureFiles.map(pureFile =>
+        this.generateName(pureFile.name)
       );
+      if (!this.beforeUploadFiles(pureFiles, newNames)) {
+        return;
+      }
+      pureFiles.forEach((pureFile, i) => {
+        let formData = new FormData();
+        let { type, size } = pureFile;
+        formData.append(this.name, pureFile);
+        this.doUploadFiles(
+          formData,
+          res => {
+            const imgUrl = this.parseResponse(res);
+            const file = {
+              name: newNames[i],
+              url: imgUrl,
+              type,
+              size,
+              status: "resolve"
+            };
+            this.afterUploadFile(file);
+          },
+          xhr => {
+            this.uploadError(xhr, newNames[i]);
+          }
+        );
+      });
     },
     uploadError(xhr, name) {
       let newFileList = [...this.fileList].map(item => {
@@ -103,23 +113,30 @@ export default {
       this.$emit("update:fileList", newFileList);
       this.$emit("error", error);
     },
-    beforeUploadFile(pureFile, newName) {
-      let { type, size } = pureFile;
-      if(size > this.sizeLimit){
-          let tips = '';
-          if(this.sizeLimit >= 1024 && this.sizeLimit < 1024*1024){
-            tips = (this.sizeLimit/1024).toFixed(1) + 'KB';
-          }else if(this.sizeLimit > 1024*1024){
-            tips = (this.sizeLimit/1024/1024).toFixed(1) + 'M';
-          }else if(this.sizeLimit < 1024){
-            tips = this.sizeLimit + 'B'
+    beforeUploadFiles(pureFiles, newNames) {
+      let result = true;
+      // 生成将要新增数据数组
+      let newFileLists = pureFiles.map((pureFile, i) => ({ name: newNames[i], status: "pending", type: pureFile.type, size: pureFile.size }));
+      // 检测上传文件尺寸限制
+      pureFiles.forEach(pureFile => {
+        let { size } = pureFile;
+        if (size > this.sizeLimit) {
+          let tips = "";
+          if (this.sizeLimit >= 1024 && this.sizeLimit < 1024 * 1024) {
+            tips = (this.sizeLimit / 1024).toFixed(1) + "KB";
+          } else if (this.sizeLimit > 1024 * 1024) {
+            tips = (this.sizeLimit / 1024 / 1024).toFixed(1) + "M";
+          } else if (this.sizeLimit < 1024) {
+            tips = this.sizeLimit + "B";
           }
-        this.$emit('error',`上传文件不得大于${tips}`);
-        return false;
-      }else{
-        this.$emit("update:fileList", [ ...this.fileList, { name: newName, status: "pending", type, size } ]);
-        return true;
+          this.$emit("error", `上传文件不得大于${tips}`);
+          result = false;
+        }
+      });
+      if (result) {
+        this.$emit("update:fileList", this.fileList.concat(newFileLists));
       }
+      return result;
     },
     // 生成新的name
     generateName(name) {
@@ -154,7 +171,7 @@ export default {
       }
       return name;
     },
-    doUploadFile(formData, success, error) {
+    doUploadFiles(formData, success, error) {
       let xhr = new XMLHttpRequest();
       xhr.open(this.method, this.action);
       xhr.onload = () => success(xhr.response);
@@ -164,7 +181,9 @@ export default {
     createInput() {
       let input = document.createElement("input");
       input.type = "file";
-      input.setAttribute("name", "file");
+      input.accept = this.accept;
+      input.multiple = this.multiple;
+      input.setAttribute("name", this.name);
       return input;
     }
   }
