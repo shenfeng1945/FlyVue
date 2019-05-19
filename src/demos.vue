@@ -1,44 +1,75 @@
 <template>
   <div id="app">
-    <div>只能上传 300kb 以内的png、jpeg 文件</div>
-    <f-upload name="avatar" action="http://localhost:3000/upload" :fileList.sync="fileList" :parse-response="parseResponse" @error="alertError" :size-limit="10*1024" multiple>
-      <f-button icon="upload">上传</f-button>
-    </f-upload>
+    <div class="scroll">
+      <p>1</p>
+      <p>2</p>
+      <p>3</p>
+      <p>4</p>
+      <p>5</p>
+      <p>6</p>
+      <p>7</p>
+      <p>8</p>
+      <p>9</p>
+      <p>10</p>
+      <f-sticky>
+        <div style="border: 1px solid red;">
+          这是粘贴的内容
+        </div>
+      </f-sticky>
+      <p>11</p>
+      <p>12</p>
+      <p>13</p>
+      <p>14</p>
+      <p>15</p>
+      <p>16</p>
+      <p>17</p>
+      <p>18</p>
+      <p>19</p>
+      <p>20</p>
+      <p>21</p>
+      <p>22</p>
+      <p>23</p>
+      <p>24</p>
+      <p>25</p>
+      <p>26</p>
+      <p>27</p>
+      <p>28</p>
+      <p>29</p>
+      <p>30</p>
+      <p>31</p>
+      <p>32</p>
+      <p>33</p>
+      <p>34</p>
+      <p>35</p>
+      <p>36</p>
+      <p>37</p>
+      <p>38</p>
+      <p>39</p>
+      <p>40</p>
+      <p>41</p>
+      <p>42</p>
+      <p>43</p>
+      <p>44</p>
+      <p>45</p>
+      <p>46</p>
+      <p>47</p>
+      <p>48</p>
+      <p>49</p>
+      <p>50</p>
+    </div>
   </div>
 </template>
 <script>
-import Nav from "./nav/nav";
-import NavItem from "./nav/nav-item";
-import SubNav from "./nav/sub-nav";
-import Button from "./button/button";
-import Pager from "./pager/pager";
-import Table from "./table/table";
-import Upload from "./upload/upload"
+import Sticky from "./sticky/sticky";
 export default {
   name: "Demos",
   components: {
-    "f-nav": Nav,
-    "f-nav-item": NavItem,
-    "f-sub-nav": SubNav,
-    "f-button": Button,
-    "f-pager": Pager,
-    "f-table": Table,
-    "f-upload": Upload,
+    "f-sticky": Sticky
   },
   data() {
-    return {
-      fileList: []
-    };
+    return {};
   },
-  methods: {
-   parseResponse(res){
-     const id = JSON.parse(res).key;
-     return `http://localhost:3000/preview/${id}`;
-   },
-    alertError(error){
-     alert(error || '上传失败')
-    }
-  }
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>
@@ -47,4 +78,8 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+  .scroll{
+    height: 300px;
+    overflow: auto;
+  }
 </style>
