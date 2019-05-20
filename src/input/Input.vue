@@ -3,6 +3,7 @@
         
        <input type="text" :value="value" :disabled="disabled" 
               :readonly="readonly"
+              :placeholder="placeholder"
               @input="$emit('input',$event.target.value)"
               @focus="$emit('focus',$event.target.value)"
               @blur="$emit('blur',$event.target.value)"
@@ -41,6 +42,9 @@ export default {
         clearable: {
             type: Boolean,
             default: false
+        },
+        placeholder: {
+            type: String,
         }
     },
     components: { 'f-icon': Icon },
