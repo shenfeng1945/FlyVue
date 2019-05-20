@@ -4,8 +4,7 @@
     ref="popover"
   >
     <div
-      class="content-wrapper"
-      :class="[`position-${this.position}`]"
+      :class="[useDefaultStyle ? `position-${this.position} content-wrapper` : '']"
       ref="contentWrapper"
       v-if="visiable"
     >
@@ -40,6 +39,11 @@ export default {
       validator(val) {
         return ["top", "bottom", "left", "right"].indexOf(val) > -1;
       }
+    },
+    // 是否使用popover自带样式
+    useDefaultStyle: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
