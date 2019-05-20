@@ -1,6 +1,6 @@
 <template>
   <div class="f-sticky-wrapper" ref="wrapper" :style="{height}">
-    <div class="f-sticky" :class="classes" :style="{left,width}">
+    <div class="f-sticky" :class="classes" :style="{left,width,top}">
       <slot></slot>
     </div>
   </div>
@@ -9,20 +9,26 @@
 <script>
 export default {
   name: "FlySticky",
+  props: {
+    distance: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       sticky: false,
       width: undefined,
       left: undefined,
-      height: undefined
+      height: undefined,
+      top: undefined
     };
   },
   mounted() {
-    const { top } = this.topAndHeight();
     this.windowScrollHandler = this._windowScrollHandler.bind(this);
     window.addEventListener("scroll", this.windowScrollHandler);
   },
-  beforeDestory() {
+  beforeDestroy() {
     window.removeEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
@@ -31,7 +37,8 @@ export default {
       return { top: top + window.scrollY, height };
     },
     _windowScrollHandler() {
-      if (window.scrollY > top) {
+      const { top } = this.topAndHeight();
+      if (window.scrollY > top - this.distance) {
         const {
           height,
           left,
@@ -40,8 +47,13 @@ export default {
         this.height = height + "px";
         this.left = left + "px";
         this.width = width + "px";
+        this.top = this.distance + 'px';
         this.sticky = true;
       } else {
+        this.height = undefined;
+        this.left = undefined;
+        this.top = undefined;
+        this.width = undefined;
         this.sticky = false;
       }
     }
@@ -60,7 +72,6 @@ export default {
 .f-sticky {
   &.sticky {
     position: fixed;
-    top: 0;
   }
 }
 </style>
