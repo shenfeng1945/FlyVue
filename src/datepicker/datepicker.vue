@@ -1,6 +1,6 @@
 <template>
   <div class="f-date-picker" v-click-outside="onBlurInput">
-    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput"/>
+    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" />
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
@@ -21,15 +21,17 @@
         <div :class="c('content')" v-else-if="mode === 'months'">月</div>
         <div :class="c('content')" v-else>
           <div :class="c('weekdays')">
-            <span v-for="week in weekdays" :key="week">{{week}}</span>
+            <span v-for="week in weekdays" :key="week">{{ week }}</span>
           </div>
-          <div :class="c('row')" v-for="(rowDay,r) in getDays" :key="r">
-            <span :class="c('col')" v-for="(day, i) in rowDay" :key="i">{{day}}</span>
+          <div :class="c('row')" v-for="(rowDay, r) in getDays" :key="r">
+            <span :class="c('cell')" v-for="(day, i) in rowDay" :key="i">{{
+              day
+            }}</span>
           </div>
         </div>
       </div>
       <div :class="c('actions')">
-         <f-button>清除</f-button>
+        <f-button>清除</f-button>
       </div>
     </div>
   </div>
@@ -41,6 +43,7 @@ import Icon from "../icon/Icon";
 import ClickOutSide from "../cascader/cascader-click-outside";
 import helper from "./helper";
 import Button from "../button/button";
+
 export default {
   name: "FlyDatePicker",
   components: {
@@ -58,62 +61,51 @@ export default {
     },
     firstDayOfWeek: {
       type: String,
-      default: '一'
+      default: "一"
     }
   },
   data() {
     return {
       popVisible: false,
-      mode: "days",//months,years
+      mode: "days", //months,years
       weekdays: null
     };
   },
-  created(){
+  created() {
     this.initWeekDays();
   },
   computed: {
     getDays() {
       let date = new Date();
+      let firstDayOfMonth = helper.firstDayOfMonth(date);
       let firstDayInWeek =
-        helper.firstDayOfMonth(date).getDay() === 0
-          ? 6
-          : helper.firstDayOfMonth(date).getDay() - 1;
-      let currentMonthAllDays = helper.lastDayOfMonth(date).getDate();
-      let beforeMonthAllDays = helper.lastDayOfPrevMonth(date).getDate();
-      let prevArray = [];
-      let currentArray = [];
-      let nextArray = [];
-      for (
-        let i = beforeMonthAllDays;
-        i > beforeMonthAllDays - firstDayInWeek;
-        i--
-      ) {
-        prevArray.unshift(i);
+        firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
+      let firstDayOfPanels =
+        firstDayOfMonth - firstDayInWeek * 24 * 3600 * 1000;
+      let panelDaysArray = [];
+      for (let i = 0; i < 42; i++) {
+        panelDaysArray.push(
+          new Date(firstDayOfPanels + i * 24 * 3600 * 1000).getDate()
+        );
       }
-      for (let i = 1; i <= currentMonthAllDays; i++) {
-        currentArray.push(i);
-      }
-      for (let i = 1; i <= 42 - currentMonthAllDays - firstDayInWeek; i++) {
-        nextArray.push(i);
-      }
-      const nativeDays = [...prevArray, ...currentArray, ...nextArray];
-      const cropDays = [0, 1, 2, 3, 4, 5].map(n =>
-        nativeDays.slice(n * 7, n * 7 + 7)
+      return [0, 1, 2, 3, 4, 5].map(n =>
+        panelDaysArray.slice(n * 7, n * 7 + 7)
       );
-      return cropDays;
     }
   },
   methods: {
-    initWeekDays(){
+    initWeekDays() {
       let basicArray = ["一", "二", "三", "四", "五", "六", "日"];
       let index = basicArray.findIndex(item => item === this.firstDayOfWeek);
-      if(index > 0){
-        basicArray = basicArray.slice(index,7).concat(basicArray.splice(0,index));
+      if (index > 0) {
+        basicArray = basicArray
+          .slice(index, 7)
+          .concat(basicArray.splice(0, index));
       }
       this.weekdays = basicArray;
     },
-    c(className){
-       return `f-date-picker-${className}`
+    c(className) {
+      return `f-date-picker-${className}`;
     },
     onClickYear() {
       this.mode = "years";
@@ -137,33 +129,32 @@ export default {
   &-pop {
     position: absolute;
     border: 1px solid red;
-    width: 400px;
+    width: 230px;
     left: 0;
     top: 100%;
     padding: 5px;
   }
-  &-nav{
+  &-nav {
     display: flex;
     justify-content: space-between;
-    svg{
+    svg {
       width: 12px;
       height: 12px;
     }
   }
-  &-content{
-    .f-date-picker-weekdays,.f-date-picker-row{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      > span{
-        width: 14%;
-        display: inline-block;
-        text-align: center;
+  &-content {
+    .f-date-picker-weekdays,
+    .f-date-picker-row {
+      > span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
       }
     }
   }
-  &-actions{
-
+  &-actions {
   }
 }
 </style>
