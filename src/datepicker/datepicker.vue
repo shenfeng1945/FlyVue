@@ -3,27 +3,34 @@
     <f-input type="text" :placeholder="placeholder" @focus="onFocusInput"/>
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
-        <span>
-          <f-icon name="left"></f-icon>
-          <f-icon name="left"></f-icon>
+        <span :class="c('prev')">
+          <f-icon :class="c('prev-year')" name="dleft"></f-icon>
+          <f-icon :class="c('prev-month')" name="left"></f-icon>
         </span>
-        <span @click="onClickYear">2019 年</span>
-        <span @click="onClickMonth">05 月</span>
-        <span>
-          <f-icon name="right"></f-icon>
-          <f-icon name="right"></f-icon>
+        <span :class="c('year-month')">
+          <span @click="onClickYear">2019 年</span>
+          <span @click="onClickMonth">05 月</span>
+        </span>
+        <span :class="c('next')">
+          <f-icon :class="c('next-year')" name="right"></f-icon>
+          <f-icon :class="c('next-month')" name="dright"></f-icon>
         </span>
       </div>
-      <div class="f-date-picker-panels">
-        <div class="f-date-picker-content" v-if="mode === 'years'">年</div>
-        <div class="f-date-picker-content" v-else-if="mode === 'months'">月</div>
-        <div class="f-date-picker-content" v-else>
-          <div v-for="(rowDay,r) in getDays" :key="r">
-            <span v-for="(day, c) in rowDay" :key="c">{{day}}</span>
+      <div :class="c('panels')">
+        <div :class="c('content')" v-if="mode === 'years'">年</div>
+        <div :class="c('content')" v-else-if="mode === 'months'">月</div>
+        <div :class="c('content')" v-else>
+          <div :class="c('weekdays')">
+            <span v-for="week in weekdays" :key="week">{{week}}</span>
+          </div>
+          <div :class="c('row')" v-for="(rowDay,r) in getDays" :key="r">
+            <span :class="c('col')" v-for="(day, i) in rowDay" :key="i">{{day}}</span>
           </div>
         </div>
       </div>
-      <div class="f-date-picker-action"></div>
+      <div :class="c('actions')">
+         <f-button>清除</f-button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,11 +40,13 @@ import Input from "../input/Input";
 import Icon from "../icon/Icon";
 import ClickOutSide from "../cascader/cascader-click-outside";
 import helper from "./helper";
+import Button from "../button/button";
 export default {
   name: "FlyDatePicker",
   components: {
     "f-input": Input,
-    "f-icon": Icon
+    "f-icon": Icon,
+    "f-button": Button
   },
   directives: {
     "click-outside": ClickOutSide
@@ -46,17 +55,24 @@ export default {
     placeholder: {
       type: String,
       default: "请选择日期"
+    },
+    firstDayOfWeek: {
+      type: String,
+      default: '一'
     }
   },
   data() {
     return {
       popVisible: false,
-      mode: "days" //months,years
+      mode: "days",//months,years
+      weekdays: null
     };
+  },
+  created(){
+    this.initWeekDays();
   },
   computed: {
     getDays() {
-      let columns = ["一", "二", "三", "四", "五", "六", "日"];
       let date = new Date();
       let firstDayInWeek =
         helper.firstDayOfMonth(date).getDay() === 0
@@ -88,6 +104,17 @@ export default {
     }
   },
   methods: {
+    initWeekDays(){
+      let basicArray = ["一", "二", "三", "四", "五", "六", "日"];
+      let index = basicArray.findIndex(item => item === this.firstDayOfWeek);
+      if(index > 0){
+        basicArray = basicArray.slice(index,7).concat(basicArray.splice(0,index));
+      }
+      this.weekdays = basicArray;
+    },
+    c(className){
+       return `f-date-picker-${className}`
+    },
     onClickYear() {
       this.mode = "years";
     },
@@ -110,9 +137,33 @@ export default {
   &-pop {
     position: absolute;
     border: 1px solid red;
-    width: 300px;
+    width: 400px;
     left: 0;
     top: 100%;
+    padding: 5px;
+  }
+  &-nav{
+    display: flex;
+    justify-content: space-between;
+    svg{
+      width: 12px;
+      height: 12px;
+    }
+  }
+  &-content{
+    .f-date-picker-weekdays,.f-date-picker-row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > span{
+        width: 14%;
+        display: inline-block;
+        text-align: center;
+      }
+    }
+  }
+  &-actions{
+
   }
 }
 </style>
