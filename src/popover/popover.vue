@@ -40,10 +40,9 @@ export default {
         return ["top", "bottom", "left", "right"].indexOf(val) > -1;
       }
     },
-    // 是否使用popover自带样式
-    useDefaultStyle: {
-      type: Boolean,
-      default: true
+    // popover动态挂载的容器，若不传默认挂载body上
+    container: {
+      type: Element
     }
   },
   data() {
@@ -89,7 +88,7 @@ export default {
     computePosition() {
       const { contentWrapper, triggerWrapper } = this.$refs;
       if (!contentWrapper) return;
-      document.body.appendChild(contentWrapper);
+      (this.container || document.body).appendChild(contentWrapper);
       const {
         width,
         height,
