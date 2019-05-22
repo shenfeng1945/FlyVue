@@ -12,10 +12,11 @@ export default {
   },
   data() {
     return {
-      value: ''
+      value: new Date()
     };
   },
-  methods: {}
+  methods: {
+  }
 };
 </script>
 <style lang="scss" scoped>

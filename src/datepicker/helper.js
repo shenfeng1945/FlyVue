@@ -12,6 +12,18 @@ export default {
       return new Date(year, month , 0)
     },
     getYearMonthDate,
+    addMonth(date,n){
+        const [year,month,day] = getYearMonthDate(date);
+        const copy = new Date(date);
+        copy.setMonth(month + n);
+        return copy
+    },
+    addYear(date,n){
+        const [year] = getYearMonthDate(date);
+        const copy = new Date(date);
+        copy.setFullYear(year + n);
+        return copy
+    }
 }
 
 function getYearMonthDate(date){

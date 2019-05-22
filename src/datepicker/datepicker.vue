@@ -1,19 +1,20 @@
 <template>
   <div class="f-date-picker" v-click-outside="onBlurInput">
-    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" :value="value"/>
+    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" :value="formatDate(value)"/>
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
-          <f-icon :class="c('prev-year')" name="dleft"></f-icon>
-          <f-icon :class="c('prev-month')" name="left"></f-icon>
+          <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon>
+          <f-icon :class="c('prev-month')" @click="onClickPrevMonth" name="left"></f-icon>
         </span>
         <span :class="c('year-month')">
-          <span @click="onClickYear">2019 年</span>
-          <span @click="onClickMonth">05 月</span>
+          <span @click="onClickYear">{{display.year}}年</span>
+          &nbsp;
+          <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span>
         </span>
         <span :class="c('next')">
-          <f-icon :class="c('next-year')" name="right"></f-icon>
-          <f-icon :class="c('next-month')" name="dright"></f-icon>
+          <f-icon :class="c('next-month')" @click="onClickNextMonth" name="right"></f-icon>
+          <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon>
         </span>
       </div>
       <div :class="c('panels')">
@@ -23,7 +24,7 @@
           <div :class="c('weekdays')">
             <span v-for="week in weekdays" :key="week">{{ week }}</span>
           </div>
-          <div :class="c('row')" v-for="(rowDay, r) in getDays" :key="r">
+          <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
             <span :class="[c('cell'),{currentMonth: day.isCurrentMonth}]" v-for="(day, i) in rowDay" :key="i" @click="onClickCell(day.value)">{{day.value.getDate()}}</span>
           </div>
         </div>
@@ -62,32 +63,35 @@ export default {
       default: "一"
     },
     value: {
-      type: String,
+      type: Date,
+      default: () => new Date()
     }
   },
   data() {
+    const [year, month] = helper.getYearMonthDate(this.value);
     return {
       popVisible: false,
       mode: "days", //months,years
       weekdays: null,
+      display: {year,month}
     };
   },
   created() {
     this.initWeekDays();
   },
   computed: {
-    getDays() {
-      let date = new Date();
+    visibleDays() {
+      let date = new Date(this.display.year,this.display.month,1);
       let firstDayOfMonth = helper.firstDayOfMonth(date);
-      let currntMonthAllDays = helper.lastDayOfMonth(date).getDate();
+      let currentMonthAllDays = helper.lastDayOfMonth(date).getDate();
       let firstDayInWeek =
         firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
       let firstDayOfPanels =
         firstDayOfMonth - firstDayInWeek * 24 * 3600 * 1000;
       let panelDaysArray = [];
       for (let i = 0; i < 42; i++) {
-        let isCurrentMonth = false
-        if(i >= firstDayInWeek && i <= currntMonthAllDays + 1){
+        let isCurrentMonth = false;
+        if(i >= firstDayInWeek && i < firstDayInWeek+currentMonthAllDays){
           isCurrentMonth = true
         }
         panelDaysArray.push({
@@ -99,7 +103,7 @@ export default {
       return [0, 1, 2, 3, 4, 5].map(n =>
         panelDaysArray.slice(n * 7, n * 7 + 7)
       );
-    }
+    },
   },
   methods: {
     initWeekDays() {
@@ -128,15 +132,41 @@ export default {
       this.popVisible = false;
     },
     onClickCell(day){
-      this.$emit('input', this.formatDate(day))
-      this.popVisible = false;
+      this.$emit('input', day);
+      const [year,month] = helper.getYearMonthDate(day);
+      this.display = {year,month};
+      // this.popVisible = false;
     },
     formatDate(date){
       let [year,month,day] = helper.getYearMonthDate(date);
       month = String(month + 1).padStart(2, '0');
       day = String(day).padStart(2, '0');
       return `${year}-${month}-${day}`
-    }
+    },
+    onClickPrevMonth(){
+        const oldDate = new Date(this.display.year,this.display.month);
+        const newDate = helper.addMonth(oldDate, -1);
+        const [year,month] = helper.getYearMonthDate(newDate);
+        this.display = {year,month}
+    },
+    onClickPrevYear(){
+      const oldDate = new Date(this.display.year,this.display.month);
+      const newDate = helper.addYear(oldDate, -1);
+      const [year,month] = helper.getYearMonthDate(newDate);
+      this.display = {year,month}
+    },
+    onClickNextMonth(){
+      const oldDate = new Date(this.display.year,this.display.month);
+      const newDate = helper.addMonth(oldDate, 1);
+      const [year,month] = helper.getYearMonthDate(newDate);
+      this.display = {year,month}
+    },
+    onClickNextYear(){
+      const oldDate = new Date(this.display.year,this.display.month);
+      const newDate = helper.addYear(oldDate, 1);
+      const [year,month] = helper.getYearMonthDate(newDate);
+      this.display = {year,month}
+    },
   },
 };
 </script>
@@ -144,6 +174,7 @@ export default {
 <style scoped lang="scss">
 .f-date-picker {
   position: relative;
+  user-select: none;
   &-pop {
     position: absolute;
     border: 1px solid red;
@@ -159,6 +190,12 @@ export default {
       width: 12px;
       height: 12px;
     }
+  }
+    &-prev-month{
+      margin-left: 1em;
+    }
+  &-next-month{
+    margin-right: 1em;
   }
   &-content {
     .f-date-picker-weekdays{

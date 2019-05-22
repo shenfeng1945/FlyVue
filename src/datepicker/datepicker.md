@@ -25,3 +25,6 @@
 
 #### 样式跨越组件限制
 /deep/ .xxx{color: red;}
+
+#### value 与display
+选中的日期和展示的日期列表应区分开
