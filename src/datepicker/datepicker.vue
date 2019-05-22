@@ -1,6 +1,6 @@
 <template>
   <div class="f-date-picker" v-click-outside="onBlurInput">
-    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" />
+    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" :value="value"/>
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
@@ -24,9 +24,7 @@
             <span v-for="week in weekdays" :key="week">{{ week }}</span>
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in getDays" :key="r">
-            <span :class="c('cell')" v-for="(day, i) in rowDay" :key="i">{{
-              day
-            }}</span>
+            <span :class="[c('cell'),{currentMonth: day.isCurrentMonth}]" v-for="(day, i) in rowDay" :key="i" @click="onClickCell(day.value)">{{day.value.getDate()}}</span>
           </div>
         </div>
       </div>
@@ -62,13 +60,16 @@ export default {
     firstDayOfWeek: {
       type: String,
       default: "一"
+    },
+    value: {
+      type: String,
     }
   },
   data() {
     return {
       popVisible: false,
       mode: "days", //months,years
-      weekdays: null
+      weekdays: null,
     };
   },
   created() {
@@ -78,16 +79,23 @@ export default {
     getDays() {
       let date = new Date();
       let firstDayOfMonth = helper.firstDayOfMonth(date);
+      let currntMonthAllDays = helper.lastDayOfMonth(date).getDate();
       let firstDayInWeek =
         firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
       let firstDayOfPanels =
         firstDayOfMonth - firstDayInWeek * 24 * 3600 * 1000;
       let panelDaysArray = [];
       for (let i = 0; i < 42; i++) {
-        panelDaysArray.push(
-          new Date(firstDayOfPanels + i * 24 * 3600 * 1000).getDate()
-        );
+        let isCurrentMonth = false
+        if(i >= firstDayInWeek && i <= currntMonthAllDays + 1){
+          isCurrentMonth = true
+        }
+        panelDaysArray.push({
+            value: new Date(firstDayOfPanels + i * 24 * 3600 * 1000),
+            isCurrentMonth
+          });
       }
+      // [[new Date(),new Date()],[new Date()]...]
       return [0, 1, 2, 3, 4, 5].map(n =>
         panelDaysArray.slice(n * 7, n * 7 + 7)
       );
@@ -118,8 +126,18 @@ export default {
     },
     onBlurInput() {
       this.popVisible = false;
+    },
+    onClickCell(day){
+      this.$emit('input', this.formatDate(day))
+      this.popVisible = false;
+    },
+    formatDate(date){
+      let [year,month,day] = helper.getYearMonthDate(date);
+      month = String(month + 1).padStart(2, '0');
+      day = String(day).padStart(2, '0');
+      return `${year}-${month}-${day}`
     }
-  }
+  },
 };
 </script>
 
@@ -143,14 +161,31 @@ export default {
     }
   }
   &-content {
-    .f-date-picker-weekdays,
+    .f-date-picker-weekdays{
+      > span{
+         display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
+      }
+    }
     .f-date-picker-row {
-      > span {
+      > .f-date-picker-cell {
         display: inline-flex;
         justify-content: center;
         align-items: center;
         width: 32px;
         height: 32px;
+        color: rgba(92,112,128,.5);
+        cursor: pointer;
+        &:hover{
+          background: #d8e1e8;
+          color: #182026;
+        }
+        &.currentMonth{
+          color: #182026;
+        }
       }
     }
   }

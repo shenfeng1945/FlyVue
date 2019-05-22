@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <f-date-picker />
+    <f-date-picker :value="value" @input="value = $event"/>
   </div>
 </template>
 <script>
@@ -11,7 +11,9 @@ export default {
     "f-date-picker": DatePicker
   },
   data() {
-    return {};
+    return {
+      value: ''
+    };
   },
   methods: {}
 };
