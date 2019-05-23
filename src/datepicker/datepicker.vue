@@ -25,12 +25,13 @@
             <span v-for="week in weekdays" :key="week">{{ week }}</span>
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
-            <span :class="[c('cell'),{currentMonth: day.isCurrentMonth}]" v-for="(day, i) in rowDay" :key="i" @click="onClickCell(day.value)">{{day.value.getDate()}}</span>
+            <span :class="[c('cell'),{currentMonth: day.isCurrentMonth, selected: isSelected(day.value)}]" v-for="(day, i) in rowDay" :key="i" @click="onClickCell(day.value)">{{day.value.getDate()}}</span>
           </div>
         </div>
       </div>
       <div :class="c('actions')">
-        <f-button>清除</f-button>
+        <f-button @click="onClickToday">今天</f-button>
+        <f-button @click="onClickClear">清除</f-button>
       </div>
     </div>
   </div>
@@ -167,6 +168,20 @@ export default {
       const [year,month] = helper.getYearMonthDate(newDate);
       this.display = {year,month}
     },
+    isSelected(data){
+      const [y,m,d] = helper.getYearMonthDate(data);
+      const [y1,m1,d1] = helper.getYearMonthDate(this.value);
+      return y === y1 && m === m1 && d === d1;
+    },
+    onClickToday(){
+      const date = new Date();
+      const [year, month, day] = helper.getYearMonthDate(date);
+      this.display = {year, month};
+      this.$emit('input', new Date(year, month, day));
+    },
+    onClickClear(){
+      this.$emit('input', null);
+    }
   },
 };
 </script>
@@ -222,6 +237,9 @@ export default {
         }
         &.currentMonth{
           color: #182026;
+        }
+        &.selected{
+          outline: 1px solid red;
         }
       }
     }
