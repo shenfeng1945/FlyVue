@@ -4,6 +4,7 @@
        <input type="text" :value="value" :disabled="disabled" 
               :readonly="readonly"
               :placeholder="placeholder"
+              ref="input"
               @input="$emit('input',$event.target.value)"
               @focus="$emit('focus',$event.target.value)"
               @blur="$emit('blur',$event.target.value)"
@@ -57,6 +58,9 @@ export default {
         clearValue(){
             this.$emit('input','')
             this.$emit('change','')
+        },
+        setNativeValue(value){
+           this.$refs.input.value = value
         }
     }
    

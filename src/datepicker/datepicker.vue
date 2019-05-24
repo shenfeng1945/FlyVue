@@ -1,6 +1,14 @@
 <template>
   <div class="f-date-picker" v-click-outside="onBlurInput">
-    <f-input type="text" :placeholder="placeholder" @focus="onFocusInput" :value="formatDate(value)"/>
+    <f-input
+      ref="fInput"
+      type="text"
+      :placeholder="placeholder"
+      @focus="onFocusInput"
+      :value="formatDate(value)"
+      @input="onInput"
+      @change="onChange"
+    />
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
@@ -25,13 +33,17 @@
             <span v-for="week in weekdays" :key="week">{{ week }}</span>
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
-            <span :class="[c('cell'),{currentMonth: day.isCurrentMonth, selected: isSelected(day.value)}]" v-for="(day, i) in rowDay" :key="i" @click="onClickCell(day.value)">{{day.value.getDate()}}</span>
+            <span
+              :class="[c('cell'),{currentMonth: day.isCurrentMonth, selected: isSelected(day.value)}]"
+              v-for="(day, i) in rowDay"
+              :key="i"
+              @click="onClickCell(day.value)"
+            >{{day.value.getDate()}}</span>
           </div>
         </div>
       </div>
       <div :class="c('actions')">
         <f-button @click="onClickToday">今天</f-button>
-        <f-button @click="onClickClear">清除</f-button>
       </div>
     </div>
   </div>
@@ -74,7 +86,7 @@ export default {
       popVisible: false,
       mode: "days", //months,years
       weekdays: null,
-      display: {year,month}
+      display: { year, month }
     };
   },
   created() {
@@ -82,7 +94,7 @@ export default {
   },
   computed: {
     visibleDays() {
-      let date = new Date(this.display.year,this.display.month,1);
+      let date = new Date(this.display.year, this.display.month, 1);
       let firstDayOfMonth = helper.firstDayOfMonth(date);
       let currentMonthAllDays = helper.lastDayOfMonth(date).getDate();
       let firstDayInWeek =
@@ -92,19 +104,19 @@ export default {
       let panelDaysArray = [];
       for (let i = 0; i < 42; i++) {
         let isCurrentMonth = false;
-        if(i >= firstDayInWeek && i < firstDayInWeek+currentMonthAllDays){
-          isCurrentMonth = true
+        if (i >= firstDayInWeek && i < firstDayInWeek + currentMonthAllDays) {
+          isCurrentMonth = true;
         }
         panelDaysArray.push({
-            value: new Date(firstDayOfPanels + i * 24 * 3600 * 1000),
-            isCurrentMonth
-          });
+          value: new Date(firstDayOfPanels + i * 24 * 3600 * 1000),
+          isCurrentMonth
+        });
       }
       // [[new Date(),new Date()],[new Date()]...]
       return [0, 1, 2, 3, 4, 5].map(n =>
         panelDaysArray.slice(n * 7, n * 7 + 7)
       );
-    },
+    }
   },
   methods: {
     initWeekDays() {
@@ -132,57 +144,76 @@ export default {
     onBlurInput() {
       this.popVisible = false;
     },
-    onClickCell(day){
-      this.$emit('input', day);
-      const [year,month] = helper.getYearMonthDate(day);
-      this.display = {year,month};
+    onClickCell(day) {
+      this.$emit("input", day);
+      const [year, month] = helper.getYearMonthDate(day);
+      this.display = { year, month };
       // this.popVisible = false;
     },
-    formatDate(date){
-      let [year,month,day] = helper.getYearMonthDate(date);
-      month = String(month + 1).padStart(2, '0');
-      day = String(day).padStart(2, '0');
-      return `${year}-${month}-${day}`
+    formatDate(date) {
+      let [year, month, day] = helper.getYearMonthDate(date);
+      month = String(month + 1).padStart(2, "0");
+      day = String(day).padStart(2, "0");
+      return `${year}-${month}-${day}`;
     },
-    onClickPrevMonth(){
-        const oldDate = new Date(this.display.year,this.display.month);
-        const newDate = helper.addMonth(oldDate, -1);
-        const [year,month] = helper.getYearMonthDate(newDate);
-        this.display = {year,month}
+    onClickPrevMonth() {
+      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDate = new Date(this.display.year, this.display.month, oldDay);
+      const newDate = helper.addMonth(oldDate, -1);
+      const [year, month] = helper.getYearMonthDate(newDate);
+      this.display = { year, month };
+      this.$emit("input", newDate);
     },
-    onClickPrevYear(){
-      const oldDate = new Date(this.display.year,this.display.month);
+    onClickPrevYear() {
+      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addYear(oldDate, -1);
-      const [year,month] = helper.getYearMonthDate(newDate);
-      this.display = {year,month}
+      const [year, month] = helper.getYearMonthDate(newDate);
+      this.display = { year, month };
+      this.$emit("input", newDate);
     },
-    onClickNextMonth(){
-      const oldDate = new Date(this.display.year,this.display.month);
+    onClickNextMonth() {
+      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addMonth(oldDate, 1);
-      const [year,month] = helper.getYearMonthDate(newDate);
-      this.display = {year,month}
+      const [year, month] = helper.getYearMonthDate(newDate);
+      this.display = { year, month };
+      this.$emit("input", newDate);
     },
-    onClickNextYear(){
-      const oldDate = new Date(this.display.year,this.display.month);
+    onClickNextYear() {
+      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addYear(oldDate, 1);
-      const [year,month] = helper.getYearMonthDate(newDate);
-      this.display = {year,month}
+      const [year, month] = helper.getYearMonthDate(newDate);
+      this.display = { year, month };
+      this.$emit("input", newDate);
     },
-    isSelected(data){
-      const [y,m,d] = helper.getYearMonthDate(data);
-      const [y1,m1,d1] = helper.getYearMonthDate(this.value);
+    isSelected(data) {
+      const [y, m, d] = helper.getYearMonthDate(data);
+      const [y1, m1, d1] = helper.getYearMonthDate(this.value);
       return y === y1 && m === m1 && d === d1;
     },
-    onClickToday(){
+    onClickToday() {
       const date = new Date();
       const [year, month, day] = helper.getYearMonthDate(date);
-      this.display = {year, month};
-      this.$emit('input', new Date(year, month, day));
+      this.display = { year, month };
+      this.$emit("input", new Date(year, month, day));
     },
-    onClickClear(){
-      this.$emit('input', null);
+    onInput(value) {
+      const reg = /^\d{4}-\d{2}-\d{2}$/g;
+      if (reg.test(value)) {
+        const [year, month, day] = value.split("-");
+        this.$emit("input", new Date(year, +month - 1, day));
+        this.display = { year: +year, month: +month - 1 };
+      }
+    },
+    onChange(value) {
+      const reg = /^\d{4}-\d{2}-\d{2}$/g;
+      if (!reg.test(value)) {
+        this.$refs.fInput.setNativeValue(this.formatDate(this.value));
+      }
     }
-  },
+  }
 };
 </script>
 
@@ -206,16 +237,16 @@ export default {
       height: 12px;
     }
   }
-    &-prev-month{
-      margin-left: 1em;
-    }
-  &-next-month{
+  &-prev-month {
+    margin-left: 1em;
+  }
+  &-next-month {
     margin-right: 1em;
   }
   &-content {
-    .f-date-picker-weekdays{
-      > span{
-         display: inline-flex;
+    .f-date-picker-weekdays {
+      > span {
+        display: inline-flex;
         justify-content: center;
         align-items: center;
         width: 32px;
@@ -229,16 +260,16 @@ export default {
         align-items: center;
         width: 32px;
         height: 32px;
-        color: rgba(92,112,128,.5);
+        color: rgba(92, 112, 128, 0.5);
         cursor: pointer;
-        &:hover{
+        &:hover {
           background: #d8e1e8;
           color: #182026;
         }
-        &.currentMonth{
+        &.currentMonth {
           color: #182026;
         }
-        &.selected{
+        &.selected {
           outline: 1px solid red;
         }
       }

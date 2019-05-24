@@ -28,3 +28,6 @@
 
 #### value 与display
 选中的日期和展示的日期列表应区分开
+
+#### 修改input输入框时，日历的时间如何动态修改。若输入值不符合规范，如何还原值。
+value修改合理值时, 组件监听的input会修改datepicker组件的value值，但value修改为不合理值时，datepicker组件的value不会修改，只能对内部的input组件,加上一个可以修改原生input的值的函数。
