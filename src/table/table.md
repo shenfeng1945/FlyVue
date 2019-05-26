@@ -20,3 +20,17 @@
   }
 </script>
 ```
+
+#### table使用自定义标签
+ ```js
+ 获取一个子组件里的内容: 当前组件里通过$slots.default获取到vnodes列表
+<vnodes :vnodes="virtual dom"></vnodes>
+
+
+components: {
+    'vnodes': {
+        functional: true,
+        render: (h, context) => context.props.vnodes
+    }
+}
+```

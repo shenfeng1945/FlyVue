@@ -53,7 +53,14 @@
                 <td
                   :style="{width: column.width + 'px'}"
                   :key="column.field"
-                >{{ item[column.field] }}</td>
+                >
+                  <template v-if="column.render">
+                      <vnodes :vnodes="column.render(item[column.field])"></vnodes>
+                  </template>
+                    <template v-else>
+                      {{ item[column.field] }}
+                    </template>
+                </td>
               </template>
               <td v-if="$scopedSlots.default">
                 <div ref="actions" style="display:inline-block;">
@@ -80,10 +87,10 @@ import Icon from "../icon/Icon";
 export default {
   name: "FlyTable",
   props: {
-    columns: {
-      type: Array,
-      required: true
-    },
+    // columns: {
+    //   type: Array,
+    //   required: true
+    // },
     dataSource: {
       type: Array,
       required: true,
@@ -135,11 +142,16 @@ export default {
     }
   },
   components: {
-    "f-icon": Icon
+    "f-icon": Icon,
+    "vnodes": {
+      functional: true,
+      render: (h, context) => context.props.vnodes
+    }
   },
   data(){
     return {
       expandedIds: [],
+        columns: []
     }
   },
   methods: {
@@ -231,6 +243,11 @@ export default {
     }
   },
   mounted() {
+    this.columns = this.$slots.default.map(node => {
+      const {text, field , width}  = node.componentOptions.propsData;
+      const render = node.data.scopedSlots && node.data.scopedSlots.default;
+      return {text, field, width ,render}
+    });
     let cloneTable = this.$refs.table.cloneNode(false);
     cloneTable.classList.add("f-table-copy");
     let tHead = this.$refs.table.children[0];
@@ -240,7 +257,7 @@ export default {
     cloneTable.appendChild(tHead);
     this.$refs.wrapper.appendChild(cloneTable);
     
-    this.setActionsWidth();
+    this.$scopedSlots.default && this.setActionsWidth();
   },
   watch: {
     selectedItems() {
