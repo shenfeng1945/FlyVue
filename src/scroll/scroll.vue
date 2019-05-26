@@ -6,7 +6,7 @@
         <div class="f-scroll-track" v-show="scrollBarVisible">
                 <div class="f-scroll-bar" ref="scrollBar"
                      @mousedown="onMouseDownScrollBar"
-                     :style="{transform: `translateY(${barTranslateY})`}"
+                     :style="{transform: `translateY(${barTranslateY}px)`}"
                 >
                     <div class="f-scroll-bar-inner"></div>
                 </div>
@@ -22,21 +22,28 @@
               scrollBarVisible: true,
                 contentTranslateY: 0,
                 barTranslateY: 0,
+                barStartTranslateY: 0,
                 mouseStartPositionBarX: undefined,
-                mouseStartPositionBarY: undefined,
+                mouseStartPositionBarY: 0,
                 mouseChangePositionBarX: undefined,
                 mouseChangePositionBarY: undefined,
+                scrollBarMousing: false,
+                parentHeight: undefined,
+                childHeight: undefined,
 
             }
         },
         mounted() {
+            this.listenDocument();
             let parent = this.$refs.parent;
             let child = this.$refs.child;
-            let translateY = 0;
             let {height: parentHeight} = parent.getBoundingClientRect();
+            this.parentHeight = parentHeight;
             let {height: childHeight} = child.getBoundingClientRect();
+            this.childHeight = childHeight;
             parent.addEventListener('wheel', e => {
                 let { deltaY } = e;
+                let translateY = this.contentTranslateY;
                 let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(parent);
                 let maxTranslateY = childHeight - parentHeight + (parseInt(borderTopWidth) + parseInt(borderBottomWidth) + parseInt(paddingTop) + parseInt(paddingBottom));
                 translateY -= deltaY;
@@ -53,23 +60,41 @@
         methods: {
             listenDocument(){
                 document.addEventListener('mousemove', e => {
-                    this.mouseChangePositionBarX = e.clientX - this.mouseStartPositionBarX;
-                    this.mouseChangePositionBarY = e.clientY - this.mouseStartPositionBarY;
+                    if(!this.scrollBarMousing){return}
+                    let changeBarTranslateY = e.clientY - this.mouseStartPositionBarY;
+                    let barTranslateY = this.barStartTranslateY + changeBarTranslateY;
+                    let maxBarTranslateY = this.parentHeight - this.$refs.scrollBar.getBoundingClientRect().height;
+                    if(barTranslateY < 0){
+                        this.barTranslateY = 0
+                    }else if(barTranslateY > maxBarTranslateY){
+                        this.barTranslateY = maxBarTranslateY;
+                    }else{
+                        this.barTranslateY = barTranslateY;
+                    }
+                    this.contentTranslateY = -this.barTranslateY * this.childHeight / this.parentHeight
                 });
                 document.addEventListener('mouseup', e => {
+                    this.scrollBarMousing = false;
                     this.mouseStartPositionBarX = e.clientX;
                     this.mouseStartPositionBarY = e.clientY;
+                    this.barStartTranslateY = this.barTranslateY;
+                });
+                document.addEventListener('selectstart', e => {
+                    if(this.scrollBarMousing){
+                        e.preventDefault()
+                    }
                 })
             },
             onMouseDownScrollBar(e){
+                this.scrollBarMousing = true;
                 this.mouseStartPositionBarX = e.clientX;
                 this.mouseStartPositionBarY = e.clientY;
             },
             updateScrollBar(parentHeight,childHeight){
                 let barHeight = parentHeight * parentHeight / childHeight;
-                let scrollHeight = this.contentTranslateY ? (parentHeight * this.contentTranslateY/ childHeight) : 0;
+                this.barStartTranslateY = this.contentTranslateY ? (-parentHeight * this.contentTranslateY/ childHeight) : 0;
                 this.$refs.scrollBar.style.height = barHeight + 'px';
-                this.$refs.scrollBar.style.transform = `translateY(${-scrollHeight}px)`
+                this.barTranslateY = this.barStartTranslateY;
             },
             onMouseEnter(){
                 // this.scrollBarVisible = true;
