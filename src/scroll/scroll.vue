@@ -101,7 +101,6 @@
 
 <style scoped lang="scss">
     .f-scroll{
-        border: 1px solid red;
         overflow: hidden;
         position: relative;
         &-inner{ transition: transform 0.05s ease; }

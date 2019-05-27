@@ -1,6 +1,6 @@
 <template>
   <div class="f-table-wrapper" ref="wrapper">
-    <div :style="{height: height + 'px',overflow: 'auto'}" ref="tableWrapper">
+    <f-scroll :style="{height, marginTop: scrollMarginTop }">
       <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
         <thead class="f-table-thead">
           <tr>
@@ -74,7 +74,7 @@
           </template>
         </tbody>
       </table>
-    </div>
+    </f-scroll>
     <div class="f-table-loading" v-if="loading">
       <f-icon name="loading"></f-icon>
     </div>
@@ -83,6 +83,7 @@
 
 <script>
 import Icon from "../icon/Icon";
+import Scroll from "../scroll/scroll";
 
 export default {
   name: "FlyTable",
@@ -146,12 +147,14 @@ export default {
     "vnodes": {
       functional: true,
       render: (h, context) => context.props.vnodes
-    }
+    },
+    "f-scroll": Scroll,
   },
   data(){
     return {
       expandedIds: [],
-        columns: []
+        columns: [],
+        scrollMarginTop: undefined
     }
   },
   methods: {
@@ -252,7 +255,8 @@ export default {
     cloneTable.classList.add("f-table-copy");
     let tHead = this.$refs.table.children[0];
     let { height } = tHead.getBoundingClientRect();
-    this.$refs.tableWrapper.style.marginTop = height + "px";
+    // this.$refs.tableWrapper.style.marginTop = height + "px";
+    this.scrollMarginTop = height + 'px';
     cloneTable.style.marginTop = `-${height}px`;
     cloneTable.appendChild(tHead);
     this.$refs.wrapper.appendChild(cloneTable);

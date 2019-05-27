@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
     <f-date-picker :value="value" @input="value = $event" />
-    <f-table  :data-source="dataSource">
+    <f-table  :data-source="dataSource" :height="300" :striped="true" :bordered="true">
       <template slot-scope="data">
         <button>编辑</button>
         <button>查看</button>
@@ -149,6 +149,14 @@ export default {
         { id: 8, name: "kobe", score: 99 },
         { id: 9, name: "allen", score: 95 },
         { id: 10, name: "curry", score: 100 },
+        { id: 11, name: "kobe", score: 99 },
+        { id: 12, name: "allen", score: 95 },
+        { id: 13, name: "allen", score: 95 },
+        { id: 14, name: "curry", score: 100 },
+        { id: 15, name: "james", score: 80 },
+        { id: 16, name: "kobe", score: 99 },
+        { id: 17, name: "allen", score: 95 },
+        { id: 18, name: "curry", score: 100 },
       ]
     };
   },
