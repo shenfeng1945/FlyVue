@@ -1,5 +1,5 @@
 <template>
-    <div class="f-scroll" ref="parent" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
+    <div class="f-scroll" ref="parent" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" @mousewheel="onMouseWheel">
         <div ref="child" class="f-scroll-inner" :style="{transform: `translateY(${contentTranslateY}px)`}">
             <slot></slot>
         </div>
@@ -19,43 +19,21 @@
         name: 'FlyScroll',
         data(){
             return {
-              scrollBarVisible: true,
+                scrollBarVisible: true,
                 contentTranslateY: 0,
                 barTranslateY: 0,
                 barStartTranslateY: 0,
-                mouseStartPositionBarX: undefined,
                 mouseStartPositionBarY: 0,
-                mouseChangePositionBarX: undefined,
-                mouseChangePositionBarY: undefined,
                 scrollBarMousing: false,
                 parentHeight: undefined,
                 childHeight: undefined,
-
             }
         },
         mounted() {
             this.listenDocument();
-            let parent = this.$refs.parent;
-            let child = this.$refs.child;
-            let {height: parentHeight} = parent.getBoundingClientRect();
-            this.parentHeight = parentHeight;
-            let {height: childHeight} = child.getBoundingClientRect();
-            this.childHeight = childHeight;
-            parent.addEventListener('wheel', e => {
-                let { deltaY } = e;
-                let translateY = this.contentTranslateY;
-                let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(parent);
-                let maxTranslateY = childHeight - parentHeight + (parseInt(borderTopWidth) + parseInt(borderBottomWidth) + parseInt(paddingTop) + parseInt(paddingBottom));
-                translateY -= deltaY;
-                if(translateY > 0){
-                    translateY = 0
-                }else if(translateY < -maxTranslateY){
-                    translateY = -maxTranslateY;
-                }
-                this.contentTranslateY = translateY;
-                this.updateScrollBar(parentHeight,childHeight)
-            });
-            this.updateScrollBar(parentHeight,childHeight)
+            this.parentHeight = this.$refs.parent.getBoundingClientRect().height;
+            this.childHeight = this.$refs.child.getBoundingClientRect().height;
+            this.updateScrollBar();
         },
         methods: {
             listenDocument(){
@@ -75,7 +53,6 @@
                 });
                 document.addEventListener('mouseup', e => {
                     this.scrollBarMousing = false;
-                    this.mouseStartPositionBarX = e.clientX;
                     this.mouseStartPositionBarY = e.clientY;
                     this.barStartTranslateY = this.barTranslateY;
                 });
@@ -85,22 +62,38 @@
                     }
                 })
             },
+            onMouseWheel(e){
+                let { deltaY } = e;
+                let translateY = this.contentTranslateY;
+                let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(this.$refs.parent);
+                let maxTranslateY = this.childHeight - this.parentHeight + (parseInt(borderTopWidth) + parseInt(borderBottomWidth) + parseInt(paddingTop) + parseInt(paddingBottom));
+                translateY -= deltaY;
+                if(translateY > 0){
+                    translateY = 0
+                }else if(translateY < -maxTranslateY){
+                    translateY = -maxTranslateY;
+                }
+                this.contentTranslateY = translateY;
+                this.updateScrollBar()
+            },
             onMouseDownScrollBar(e){
                 this.scrollBarMousing = true;
-                this.mouseStartPositionBarX = e.clientX;
                 this.mouseStartPositionBarY = e.clientY;
             },
-            updateScrollBar(parentHeight,childHeight){
+            updateScrollBar(){
+                const {parentHeight,childHeight, contentTranslateY} = this;
                 let barHeight = parentHeight * parentHeight / childHeight;
-                this.barStartTranslateY = this.contentTranslateY ? (-parentHeight * this.contentTranslateY/ childHeight) : 0;
+                this.barStartTranslateY = contentTranslateY ? (-parentHeight * contentTranslateY/ childHeight) : 0;
                 this.$refs.scrollBar.style.height = barHeight + 'px';
                 this.barTranslateY = this.barStartTranslateY;
             },
             onMouseEnter(){
-                // this.scrollBarVisible = true;
+                this.scrollBarVisible = true;
             },
             onMouseLeave(){
-                // this.scrollBarVisible = false;
+                if(!this.scrollBarMousing){
+                   this.scrollBarVisible = false;
+                }
             }
         }
     }
@@ -113,7 +106,7 @@
         position: relative;
         &-inner{ transition: transform 0.05s ease; }
         &-track{ position: absolute; top: 0;right: 0; height: 100%; width: 14px; border-left: 1px solid #e8e7e8; background: #fafafa; opacity: 0.9; }
-        &-bar{ position: absolute; top: -1px; left: 50%; height: 40px; width: 8px; margin-left: -4px; padding: 4px 0; }
+        &-bar{ position: absolute;box-sizing: border-box; top: -1px; left: 50%; height: 40px; width: 8px; margin-left: -4px; padding: 4px 0; }
         &-bar-inner{ height: 100%; border-radius: 4px; background: #c2c2c2; &:hover{background: #7d7d7d} }
     }
 </style>
