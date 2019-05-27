@@ -30,7 +30,7 @@ describe('Button', () => {
         expect(useElements.length).to.equal(1)
         expect(useElements[0].getAttribute('xlink:href')).to.equal('#i-loading')
     })
-    xit('icon 默认的 order 是 1', () => {
+    it('icon 默认的 order 是 1', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
         const Constructor = Vue.extend(Button)
@@ -44,7 +44,7 @@ describe('Button', () => {
         vm.$el.remove()
         vm.$destroy()
     })
-    xit('设置 iconPosition 可以改变 order', () => {
+    it('设置 iconPosition 可以改变 order', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
         const Constructor = Vue.extend(Button)

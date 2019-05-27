@@ -4,7 +4,7 @@
     ref="popover"
   >
     <div
-      :class="[useDefaultStyle ? `position-${this.position} content-wrapper` : '']"
+      :class="[`position-${this.position} content-wrapper`]"
       ref="contentWrapper"
       v-if="visiable"
     >
@@ -89,6 +89,7 @@ export default {
       const { contentWrapper, triggerWrapper } = this.$refs;
       if (!contentWrapper) return;
       (this.container || document.body).appendChild(contentWrapper);
+      document.body.appendChild(contentWrapper);
       const {
         width,
         height,

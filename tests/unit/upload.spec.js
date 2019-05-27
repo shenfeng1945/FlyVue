@@ -7,6 +7,6 @@ chai.use(sinonChai);
 
 describe('Upload.vue', () => {
     it('upload 存在', () => {
-        expect(Upload).to.exist();
+        expect(Upload).to.be.ok
     })
 });

@@ -11,7 +11,7 @@ describe('Row', () => {
     it('存在.', () => {
         expect(Row).to.be.ok
     })
-    xit('接受 gutter 属性', (done) => {
+    it('接受 gutter 属性', (done) => {
         // 默认代码是同步的，只要加了done，才表示可为异步。异步代码结束后，调用done表示异步执行完了
         Vue.component('f-row',Row)
         Vue.component('f-col',Col)
@@ -38,7 +38,7 @@ describe('Row', () => {
             vm.$destroy()
         })
     })
-    xit('接受 align 属性', () => {
+    it('接受 align 属性', () => {
       const wrapper = mount(Row,{
           propsData: {
               align: 'right'
