@@ -1,6 +1,6 @@
 <template>
   <div class="f-table-wrapper" ref="wrapper">
-    <f-scroll :style="{height, marginTop: scrollMarginTop }">
+    <f-scroll :style="{height: height + 'px', marginTop: scrollMarginTop, overflow: 'hidden' }">
       <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
         <thead class="f-table-thead">
           <tr>

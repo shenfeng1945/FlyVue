@@ -92,7 +92,7 @@
             },
             onMouseLeave(){
                 if(!this.scrollBarMousing){
-                   this.scrollBarVisible = false;
+                //    this.scrollBarVisible = false;
                 }
             }
         }

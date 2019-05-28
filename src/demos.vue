@@ -14,7 +14,7 @@
         <f-table-column text="分数" field="score">
         </f-table-column>
     </f-table>
-    <f-scroll style="width: 400px;height: 400px;">
+    <!-- <f-scroll style="width: 400px;height: 400px;">
       <p>1</p>
       <p>2</p>
       <p>3</p>
@@ -115,7 +115,12 @@
       <p>98</p>
       <p>99</p>
       <p>100</p>
-    </f-scroll>
+    </f-scroll> -->
+    <f-row gutter="20">
+      <f-col span="8" :ipad="{span: 12}">hello</f-col>
+      <f-col span="8" :ipad="{span: 12}">wolrd</f-col>
+      <f-col span="8">wolrd</f-col>
+    </f-row>
   </div>
 </template>
 <script>
@@ -123,13 +128,17 @@ import DatePicker from "./datepicker/datepicker";
 import Table from "./table/table";
 import TableColumn from "./table/table-column";
 import Scroll from "./scroll/scroll";
+import Row from "./grid/row";
+import Col from "./grid/col";
 export default {
   name: "Demos",
   components: {
     "f-date-picker": DatePicker,
     "f-table": Table,
     "f-table-column": TableColumn,
-    "f-scroll": Scroll
+    "f-scroll": Scroll,
+    "f-row": Row,
+    "f-col": Col
   },
   data() {
     return {
