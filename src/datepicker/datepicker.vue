@@ -228,6 +228,7 @@ export default {
     left: 0;
     top: 100%;
     padding: 5px;
+    background: white;
   }
   &-nav {
     display: flex;
