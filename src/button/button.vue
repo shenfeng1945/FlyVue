@@ -2,18 +2,18 @@
   <button
     class="f-button"
     :type="type"
-    :class="[iconPosition && `icon-${iconPosition}`, `${intent}`, circle && `circle`, loading && `is-loading`,disabled && `f-disabled`]"
+    :class="[
+      iconPosition && `icon-${iconPosition}`,
+      `${intent}`,
+      circle && `circle`,
+      loading && `is-loading`,
+      disabled && `f-disabled`,
+      minimal && 'minimal'
+    ]"
     @click="$emit('click')"
   >
-    <f-icon
-      :name="icon"
-      :style="noMargin"
-    ></f-icon>
-    <f-icon
-      class="loading"
-      name="loading"
-      v-if="loading"
-    ></f-icon>
+    <f-icon :name="icon" :style="noMargin"></f-icon>
+    <f-icon class="loading" name="loading" v-if="loading"></f-icon>
     <div class="button-content">
       <slot></slot>
     </div>
@@ -52,11 +52,12 @@ export default {
     disabled: Boolean,
     type: {
       type: String,
-      default: 'button',
-      validator(value){
-        return ['button','submit'].indexOf(value) > -1;
+      default: "button",
+      validator(value) {
+        return ["button", "submit"].indexOf(value) > -1;
       }
-    }
+    },
+    minimal: Boolean
   },
   data() {
     return {
@@ -188,11 +189,18 @@ export default {
   &.circle {
     border-radius: 50%;
   }
-  > svg{
+  &.minimal {
+    box-shadow: none;
+    background: white;
+    color: #182026;
+    &:hover {
+      background: rgba(167, 182, 194, 0.3);
+      color: #182026;
+    }
+  }
+
+  > svg {
     fill: currentColor;
   }
-  
 }
 </style>
-
-
