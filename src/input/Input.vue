@@ -1,7 +1,8 @@
 <template>
    <div class="wrapper" :class="{error}">
-        
        <input type="text" :value="value" :disabled="disabled" 
+              class="f-input"
+              :class="{'f-inner': clearValue, 'f-suffix-icon': !!suffixIcon, 'f-prefix-icon': !!prefixIcon}"
               :readonly="readonly"
               :placeholder="placeholder"
               ref="input"
@@ -14,8 +15,18 @@
          <span class="error-message">{{error}}</span>
        </template>
       <template v-if="showClear">
-          <div class="close-icon" @click="clearValue">
+          <div class="close-icon" :class="{'suffix-close': suffixIcon}" @click="clearValue">
             <f-icon name="close"></f-icon>
+          </div>
+       </template>
+       <template v-if="suffixIcon">
+          <div class="suffix-icon">
+            <f-icon :name="suffixIcon"></f-icon>
+          </div>
+       </template>
+       <template v-if="prefixIcon">
+          <div class="prefix-icon">
+            <f-icon :name="prefixIcon"></f-icon>
           </div>
        </template>
     </div> 
@@ -46,6 +57,14 @@ export default {
         },
         placeholder: {
             type: String,
+        },
+        // icon在右侧
+        suffixIcon: {
+            type: String
+        },
+        // icon在左侧
+        prefixIcon: {
+            type: String
         }
     },
     components: { 'f-icon': Icon },
@@ -67,7 +86,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-   $height: 32px;
+   $height: 30px;
    $border-color: #999;
    $border-color-error: #999;
    $border-color-hover: #666;
@@ -80,16 +99,32 @@ export default {
        display: inline-flex;
        align-items: center;
        position: relative;
+       vertical-align: middle;
        > :not(:last-child){
-           margin-right: .2em;
+        //    margin-right: .2em;
        }
-       > input {
+       > .f-input {
            height: $height;
            border: 1px solid $border-color;
            border-radius: 4px;
-           padding-left: 1em;
-           padding-right: 1.2em;
+           padding: 0 10px;
            font-size: inherit;
+           line-height: $height;
+           font-weight: 400;
+           color: #182026;
+           width: 100%;
+           &.f-inner{
+               padding-right: 2em;
+           }
+           &.f-suffix-icon{
+               padding-right: 2em;
+           }
+           &.f-prefix-icon{
+               padding-left: 2em;
+           }
+           &.f-inner.f-suffix-icon{
+               padding-right: 4em;
+           }
            &:hover{
                border-color: $border-color-hover;
            }
@@ -114,22 +149,51 @@ export default {
              }
            }
        }
+       &.f-round{
+           > input{
+               border-radius: $height / 2;
+           }
+       }
        .error-icon{
            fill: $red;
        }
        .error-message{
            color: $red;
        }
-       
-       > .close-icon{
+       .close-icon{
+           display: none;
+       }
+       &:hover > .close-icon{
            position: absolute;
-           right: .4em;
+           right: 1em;
            top: 50%;
-           transform: translateY(-50%);
+           transform: translate(25%,-50%);
            display: flex;
            align-items: center;
+           &.suffix-close{
+               right: 2.5em;
+           }
+       }
+       .suffix-icon{
+           position: absolute;
+           right: 0.5em;
+           top: 50%;
+           display: flex;
+           align-items: center;
+           transform: translateY(-50%);
+           > svg{width: 1.2em;height: 1.2em;}
+       }
+       .prefix-icon{
+           position: absolute;
+           left: 0.5em;
+           top: 50%;
+           display: flex;
+           align-items: center;
+           transform: translateY(-50%);
+           > svg{width: 1.2em;height: 1.2em;}
        }
    }
+   
 </style>
 
 
