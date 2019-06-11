@@ -6,19 +6,31 @@ $button-intent-disabled-color: hsla(0,0%,100%,.6);
 $button-bg: rgb(221, 221, 221);
 $button-active-bg: #d8e1e8;
 $button-hover-bg: #ebf1f5;
-$button-primary-active-bg: #0e5a8a;
 $button-primary-bg: #137cbd;
-$button-primary-hover-bg: #106ba3;
 $button-primary-disabled-bg: rgba(19,124,189,.5);
+$button-primary-active-bg: #0e5a8a;
+$button-primary-hover-bg: #106ba3;
+$button-intent-primary-active-bg: rgba(19,124,189,.3);
+$button-intent-primary-hover-bg: rgba(19,124,189,.15);
+
 $button-success-active-bg: #0a6640;
 $button-success-bg: #0f9960;
 $button-success-hover-bg: #0d8050;
+$button-intent-success-hover-bg: rgba(19,124,189,.15);
+$button-intent-success-active-bg: rgba(19,124,189,.3);
+
 $button-warn-active-bg: #a66321;
 $button-warn-hover-bg: #bf7326;
-$button-warn-bg: #d9822b;
+$button-intent-warn-active-bg: rgba(217,130,43,.3);
+$button-intent-warn-hover-bg: rgba(217,130,43,.15);
+$button-warn-bg: #080706;
+
 $button-danger-active-bg: #a82a2a;
 $button-danger-hover-bg: #c23030;
+$button-intent-danger-active-bg: rgba(219,55,55,.3);
+$button-intent-danger-hover-bg: rgba(219,55,55,.15);
 $button-danger-bg: #db3737;
+
 $border-radius: 4px;
 $border-circle-radius: 50%;
 $color: #333;

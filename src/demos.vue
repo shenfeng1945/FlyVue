@@ -1,6 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-button intent="success" minimal>点我</f-button>
+    <f-button intent="primary" minimal>点我</f-button>
   </div>
 </template>
 <script>

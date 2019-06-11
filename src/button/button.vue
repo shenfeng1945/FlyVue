@@ -5,10 +5,10 @@
     :class="[
       iconPosition && `icon-${iconPosition}`,
       `${intent}`,
-      circle && `circle`,
+      circle && `f-circle`,
       loading && `is-loading`,
       disabled && `f-disabled`,
-      minimal && 'minimal'
+      minimal && 'f-minimal'
     ]"
     @click="$emit('click')"
   >
@@ -186,17 +186,30 @@ export default {
   > .loading {
     animation: spin 1.2s infinite linear;
   }
-  &.circle {
+  &.f-circle {
     border-radius: 50%;
   }
-  &.minimal {
+  &.f-minimal {
     box-shadow: none;
     background: white;
-    color: #182026;
-    &:hover {
-      background: rgba(167, 182, 194, 0.3);
-      color: #182026;
-    }
+    &:hover {background: rgba(167, 182, 194, 0.3);}
+    &:active{background: rgba(115,134,148,.3);}
+    
+    &.success{color: $button-success-hover-bg;}
+    &.success:hover{background: $button-intent-success-hover-bg;}
+    &.success:active{background: $button-intent-success-active-bg;}
+    
+    &.primary{color: $button-primary-hover-bg;}
+    &.primary:hover{background: $button-intent-primary-hover-bg;}
+    &.primary:active{background: $button-intent-primary-active-bg;}
+    
+    &.warn{color: $button-warn-hover-bg;}
+    &.warn:hover{background: $button-intent-warn-hover-bg;}
+    &.warn:active{background: $button-intent-warn-active-bg;}
+    
+    &.danger{color: $button-danger-hover-bg;}
+    &.danger:hover{background: $button-intent-danger-hover-bg;}
+    &.danger:active{background: $button-intent-danger-active-bg;}
   }
 
   > svg {
