@@ -3,34 +3,37 @@
     class="f-button"
     :type="type"
     :class="[
-      iconPosition && `icon-${iconPosition}`,
       `${intent}`,
       circle && `f-circle`,
       loading && `is-loading`,
-      disabled && `f-disabled`,
+      disabled || loading && `f-disabled`,
       minimal && 'f-minimal'
     ]"
     @click="$emit('click')"
+    :disabled="disabled || loading"
   >
-    <f-icon :name="icon" :style="noMargin"></f-icon>
-    <f-icon class="loading" name="loading" v-if="loading"></f-icon>
+    <template v-if="leftIcon">
+      <template v-for="icon of getLeftIconList">
+         <f-icon :name="icon" :key="icon" :style="noMargin" style="margin-right: 0.3em;"></f-icon>
+      </template>
+    </template>
+    <f-icon class="loading" name="loading" v-if="loading" ></f-icon>
     <div class="button-content">
       <slot></slot>
     </div>
+    <template v-if="rightIcon">
+      <template v-for="icon of getRightIconList">
+         <f-icon :name="icon" :key="icon" :style="noMargin" style="margin-left: 0.3em;"></f-icon>
+      </template>
+    </template>
   </button>
 </template>
 <script>
 import Icon from "../icon/Icon";
 export default {
   props: {
-    icon: {},
-    iconPosition: {
-      type: String,
-      default: "left",
-      validator(value) {
-        return value === "left" || value === "right";
-      }
-    },
+    leftIcon: String,
+    rightIcon: String,
     loading: {
       type: Boolean,
       default: false
@@ -75,6 +78,14 @@ export default {
         marginRight: 0
       };
     }
+  },
+  computed: {
+    getLeftIconList(){
+      return this.leftIcon.trim().split(' ');
+    },
+    getRightIconList(){
+      return this.rightIcon.trim().split(' ');
+    }
   }
 };
 </script>
@@ -94,6 +105,10 @@ export default {
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2),
     inset 0 -1px 0 rgba(16, 22, 26, 0.1);
   border: none;
+  
+  &.f-disabled{
+    cursor: not-allowed;
+  }
 
   &.primary {
     background-color: $button-primary-bg;
@@ -154,12 +169,12 @@ export default {
   }
 
   > .icon {
-    order: 1;
-    margin-left: 0;
-    margin-right: 0.3em;
+    // order: 1;
+    // margin-left: 0;
+    // margin-right: 0.3em;
   }
   > .button-content {
-    order: 2;
+    // order: 2;
   }
   &:hover,
   &.is-loading {
@@ -175,12 +190,12 @@ export default {
   }
   &.icon-right {
     > .icon {
-      order: 2;
-      margin-right: 0;
-      margin-left: 0.3em;
+      // order: 2;
+      // margin-right: 0;
+      // margin-left: 0.3em;
     }
     > .button-content {
-      order: 1;
+      // order: 1;
     }
   }
   > .loading {
