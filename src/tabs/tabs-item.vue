@@ -1,6 +1,6 @@
 <template>
     <div class="tabs-item" @click="tabClick" :class="itemclass" :data-name="name">
-       <slot><slot>
+       <slot></slot>
     </div>
 </template>
 <script>
@@ -48,10 +48,13 @@ export default {
   $disabled-color: #ddd;
   .tabs-item{
      flex-shrink: 0;
-     padding: .5em 1em;
+     padding: .5em 0;
      cursor: pointer;
      display: flex;
      align-items: center;
+     &:not(:last-child){
+         margin-right: 20px;
+     }
      &.active{
          color: $active-color;
          .icon{

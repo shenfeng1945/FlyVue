@@ -12,6 +12,12 @@
 export default {
    name: 'FlyTabsNav',
    inject: ['eventBus'],
+   props: {
+     animate: {
+       type: Boolean,
+       default: true
+     }
+   },
    data(){
      return {
        showLine: false
@@ -21,6 +27,7 @@ export default {
       this.eventBus.$on('update:selected', (name,vm) => {
         const {left,top,width,height} = vm.$el.getBoundingClientRect()
         this.showLine = true
+        console.log(left,'left')
         this.$refs.line.style.width = `${width}px`
         this.$refs.line.style.transform = `translateX(${left}px)`
       })
@@ -35,7 +42,6 @@ export default {
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    border-bottom: 1px solid #ddd;
     > .line {
        position: absolute;
        bottom: 0;
