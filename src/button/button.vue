@@ -90,7 +90,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../style/variable";
+@import "_variable";
 .f-button {
   font-size: $font-size;
   height: $button-height;

@@ -116,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/variable";
+@import "_variable";
 .cascader {
   position: relative;
   display: inline-block;

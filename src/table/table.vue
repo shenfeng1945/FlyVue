@@ -275,7 +275,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../style/variable";
+@import "_variable";
 $grey: darken($grey, 20%);
 .f-table-wrapper {
   position: relative;

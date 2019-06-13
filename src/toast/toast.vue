@@ -1,29 +1,41 @@
 <template>
-  <div
-    class="wrapper"
-    :class="toastClass"
-  >
-    <div
-      class="toast"
-      ref="toast"
-    >
-      <div class="message">
-        <slot v-if="!enableHtml"></slot>
-        <div
-          v-else
-          v-html="$slots.default[0]"
-        ></div>
-      </div>
-      <div
-        class="line"
-        ref="line"
-      ></div>
-      <div
-        class="close"
-        v-if="buttonClose"
-        @click="onButtonClose"
-      >{{buttonClose.text}}</div>
-    </div>
+  <div class="wrapper" :class="toastClass">
+    <template v-if="this.position === 'top'">
+      <transition name="fade-down" v-on:after-leave="afterLeave">
+        <div class="toast" ref="toast" v-if="show">
+          <div class="message">
+            <slot v-if="!enableHtml"></slot>
+            <div v-else v-html="$slots.default[0]"></div>
+          </div>
+          <div class="line" ref="line"></div>
+          <div class="close" v-if="buttonClose" @click="onButtonClose">{{buttonClose.text}}</div>
+        </div>
+      </transition>
+    </template>
+    <template v-if="this.position === 'bottom'">
+      <transition name="fade-up" v-on:after-leave="afterLeave">
+        <div class="toast" ref="toast" v-if="show">
+          <div class="message">
+            <slot v-if="!enableHtml"></slot>
+            <div v-else v-html="$slots.default[0]"></div>
+          </div>
+          <div class="line" ref="line"></div>
+          <div class="close" v-if="buttonClose" @click="onButtonClose">{{buttonClose.text}}</div>
+        </div>
+      </transition>
+    </template>
+    <template v-if="this.position === 'middle'">
+      <transition name="fade" v-on:after-leave="afterLeave">
+        <div class="toast" ref="toast" v-if="show">
+          <div class="message">
+            <slot v-if="!enableHtml"></slot>
+            <div v-else v-html="$slots.default[0]"></div>
+          </div>
+          <div class="line" ref="line"></div>
+          <div class="close" v-if="buttonClose" @click="onButtonClose">{{buttonClose.text}}</div>
+        </div>
+      </transition>
+    </template>
   </div>
 </template>
 <script>
@@ -59,9 +71,24 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      show: false
+    };
+  },
+  computed: {
+    getTranstionName() {
+      // return this.position === 'middle' ? 'fade' : this.position;
+      return "bottom";
+    }
+  },
   mounted() {
+    this.show = true;
     this.handerAutoClose();
     this.initStyles();
+  },
+  beforeDestory() {
+    this.show = false;
   },
   computed: {
     toastClass() {
@@ -88,12 +115,15 @@ export default {
         }, this.autoClose * 1000);
       }
     },
-    close() {
+    afterLeave() {
       // dom元素remove
       this.$el.remove();
       this.$emit("close");
       // 组件死掉，注销绑定的事件
       this.$destroy();
+    },
+    close() {
+      this.show = false;
     },
     onButtonClose() {
       this.close();
@@ -109,6 +139,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "_variable";
 $font-size: 14px;
 $height: 40px;
 $toast-bg: rgba(0, 0, 0, 0.75);
@@ -119,55 +150,24 @@ $toast-bg: rgba(0, 0, 0, 0.75);
   &.position-top {
     top: 0;
     .toast {
-      animation: fade-down-in 0.8s;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
   }
   &.position-middle {
     top: 50%;
-    animation: fade-in 0.8s;
     transform: translate(-50%, -50%);
   }
   &.position-bottom {
     top: inherit;
     bottom: 0;
     .toast {
-      animation: fade-up-in 0.8s;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
   }
 }
 .toast {
-  @keyframes fade-up-in {
-    0% {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-  }
-  @keyframes fade-down-in {
-    0% {
-      opacity: 0;
-      transform: translateY(-100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-  }
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
   font-size: $font-size;
   top: 0;
   line-height: 1.7;

@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../style/variable';
+  @import '_variable';
   $width: 20px;
   $height: 20px;
   $font-size: 12px;

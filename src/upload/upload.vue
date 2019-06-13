@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/variable";
+@import "_variable";
 .f-upload {
   &-fileList {
     list-style: none;

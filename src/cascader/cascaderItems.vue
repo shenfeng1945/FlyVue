@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/variable";
+@import "_variable";
 .cascader-items {
   display: flex;
   height: 100px;

@@ -67,7 +67,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '../../style/variable';
+@import '_variable';
 .f-nav {
   display: flex;
   user-select: none;
