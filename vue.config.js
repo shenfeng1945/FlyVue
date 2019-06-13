@@ -1,4 +1,7 @@
 const path = require('path')
+function resolve (dir) {
+    return path.join(__dirname, dir)
+}
 module.exports = {
     css: {
         loaderOptions: {
@@ -7,5 +10,9 @@ module.exports = {
                 includePaths: [path.join(__dirname, 'style')]
             }
         }
+    },
+    chainWebpack: (config)=>{
+        config.resolve.alias
+            .set('_variable', resolve('style/_variable'))
     }
 }
