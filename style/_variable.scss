@@ -53,3 +53,31 @@ $grey: #999;
 @mixin spin{
   animation: spin 1s infinite linear;
 }
+
+.fade-down-enter-active,
+.fade-down-leave-active {
+  transition: transform 0.5s;
+}
+.fade-down-enter,
+.fade-down-leave-to {
+  transform: translateY(-100%);
+}
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: transform 0.5s;
+}
+.fade-up-enter,
+.fade-up-leave-to {
+  transform: translateY(100%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
