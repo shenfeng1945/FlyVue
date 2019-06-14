@@ -1,44 +1,31 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-tabs selected="vue" direction="vertical" :renderActivePanel="true">
-      <f-tabs-nav :animate="true">
-        <f-tabs-item name="react">React</f-tabs-item>
-        <f-tabs-item name="vue">Vue</f-tabs-item>
-        <f-tabs-item name="angular">Angular</f-tabs-item>
-        <f-tabs-item name="backbone" disabled>Backbone</f-tabs-item>
-      </f-tabs-nav>
-      <f-tabs-content>
-        <f-tabs-panel name="react">
-          <h3>Example panel: React</h3>
-          <p>Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology stack, it's easy to try it out on a small feature in an existing project.</p>
-        </f-tabs-panel>
-        <f-tabs-panel name="vue">
-          <input type="text">
-        </f-tabs-panel>
-        <f-tabs-panel name="angular">Angular</f-tabs-panel>
-      </f-tabs-content>
-    </f-tabs>
+    <f-popover trigger="click" position="bottom">
+      <f-button>Popover target</f-button>
+      <template slot="content">
+        <div>
+          <h3>Confirm deletion</h3>
+          <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
+          <p>
+            <f-button>Cancel</f-button>
+            <f-button intent="danger">Delete</f-button>
+          </p>
+        </div>
+      </template>
+    </f-popover>
   </div>
 </template>
 <script>
 
 import Input from "./input/Input";
 import Button from "./button/button";
-import Tabs from "./tabs/tabs";
-import TabsContent from "./tabs/tabs-content";
-import TabsItem from "./tabs/tabs-item";
-import TabsNav from "./tabs/tabs-nav";
-import TabsPanel from "./tabs/tabs-panel";
+import Popover from "./popover/popover";
 export default {
   name: "Demos",
   components: {
     'f-input': Input,
     'f-button': Button,
-    'f-tabs': Tabs,
-    'f-tabs-content': TabsContent,
-    'f-tabs-item': TabsItem,
-    'f-tabs-nav': TabsNav,
-    'f-tabs-panel': TabsPanel
+    'f-popover': Popover
   },
   data() {
     return {

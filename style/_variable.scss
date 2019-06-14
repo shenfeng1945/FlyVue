@@ -34,7 +34,7 @@ $button-danger-bg: #db3737;
 $border-radius: 4px;
 $border-circle-radius: 50%;
 $color: #333;
-$border-color: #999;
+$border-color: rgba(16,22,26,.2);
 $border-color-hover: #666;
 $border-color-light: lighten($border-color, 30%);
 .box-shadow {
@@ -59,6 +59,7 @@ $grey: #999;
   animation: spin 1s infinite linear;
 }
 
+// 向下划出动画
 .fade-down-enter-active,
 .fade-down-leave-active {
   transition: transform 0.5s;
@@ -68,6 +69,7 @@ $grey: #999;
   transform: translateY(-100%);
 }
 
+// 向上划出动画
 .fade-up-enter-active,
 .fade-up-leave-active {
   transition: transform 0.5s;
@@ -77,6 +79,8 @@ $grey: #999;
   transform: translateY(100%);
 }
 
+
+// 淡入，淡出
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

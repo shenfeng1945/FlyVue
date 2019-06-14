@@ -1,23 +1,13 @@
 <template>
-  <div
-    class="popover"
-    ref="popover"
-  >
+  <div class="popover" ref="popover">
     <div
       :class="[`position-${this.position} content-wrapper`]"
       ref="contentWrapper"
       v-if="visiable"
     >
-      <slot
-        name="content"
-        :close="close"
-      ></slot>
+      <slot name="content" :close="close"></slot>
     </div>
-    <span
-      class="trigger-wrapper"
-      ref="triggerWrapper"
-      style="display:inline-block;"
-    >
+    <span class="trigger-wrapper" ref="triggerWrapper" style="display:inline-block;">
       <slot></slot>
     </span>
   </div>
@@ -89,7 +79,6 @@ export default {
       const { contentWrapper, triggerWrapper } = this.$refs;
       if (!contentWrapper) return;
       (this.container || document.body).appendChild(contentWrapper);
-      document.body.appendChild(contentWrapper);
       const {
         width,
         height,
@@ -182,17 +171,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$border-color: #333;
-$border-radius: 4px;
+@import "_variable";
 .popover {
   position: relative;
   display: inline-block;
 }
 .content-wrapper {
   position: absolute;
-  border: 1px solid $border-color;
-  // box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+  // border: 1px solid rgba(16,22,26,.1);
+  // filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+  box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 2px 4px rgba(16,22,26,.2), 0 8px 24px rgba(16,22,26,.2);
   max-width: 20em;
   background: white;
   word-break: break-all;
