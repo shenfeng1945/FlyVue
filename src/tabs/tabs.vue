@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs">
+  <div class="tabs" :class="{'f-vertical': direction === 'vertical'}">
     <slot></slot>
   </div>
 </template>
@@ -18,6 +18,10 @@ export default {
       validator(value) {
         return ["horizontal", "vertical"].indexOf(value) > -1;
       }
+    },
+    renderActivePanel: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -50,6 +54,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .tabs {
+  &.f-vertical{
+    display: flex;
+  }
 }
 </style>
 

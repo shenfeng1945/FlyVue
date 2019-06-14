@@ -41,6 +41,11 @@ $border-color-light: lighten($border-color, 30%);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+// tabs
+$active-color: #106ba3;
+$disabled-color: rgba(92,112,128,.6);
+$bg-selected: rgba(19,124,189,.2);
+
 $grey: #999;
 @keyframes spin {
     0% {
