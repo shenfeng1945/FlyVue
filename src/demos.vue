@@ -1,15 +1,11 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-popover trigger="click" position="bottom">
+    <f-popover trigger="click" position="left">
       <f-button>Popover target</f-button>
       <template slot="content">
         <div>
           <h3>Confirm deletion</h3>
           <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
-          <p>
-            <f-button>Cancel</f-button>
-            <f-button intent="danger">Delete</f-button>
-          </p>
         </div>
       </template>
     </f-popover>

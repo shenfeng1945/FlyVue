@@ -1,7 +1,8 @@
 <template>
   <div class="popover" ref="popover">
     <div
-      :class="[`position-${this.position} content-wrapper`]"
+      :class="getClassPosition"
+      class="content-wrapper"
       ref="contentWrapper"
       v-if="visiable"
     >
@@ -38,7 +39,8 @@ export default {
   data() {
     return {
       visiable: false,
-      colck: null
+      clock: null,
+      reversePosition: false
     };
   },
   mounted() {
@@ -62,9 +64,20 @@ export default {
       } else {
         return "mouseleave";
       }
+    },
+    getClassPosition(){
+      let direction = this.position;
+      if(this.reversePosition){
+        direction = this.getReverseDirection(direction);
+      }
+      return `position-${direction}`;
     }
   },
   methods: {
+    getReverseDirection(direc){
+      const obj = { 'top': 'bottom', 'bottom': 'top', 'left': 'right', 'right': 'left' };
+      return obj[direc]
+    },
     putBackContent() {
       const { contentWrapper, popover } = this.$refs;
       popover.appendChild(contentWrapper);
@@ -107,8 +120,9 @@ export default {
           left: left + width + window.scrollX
         }
       };
+      if(top < height2 + 8){ this.reversePosition = true}
       contentWrapper.style.left = positions[this.position].left + "px";
-      contentWrapper.style.top = positions[this.position].top + "px";
+      contentWrapper.style.top = positions[this.getReverseDirection(this.position)].top + "px";
     },
     addTriggerEvent() {
       const { triggerWrapper } = this.$refs;
@@ -126,7 +140,7 @@ export default {
       } else {
         triggerWrapper.removeEventListener("mouseenter", this.hoverOpen);
         triggerWrapper.removeEventListener("mouseleave", this.delayClose);
-        contentWrapper.addEventListener("mouseenter", this.clearColck);
+        contentWrapper.addEventListener("mouseenter", this.clearClock);
         contentWrapper.addEventListener("mouseleave", this.delayClose);
       }
     },
@@ -141,10 +155,10 @@ export default {
       }
     },
     delayClose() {
-      this.colck = setTimeout(this.close, 200);
+      this.clock = setTimeout(this.close, 200);
     },
-    clearColck() {
-      clearTimeout(this.colck);
+    clearClock() {
+      clearTimeout(this.clock);
     },
     close() {
       this.visiable = false;
