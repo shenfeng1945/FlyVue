@@ -1,6 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-popover trigger="click" position="left">
+    <f-popover trigger="click" position="top" :only-target="true">
       <f-button>Popover target</f-button>
       <template slot="content">
         <div>
@@ -38,9 +38,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-body,html{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+#app{
+  margin: 300px 0 0 300px;
 }
 </style>

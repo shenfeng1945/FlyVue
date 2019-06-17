@@ -34,13 +34,18 @@ export default {
     // popover动态挂载的容器，若不传默认挂载body上
     container: {
       type: Element
+    },
+    onlyTarget: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       visiable: false,
       clock: null,
-      reversePosition: false
+      reversePositionY: false,
+      reversePositionX: false
     };
   },
   mounted() {
@@ -67,16 +72,24 @@ export default {
     },
     getClassPosition(){
       let direction = this.position;
-      if(this.reversePosition){
-        direction = this.getReverseDirection(direction);
-      }
+      direction = this.getReverseDirection(direction);
       return `position-${direction}`;
     }
   },
   methods: {
     getReverseDirection(direc){
-      const obj = { 'top': 'bottom', 'bottom': 'top', 'left': 'right', 'right': 'left' };
-      return obj[direc]
+      if(this.reversePositionX && !this.reversePositionY){
+        const objX = { 'left': 'right', 'right': 'left' };
+        return objX[direc] || direc
+      }else if(this.reversePositionY && !this.reversePositionX){
+        const objY = { 'top': 'bottom', 'bottom': 'top' };
+        return objY[direc] || direc
+      }else if(this.reversePositionY && this.reversePositionX){
+        const objY = { 'left': 'right', 'right': 'left','top': 'bottom', 'bottom': 'top' };
+        return objY[direc]
+      }else{
+        return direc;
+      }
     },
     putBackContent() {
       const { contentWrapper, popover } = this.$refs;
@@ -120,9 +133,10 @@ export default {
           left: left + width + window.scrollX
         }
       };
-      if(top < height2 + 8){ this.reversePosition = true}
-      contentWrapper.style.left = positions[this.position].left + "px";
-      contentWrapper.style.top = positions[this.getReverseDirection(this.position)].top + "px";
+      if(top < height2 + 10){ this.reversePositionY = true };
+      if(left < width2 + 10){ this.reversePositionX = true };
+      contentWrapper.style.left = positions[this.reversePositionX ? this.getReverseDirection(this.position): this.position].left + "px";
+      contentWrapper.style.top = positions[this.reversePositionY ? this.getReverseDirection(this.position): this.position].top + "px";
     },
     addTriggerEvent() {
       const { triggerWrapper } = this.$refs;
@@ -158,27 +172,33 @@ export default {
       this.clock = setTimeout(this.close, 200);
     },
     clearClock() {
-      clearTimeout(this.clock);
+      this.clock && clearTimeout(this.clock);
     },
     close() {
       this.visiable = false;
-      document.removeEventListener("click", this.onClickDocument);
+      if(!this.onlyTarget){
+        document.removeEventListener("click", this.onClickDocument);
+      }
     },
     open() {
       this.visiable = true;
       this.$nextTick(() => {
         this.computePosition();
-        document.addEventListener("click", this.onClickDocument);
+        if(!this.onlyTarget){
+          document.addEventListener("click", this.onClickDocument);
+        }
       });
     },
     hoverOpen() {
+      this.clearClock();
       this.visiable = true;
       this.$nextTick(() => {
         const { contentWrapper, triggerWrapper } = this.$refs;
         this.computePosition();
-        contentWrapper.addEventListener("mouseenter", this.clearColck);
-        contentWrapper.addEventListener("mouseleave", this.delayClose);
-        document.addEventListener("click", this.onClickDocument);
+        if(!this.onlyTarget){
+          contentWrapper.addEventListener("mouseenter", this.clearClock);
+          contentWrapper.addEventListener("mouseleave", this.delayClose);
+        }
       });
     }
   }
@@ -192,10 +212,9 @@ export default {
 }
 .content-wrapper {
   position: absolute;
-  // border: 1px solid rgba(16,22,26,.1);
-  // filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
   box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 2px 4px rgba(16,22,26,.2), 0 8px 24px rgba(16,22,26,.2);
   max-width: 20em;
+  min-width: 5em;
   background: white;
   word-break: break-all;
   border-radius: $border-radius;
@@ -246,13 +265,15 @@ export default {
       border-left-color: $border-color;
       border-right: none;
       left: 100%;
-      top: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
     &::after {
       border-left-color: white;
       border-right: none;
       left: calc(100% - 1px);
-      top: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
   &.position-right {
@@ -261,13 +282,15 @@ export default {
       border-right-color: $border-color;
       border-left: none;
       right: 100%;
-      top: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
     &::after {
       border-right-color: white;
       border-left: none;
       right: calc(100% - 1px);
-      top: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }
