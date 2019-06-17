@@ -5,3 +5,6 @@
 - 交互阶段: 点击子组件时会触发`Add/Remove`各自将当前name传给父组件。父组件更新Selected，并`emit`最新的Selected给子组件，同时往外通知Selected的值改的了，UI可以更新了。
 - 使用 `:selected.sync=Selected` 外部监听update事件，并显示最新值。
 - 子组件自身不去控制content展示与隐藏，而是驱动数据给父组件去更新，再传给子组件。
+
+
+#### 使用示例

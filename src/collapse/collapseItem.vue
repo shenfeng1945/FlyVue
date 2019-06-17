@@ -2,6 +2,7 @@
   <div class="collapseItem">
     <div
       class="title"
+      :class="{'f-isOpen': isOpen}"
       @click="triggleClick"
     >{{title}}</div>
     <div
@@ -81,6 +82,9 @@ $border-radius: 4px;
   }
   .content {
     padding: 8px;
+  }
+  &.f-isOpen{
+    border-bottom: none;
   }
 }
 </style>
