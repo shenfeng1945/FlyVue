@@ -59,15 +59,23 @@ $grey: #999;
   animation: spin 1s infinite linear;
 }
 
-// 向下划出动画
-.fade-down-enter-active,
-.fade-down-leave-active {
-  transition: transform 0.5s;
+@keyframes rotate90 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(90deg);
+  }
 }
-.fade-down-enter,
-.fade-down-leave-to {
-  transform: translateY(-100%);
+@keyframes anti-rotate90 {
+  0% {
+    transform: rotateZ(90deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
 }
+
 
 // 向上划出动画
 .fade-up-enter-active,
@@ -89,4 +97,30 @@ $grey: #999;
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+// 正，反旋转90deg动画
+.antiRotate90-enter{
+  transform: rotateZ(90deg);
+}
+.rotate90-enter{
+  transform: rotateZ(-90deg);
+}
+.antiRotate90-enter-active,
+.rotate90-enter-active{
+  transition: transform 0.3s;
+}
+
+// 高度由0到额定高度的动画
+.expandHeight-leave-to,
+.expandHeight-enter{
+   height: 0;
+}
+.expandHeight-leave,
+.expandHeight-enter-to{
+  height: 42px;
+}
+.expandHeight-leave-active,
+.expandHeight-enter-active{
+   transition: all 0.5s;
 }

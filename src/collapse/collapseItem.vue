@@ -4,16 +4,23 @@
       class="title"
       :class="{'f-isOpen': isOpen}"
       @click="triggleClick"
-    >{{title}}</div>
+    >
+        <p>{{title}}</p>
+        <f-icon name="right" :class="{'f-rotate90': isOpen, 'f-antiRotate90': !isOpen}"></f-icon>
+    </div>
+      <transition name="expandHeight">
+
     <div
       class="content"
       v-if="isOpen"
     >
       <slot></slot>
     </div>
+      </transition>
   </div>
 </template>
 <script>
+import Icon from '../icon/Icon';
 export default {
   name: "FlyCollapseItem",
   props: {
@@ -25,6 +32,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    'f-icon': Icon
   },
   data() {
     return {
@@ -54,6 +64,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  @import '_variable';
 $grey: #ddd;
 $border-radius: 4px;
 .collapseItem {
@@ -66,6 +77,13 @@ $border-radius: 4px;
     display: flex;
     align-items: center;
     padding: 0 8px;
+    justify-content: space-between;
+    .f-rotate90{
+      animation: rotate90 0.5s forwards;
+    }
+    .f-antiRotate90{
+      animation: anti-rotate90 0.5s forwards;
+    }
   }
   &:first-child {
     > .title {
@@ -81,7 +99,8 @@ $border-radius: 4px;
     }
   }
   .content {
-    padding: 8px;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   &.f-isOpen{
     border-bottom: none;
