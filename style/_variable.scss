@@ -112,15 +112,7 @@ $grey: #999;
 }
 
 // 高度由0到额定高度的动画
-.expandHeight-leave-to,
-.expandHeight-enter{
-   height: 0;
-}
-.expandHeight-leave,
-.expandHeight-enter-to{
-  height: 42px;
-}
 .expandHeight-leave-active,
 .expandHeight-enter-active{
-   transition: all 0.5s;
+   transition: height 0.3s;
 }

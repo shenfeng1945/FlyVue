@@ -1,32 +1,26 @@
 <template>
   <div class="collapseItem">
-    <div
-      class="title"
-      :class="{'f-isOpen': isOpen}"
-      @click="triggleClick"
-    >
-        <p>{{title}}</p>
-        <f-icon name="right" :class="{'f-rotate90': isOpen, 'f-antiRotate90': !isOpen}"></f-icon>
+    <div class="title" :class="{'f-isOpen': isOpen}" @click="triggleClick">
+        <p v-if="title">{{title}}</p>
+        <p v-else>
+          <slot name="title"></slot>
+        </p>
+      <f-icon name="right" :class="{'f-rotate90': isOpen, 'f-antiRotate90': !isOpen}"></f-icon>
     </div>
-      <transition name="expandHeight">
-
-    <div
-      class="content"
-      v-if="isOpen"
-    >
-      <slot></slot>
-    </div>
-      </transition>
+    <transition name="expandHeight" @enter="enter" @leave="leave">
+      <div class="content" v-if="isOpen" ref="content">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
-import Icon from '../icon/Icon';
+import Icon from "../icon/Icon";
 export default {
   name: "FlyCollapseItem",
   props: {
     title: {
       type: String,
-      required: true
     },
     name: {
       type: String,
@@ -34,7 +28,7 @@ export default {
     }
   },
   components: {
-    'f-icon': Icon
+    "f-icon": Icon
   },
   data() {
     return {
@@ -52,6 +46,25 @@ export default {
       });
   },
   methods: {
+    enter(el, done) {
+      el.style.height = `auto`;
+      const { height } = el.getBoundingClientRect();
+      el.style.height = "0px";
+      el.getBoundingClientRect();
+      el.style.height = `${height}px`;
+      el.addEventListener("transitionend", () => {
+        done();
+      });
+    },
+    leave(el, done) {
+      const { height } = el.getBoundingClientRect();
+      el.style.height = `${height}px`;
+      el.getBoundingClientRect();
+      el.style.height = "0px";
+      el.addEventListener("transitionend", () => {
+        done();
+      });
+    },
     triggleClick() {
       if (this.isOpen) {
         this.eventBus.$emit("update:removeSelected", this.name);
@@ -64,12 +77,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-  @import '_variable';
-$grey: #ddd;
-$border-radius: 4px;
+@import "_variable";
 .collapseItem {
+  border-bottom: 1px solid $border-color;
   > .title {
-    border: 1px solid $grey;
     margin-top: -1px;
     margin-left: -1px;
     margin-right: -1px;
@@ -78,32 +89,30 @@ $border-radius: 4px;
     align-items: center;
     padding: 0 8px;
     justify-content: space-between;
-    .f-rotate90{
+    cursor: pointer;
+    .f-rotate90 {
       animation: rotate90 0.5s forwards;
     }
-    .f-antiRotate90{
+    .f-antiRotate90 {
       animation: anti-rotate90 0.5s forwards;
     }
   }
-  &:first-child {
-    > .title {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
-    }
-  }
-  &:last-child {
-    > .title:last-child {
-      border-bottom-left-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-      border-bottom: none;
-    }
-  }
+  // &:first-child {
+  //   > .title {
+  //     border-top-left-radius: $border-radius;
+  //     border-top-right-radius: $border-radius;
+  //   }
+  // }
+  // &:last-child {
+  //   > .title:last-child {
+  //     border-bottom-left-radius: $border-radius;
+  //     border-bottom-right-radius: $border-radius;
+  //   }
+  // }
   .content {
     overflow: hidden;
     box-sizing: border-box;
   }
-  &.f-isOpen{
-    border-bottom: none;
-  }
+  
 }
 </style>

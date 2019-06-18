@@ -1,7 +1,14 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-collapse :selected.sync="selected" :single="false">
-      <f-collapse-item title="一致性 Consistency" name="1">
+    <f-collapse :selected.sync="selected" :single="true">
+      <f-collapse-item name="1">
+        <template slot="title">
+          一致性 Consistency 
+          <f-popover trigger="hover" :only-target="true" position="top">
+            <f-icon name="info-sign"></f-icon>
+            <template slot="content">hello world</template>
+          </f-popover>
+        </template>
         <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
         <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
       </f-collapse-item>
@@ -26,14 +33,18 @@ import Input from "./input/Input";
 import Button from "./button/button";
 import Collapse from "./collapse/collapse";
 import CollapseItem from "./collapse/collapseItem";
+import Icon from "./icon/Icon";
+import Popover from "./popover/popover";
 
 export default {
   name: "Demos",
   components: {
     "f-input": Input,
+    "f-icon": Icon,
     "f-button": Button,
     "f-collapse": Collapse,
-    "f-collapse-item": CollapseItem
+    "f-collapse-item": CollapseItem,
+    "f-popover": Popover
   },
   data() {
     return {
