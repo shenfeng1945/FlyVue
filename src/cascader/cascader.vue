@@ -19,6 +19,7 @@
         :level="level"
         :selected.sync="selected"
         :loadData="loadData"
+        :close="close"
         @update:selected="onUpdateSelected($event)"
         :loading-item="loadingItem"
       ></cascader-items>

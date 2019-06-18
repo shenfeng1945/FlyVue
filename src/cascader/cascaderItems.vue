@@ -33,6 +33,7 @@
         :level="level + 1"
         :selected="selected"
         :load-data="loadData"
+        :close="close"
         @update:selected="onUpdateSelect"
         :loading-item="loadingItem"
       ></FlyCascaderItems>
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import Icon from "../Icon";
+import Icon from "../icon/Icon";
 export default {
   name: "FlyCascaderItems",
   props: {
@@ -53,7 +54,8 @@ export default {
     loadingItem: {
         type: Object,
         default: () => ({})
-    }
+    },
+    close: Function
   },
   data(){
       return {
@@ -93,6 +95,10 @@ export default {
       selectedCopy.splice(this.level + 1);
       this.$emit("update:selected", selectedCopy);
       this.selectedCopy = selectedCopy;
+      if(!this.rightArrayVisiable(item)){
+        console.log(selectedCopy,'selectedCopy')
+        this.close();
+      }
     },
     onUpdateSelect(newSelect) {
       this.$emit("update:selected", newSelect);
@@ -113,7 +119,7 @@ export default {
     display: none;
   }
   .isSelected{
-      background: $grey;
+    color: $menu-active-color;
   }
   .label {
     padding: 0.3em 0.8em;
@@ -127,10 +133,7 @@ export default {
       user-select: none;
     }
     &:hover {
-      background: #e6f7ff;
-    }
-    &.isSelected:hover{
-      background: $grey;
+      background: $menu-hover-color;
     }
     .icons {
       margin-left: auto;
