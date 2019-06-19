@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-cascader>
-      <f-input></f-input>
+    <f-cascader :sources="sources" :level="0" @update:value="value = $event">
+      <f-input v-model="value" clearable></f-input>
     </f-cascader>
   </div>
 </template>
@@ -9,7 +9,7 @@
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import Cascader from "./cascader1/cascader";
+import Cascader from "./cascader/cascader";
 import db from "../tests/fixtures/db";
 
 function ajax(parent_id = 0) {
@@ -28,10 +28,11 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-cascader": Cascader
+    "f-cascader": Cascader,
   },
   data() {
     return {
+      value: '',
       sources: [
         {
           name: "广东省",

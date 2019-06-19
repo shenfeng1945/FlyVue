@@ -22,6 +22,7 @@
         :close="close"
         @update:selected="onUpdateSelected($event)"
         :loading-item="loadingItem"
+        @update:selectedValue="onSelectedValue($event)"
       ></cascader-items>
     </div>
   </div>
@@ -39,7 +40,7 @@ export default {
       type: Number,
       default: 0
     },
-    loadData: Function
+    loadData: Function,
   },
   directives: { "click-outside": ClickOutside },
   components: { "cascader-items": CascaderItems },
@@ -47,7 +48,7 @@ export default {
     return {
       popoverVisiable: false,
       selected: [],
-      loadingItem: {}
+      loadingItem: {},
     };
   },
   methods: {
@@ -111,6 +112,9 @@ export default {
         this.loadData(lastItem, updateSource);
         this.loadingItem = lastItem;
       }
+    },
+    onSelectedValue(value){
+      this.$emit('update:value', value)
     }
   }
 };

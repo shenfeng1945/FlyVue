@@ -36,6 +36,7 @@
         :close="close"
         @update:selected="onUpdateSelect"
         :loading-item="loadingItem"
+        @update:selectedValue="onSelectedValue"
       ></FlyCascaderItems>
     </div>
   </div>
@@ -96,12 +97,16 @@ export default {
       this.$emit("update:selected", selectedCopy);
       this.selectedCopy = selectedCopy;
       if(!this.rightArrayVisiable(item)){
-        console.log(selectedCopy,'selectedCopy')
+        const name = selectedCopy.reduce((sum,n) => sum + n.name + '/', '').replace(/\/$/,'');
+        this.$emit('update:selectedValue', name);
         this.close();
       }
     },
     onUpdateSelect(newSelect) {
       this.$emit("update:selected", newSelect);
+    },
+    onSelectedValue(value){
+      this.$emit('update:selectedValue', value);
     }
   }
 };

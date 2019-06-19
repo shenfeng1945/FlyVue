@@ -74,7 +74,7 @@ export default {
         }
     },
     methods: {
-        clearValue(){
+        clearValue(e){
             this.$emit('input','')
             this.$emit('change','')
         },
