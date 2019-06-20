@@ -65,7 +65,7 @@ export default {
         // icon在左侧
         prefixIcon: {
             type: String
-        }
+        },
     },
     components: { 'f-icon': Icon },
     computed: {
@@ -192,6 +192,12 @@ export default {
            transform: translateY(-50%);
            > svg{width: 1.2em;height: 1.2em;}
        }
+        &.pointer{
+          input{
+            cursor: pointer;
+          }
+        }
+       
    }
    
 </style>

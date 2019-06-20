@@ -1,19 +1,19 @@
 <template>
   <div
-    class="cascader"
+    class="f-cascader"
     v-click-outside="close"
   >
     <div
-      class="trriger"
-      @click="onTrriger"
+      class="f-cascader-trigger"
+      @click="onTrigger"
     >
-      <slot></slot>
+      <f-input v-model="value" :clearable="clearable" @change="onInputValue" class="pointer"></f-input>
     </div>
     <div
-      class="popover-wrapper"
-      v-if="popoverVisiable"
+      class="f-popover-wrapper"
+      v-if="popoverVisible"
     >
-      <cascader-items
+      <f-cascader-items
         :items="sources"
         :height="popoverHeight"
         :level="level"
@@ -22,8 +22,8 @@
         :close="close"
         @update:selected="onUpdateSelected($event)"
         :loading-item="loadingItem"
-        @update:selectedValue="onSelectedValue($event)"
-      ></cascader-items>
+        @update:selectedValue="value = $event"
+      ></f-cascader-items>
     </div>
   </div>
 </template>
@@ -31,6 +31,7 @@
 <script>
 import CascaderItems from "./cascaderItems";
 import ClickOutside from "./cascader-click-outside";
+import Input from "../input/Input";
 export default {
   name: "FlyCascader",
   props: {
@@ -41,29 +42,34 @@ export default {
       default: 0
     },
     loadData: Function,
+    clearable: {
+      type: Boolean,
+      default: false
+    }
   },
   directives: { "click-outside": ClickOutside },
-  components: { "cascader-items": CascaderItems },
+  components: { "f-cascader-items": CascaderItems, "f-input": Input },
   data() {
     return {
-      popoverVisiable: false,
+      popoverVisible: false,
       selected: [],
       loadingItem: {},
+      value: '',
     };
   },
   methods: {
-    onTrriger() {
-      if (this.popoverVisiable) {
+    onTrigger() {
+      if (this.popoverVisible) {
         this.close();
       } else {
         this.open();
       }
     },
     open() {
-      this.popoverVisiable = true;
+      this.popoverVisible = true;
     },
     close() {
-      this.popoverVisiable = false;
+      this.popoverVisible = false;
     },
     onUpdateSelected(selected) {
       this.$emit("update:selected", selected);
@@ -113,8 +119,16 @@ export default {
         this.loadingItem = lastItem;
       }
     },
-    onSelectedValue(value){
-      this.$emit('update:value', value)
+    onInputValue(value){
+      if(value === ''){
+        this.selected = [];
+        this.value = ''
+      }else if(value !== this.getCurrentInputValue()){
+        this.value = this.getCurrentInputValue();
+      }
+    },
+    getCurrentInputValue(){
+      return this.selected.reduce((sum,n) => sum + n.name + '/','').replace(/\/$/,'');
     }
   }
 };
@@ -122,10 +136,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "_variable";
-.cascader {
+.f-cascader {
   position: relative;
   display: inline-block;
-  .popover-wrapper {
+  &-trigger{
+    input{
+      cursor: pointer;
+    }
+  }
+  .f-popover-wrapper {
     @extend .box-shadow;
     position: absolute;
     top: 100%;

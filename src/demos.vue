@@ -1,8 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-cascader :sources="sources" :level="0" @update:value="value = $event">
-      <f-input v-model="value" clearable></f-input>
-    </f-cascader>
+    <f-cascader :sources="sources" :level="0" clearable/>
   </div>
 </template>
 <script>
@@ -15,9 +13,7 @@ import db from "../tests/fixtures/db";
 function ajax(parent_id = 0) {
   return new Promise((resolve, rejects) => {
     let provinceList = db.filter(item => item.parent === parent_id);
-    provinceList.forEach(node => {
-      
-    })
+    provinceList.filter(node => {});
     resolve(provinceList);
   });
 }
@@ -28,11 +24,10 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-cascader": Cascader,
+    "f-cascader": Cascader
   },
   data() {
     return {
-      value: '',
       sources: [
         {
           name: "广东省",
@@ -64,12 +59,8 @@ export default {
       ]
     };
   },
-  created() {
-    
-  },
-  methods: {
-    
-  }
+  created() {},
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>
