@@ -97,7 +97,7 @@ export default {
       this.$emit("update:selected", selectedCopy);
       this.selectedCopy = selectedCopy;
       if(!this.rightArrayVisiable(item)){
-        const name = selectedCopy.reduce((sum,n) => sum + n.name + '/', '').replace(/\/$/,'');
+        const name = selectedCopy.map(item => item.name).join('/');
         this.$emit('update:selectedValue', name);
         this.close();
       }

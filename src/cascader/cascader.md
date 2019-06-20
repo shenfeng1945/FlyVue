@@ -2,7 +2,7 @@
 
 ##### 静态加载
 
-```js
+```vue
 <f-cascader :sources="sources" :level="0" clearable/>
 
 data(){
@@ -16,3 +16,35 @@ data(){
 ```
 
 #### 动态加载
+
+```vue
+<f-cascader :sources="sources" :level="0" clearable/>
+
+function ajax(parent_id = 0) {
+  return new Promise((resolve, reject) => {
+    let data = db.filter(item => item.parent === parent_id);
+    data.forEach(node => {
+        node.isLeaf = db.filter(item => item.parent === node.id).length <= 0;
+    });
+    resolve(data);
+  });
+}
+data(){
+  return {
+    sources: []
+  }
+},
+created() {
+    ajax(0).then(res => {
+        this.sources = res;
+    })
+  },
+  methods: {
+    loadData(lastItem, callback){
+      setTimeout(() => {
+        ajax(lastItem.id).then(res => callback(res))
+      }, 500)
+    }
+  }
+
+```
