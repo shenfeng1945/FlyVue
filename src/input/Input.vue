@@ -1,6 +1,6 @@
 <template>
    <div class="wrapper" :class="{error}">
-       <input type="text" :value="value" :disabled="disabled" 
+       <input type="text" :value="value" :disabled="disabled"
               class="f-input"
               :class="{'f-inner': clearValue, 'f-suffix-icon': !!suffixIcon, 'f-prefix-icon': !!prefixIcon}"
               :readonly="readonly"
