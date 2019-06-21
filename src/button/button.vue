@@ -203,6 +203,8 @@ export default {
   }
   &.f-circle {
     border-radius: 50%;
+    width: 32px;
+    padding: 0;
   }
   &.f-minimal {
     box-shadow: none;

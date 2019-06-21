@@ -16,7 +16,8 @@
           v-for="index in childrenLength"
           :key="index"
           :class="{active: selectedIndex === (index - 1)}"
-          @click="select(index-1)"
+          @mouseenter="trigger === 'hover' && select(index - 1)"
+          @click="trigger === 'click' && select(index-1)"
           :data-index="index-1"
         >
           {{index}}
@@ -35,7 +36,8 @@
 
 <script>
 // 待完善部分: 样式，前进后退到头不能再点
-import Icon from '../icon/Icon'
+import Icon from '../icon/Icon';
+import Button from '../button/button';
 export default {
   name: "FlySlides",
   props: {
@@ -51,10 +53,15 @@ export default {
     autoPlayDelay: {
       type: Number,
       default: 3000
+    },
+    trigger: {
+      type: String,
+      default: 'hover'
     }
   },
   components:{
-    'f-icon': Icon
+    'f-icon': Icon,
+    'f-button': Button
   },
   data() {
     return {
