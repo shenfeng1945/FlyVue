@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slideName">
     <div class="f-slides-item" v-if="visiable" :class="{reverse}">
       <slot></slot>
     </div>
@@ -18,42 +18,75 @@ export default {
   data() {
     return {
       selected: undefined,
-      reverse: false
+      reverse: false,
+      slideName: 'slideX'
     };
   },
   computed: {
     visiable() {
       return this.name === this.selected;
     }
+  },
+  beforeMount() {
+    this.slideName = (this.$parent.direction === 'horizontal' ? 'slideX' : 'slideY');
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.slide-enter {
+.f-slides-item {
+  height: 100%;
+}
+.slideX-enter {
   transform: translateX(100%);
 }
-.slide-enter.reverse {
+.slideX-enter.reverse {
   transform: translateX(-100%);
 }
-.slide-enter-active {
-  transition: all .8s;
+.slideX-enter-active {
+  transition: all 0.8s;
 }
-.slide-leave-active {
-  transition: all .8s;
+.slideX-leave-active {
+  transition: all 0.8s;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
 }
-.slide-leave-to {
+.slideX-leave-to {
   opacity: 0;
   transform: translateX(-100%);
 }
-.slide-leave-to.reverse {
+.slideX-leave-to.reverse {
   opacity: 0;
   transform: translateX(100%);
+}
+// Y
+.slideY-enter {
+  transform: translateY(100%);
+}
+.slideY-enter.reverse {
+  transform: translateY(-100%);
+}
+.slideY-enter-active {
+  transition: all 0.8s;
+}
+.slideY-leave-active {
+  transition: all 0.8s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.slideY-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.slideY-leave-to.reverse {
+  opacity: 0;
+  transform: translateY(100%);
 }
 </style>
 

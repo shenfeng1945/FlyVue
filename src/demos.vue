@@ -1,6 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-slides :selected.sync="selected" :autoPlay="true" trigger="click">
+    <f-slides :selected.sync="selected" :autoPlay="false" trigger="click" height="300px" direction="vertical">
       <f-slides-item name="1">
         <div class="box box1">hello</div>
       </f-slides-item>
@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      selected: '1'
+      selected: '3'
     };
   },
   created() {
@@ -50,21 +50,23 @@ export default {
 }
 .box{
   width: 100%;
-  height: 350px;
-  border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 32px;
+  height: 100%;
 }
 .box1{
-  color: red;
+  color: white;
+  background: red;
 }
 .box2{
-  color: yellow;
+  color: white;
+  background: yellow;
 }
 .box3{
-  color: blue;
+  background: blue;
+  color: white;
 }
 
 </style>
