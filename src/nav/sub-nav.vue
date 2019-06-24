@@ -1,26 +1,36 @@
 <template>
-  <div class="f-sub-nav" :class="{active}" v-click-outside="close">
-    <span @click="open = !open" class="f-sub-nav-label">
+  <div class="f-sub-nav" :class="{active,isParentSub}" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <span class="f-sub-nav-label">
       <slot name="title"></slot>
       <span class="f-sub-nav-icon">
-        <f-icon name="right" :class="{open}"></f-icon>
+        <f-icon :name="isParentSub? 'down': 'right'" :class="{rotate180,antiRotate180}"></f-icon>
       </span>
     </span>
-    <transition name="expand" @enter="enter" @leave="leave" @after-leave="afterLeave" @after-enter="afterEnter">
-      <div class="f-sub-nav-popover" v-show="open" :class="{'f-vertical': vertical}">
+    <!-- <transition
+      name="expand"
+      @enter="enter"
+      @leave="leave"
+      @after-leave="afterLeave"
+      @after-enter="afterEnter"
+    > -->
+      <div class="f-sub-nav-popover" v-show="isOpen" :class="{'f-vertical': vertical}">
         <slot></slot>
       </div>
-    </transition>
+    <!-- </transition> -->
   </div>
 </template>
 <script>
-import ClickOutSide from "../cascader/cascader-click-outside";
 import Icon from "../icon/Icon";
 export default {
   name: "FlySubNav",
   data() {
     return {
-      open: false
+      isOpen: false,
+      rotate180: false,
+      antiRotate180: false,
+      isParentSub: false,
+      openTimeId: null,
+      closeTimeId: null
     };
   },
   components: { "f-icon": Icon },
@@ -29,7 +39,6 @@ export default {
       return this.root.namePath.indexOf(this.name) > -1;
     }
   },
-  directives: { "click-outside": ClickOutSide },
   props: {
     name: {
       type: String,
@@ -37,6 +46,9 @@ export default {
     }
   },
   inject: ["root", "vertical"],
+  mounted(){
+    this.isParentSub = this.$parent.$options.name === 'FlyNav';
+  },
   methods: {
     updateNamePath() {
       this.root.namePath.unshift(this.name);
@@ -46,49 +58,78 @@ export default {
         // 到顶了
       }
     },
-    close() {
-      this.open = false;
-    },
-    enter(el, done){
+    enter(el, done) {
       el.style.height = `auto`;
-      const {height} = el.getBoundingClientRect();
-      el.style.height = '0px';
+      const { height } = el.getBoundingClientRect();
+      el.style.height = "0px";
       el.getBoundingClientRect();
       el.style.height = `${height}px`;
-      el.addEventListener('transitionend',() =>{
-        done()
-      })
+      el.addEventListener("transitionend", () => {
+        done();
+      });
     },
-    afterEnter(el){
-      el.style.height = 'auto';
+    afterEnter(el) {
+      el.style.height = "auto";
     },
-    leave(el, done){
-      const {height} = el.getBoundingClientRect();
+    leave(el, done) {
+      const { height } = el.getBoundingClientRect();
       el.style.height = `${height}px`;
       el.getBoundingClientRect();
-      el.style.height = '0px';
-      el.addEventListener('transitionend',() =>{
-        done()
-      })
+      el.style.height = "0px";
+      el.addEventListener("transitionend", () => {
+        done();
+      });
     },
-    afterLeave(el){
-      el.style.height = 'auto';
+    afterLeave(el) {
+      el.style.height = "auto";
     },
+    open() {
+      this.closeTimeId && clearTimeout(this.closeTimeId);
+      this.openTimeId = setTimeout(() => {
+        this.isOpen = true;
+        this.rotate180 = true;
+        this.antiRotate180 = false;
+      }, 300);
+    },
+    close() {
+      this.openTimeId && clearTimeout(this.openTimeId);
+      this.closeTimeId = setTimeout(() => {
+        this.isOpen = false;
+        this.rotate180 = false;
+        this.antiRotate180 = true;
+      }, 300);
+    },
+    clickClose(){
+      this.isOpen = false;
+      this.rotate180 = false;
+      this.antiRotate180 = true;
+    },
+    mouseenter() {
+      this.open();
+    },
+    mouseleave() {
+      this.close();
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
+@import "_variable";
 .f-sub-nav {
   position: relative;
 
   &-label {
     padding: 1em;
     display: block;
+    cursor: pointer;
+    &:hover {
+      color: $active-color;
+      .icon {
+        fill: $active-color;
+      }
+    }
   }
 
-  &-icon {
-    display: none;
-  }
   &-popover {
     position: absolute;
     top: 100%;
@@ -101,17 +142,28 @@ export default {
       overflow: hidden;
     }
   }
+  
+
+  &{
+   .f-sub-nav-icon {
+      margin-left: .3em;
+      .rotate180 {
+        transform: rotateZ(180deg);
+        transition: transform 0.3s;
+      }
+      .antiRotate180 {
+        transform: rotateZ(0deg);
+        transition: transform 0.3s;
+      }
+    }
+  }
 
   & & {
     > .f-sub-nav-label {
-      padding: 1em 0 1em 1em;
+      padding: 1em;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      svg {
-        fill: red;
-      }
     }
 
     .f-sub-nav-popover {
@@ -126,25 +178,20 @@ export default {
 
     .f-sub-nav-icon {
       display: inline-flex;
-      margin-left: 1em;
-      > .open {
+      > .isOpen {
         transform: rotate(90deg);
         transition: all 0.3s;
       }
     }
   }
-  &.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-bottom: 2px solid blue;
-    width: 100%;
+  &.isParentSub.active {
+    box-shadow: inset 0 -2px 0 $active-color;
   }
 }
 
-.expand-enter-active, .expand-leave-active {
-   transition: height .3s;
+.expand-enter-active,
+.expand-leave-active {
+  transition: height 0.2s;
 }
 .expand-enter, .expand-leave-to /* .fade-leave-active below version 2.1.8 */ {
   height: auto;

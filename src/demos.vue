@@ -1,24 +1,53 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-slides :selected.sync="selected" :autoPlay="false" trigger="click" height="300px" direction="vertical">
-      <f-slides-item name="1">
-        <div class="box box1">hello</div>
-      </f-slides-item>
-      <f-slides-item name="2">
-        <div class="box box2">hello</div>
-      </f-slides-item>
-      <f-slides-item name="3">
-        <div class="box box3">allen</div>
-      </f-slides-item>
-    </f-slides>
+    {{selected}}
+    <f-nav :selected.sync="selected">
+      <f-sub-nav name="news">
+        <template slot="title">新闻</template>
+        <f-nav-item name="new1">网易新闻</f-nav-item>
+        <f-nav-item name="new2">腾讯新闻</f-nav-item>
+        <f-sub-nav name="toutiao">
+          <template slot="title">今日头条</template>
+          <f-nav-item name="toutiao1">xxxx</f-nav-item>
+          <f-nav-item name="toutiao2">yyyy</f-nav-item>
+          <f-nav-item name="toutiao3">zzzz</f-nav-item>
+        </f-sub-nav>
+      </f-sub-nav>
+      <f-nav-item name="sports">体育</f-nav-item>
+      <f-nav-item name="finance">财经</f-nav-item>
+    </f-nav>
+    <!-- <f-tabs selected="vue" direction="horizontal" :renderActivePanel="true">
+      <f-tabs-nav :animate="true">
+        <f-tabs-item name="react">React</f-tabs-item>
+        <f-tabs-item name="vue">Vue</f-tabs-item>
+        <f-tabs-item name="angular">Angular</f-tabs-item>
+        <f-tabs-item name="backbone" disabled>Backbone</f-tabs-item>
+      </f-tabs-nav>
+      <f-tabs-content>
+        <f-tabs-panel name="react">
+          <h3>Example panel: React</h3>
+          <p>Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology stack, it's easy to try it out on a small feature in an existing project.</p>
+        </f-tabs-panel>
+        <f-tabs-panel name="vue">
+          <input type="text">
+        </f-tabs-panel>
+        <f-tabs-panel name="angular">Angular</f-tabs-panel>
+      </f-tabs-content>
+</f-tabs> -->
   </div>
 </template>
 <script>
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import Slides from "./carousel/slides";
-import SlidesItem from "./carousel/slides-item";
+import Nav from './nav/nav';
+import NavItem from './nav/nav-item';
+import SubNav from './nav/sub-nav';
+import Tabs from './tabs/tabs';
+import TabsItem from './tabs/tabs-item';
+import TabsNav from './tabs/tabs-nav';
+import TabsPanel from './tabs/tabs-panel';
+import TabsContent from './tabs/tabs-content';
 
 
 export default {
@@ -27,12 +56,19 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-slides": Slides,
-    "f-slides-item": SlidesItem
+    "f-nav": Nav,
+    "f-nav-item": NavItem,
+    "f-sub-nav": SubNav,
+    "f-tabs": Tabs,
+    "f-tabs-content": TabsContent,
+    "f-tabs-panel": TabsPanel,
+    "f-tabs-nav": TabsNav,
+    "f-tabs-item": TabsItem
+    
   },
   data() {
     return {
-      selected: '3'
+      selected: []
     };
   },
   created() {
