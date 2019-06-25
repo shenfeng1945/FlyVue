@@ -1,22 +1,25 @@
 <template>
-  <div class="f-sub-nav" :class="{active,isParentSub}" @mouseenter="mouseenter" @mouseleave="mouseleave">
-    <span class="f-sub-nav-label">
+  <div
+    class="f-sub-nav"
+    :class="{active,isParentSub, [direction]: true}"
+    @mouseenter="mouseenter"
+    @mouseleave="mouseleave"
+  >
+    <span class="f-sub-nav-label" :class="{active}" @click="triggerSub">
       <slot name="title"></slot>
       <span class="f-sub-nav-icon">
-        <f-icon :name="isParentSub? 'down': 'right'" :class="{rotate180,antiRotate180}"></f-icon>
+        <f-icon :name="isParentSub || (direction === 'vertical') ? 'down': 'right'" :class="{rotate180,antiRotate180}"></f-icon>
       </span>
     </span>
-    <!-- <transition
+    <transition
       name="expand"
       @enter="enter"
-      @leave="leave"
-      @after-leave="afterLeave"
       @after-enter="afterEnter"
-    > -->
-      <div class="f-sub-nav-popover" v-show="isOpen" :class="{'f-vertical': vertical}">
-        <slot></slot>
-      </div>
-    <!-- </transition> -->
+    >
+    <div class="f-sub-nav-popover" v-show="isOpen" :class="direction">
+      <slot></slot>
+    </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -30,7 +33,8 @@ export default {
       antiRotate180: false,
       isParentSub: false,
       openTimeId: null,
-      closeTimeId: null
+      closeTimeId: null,
+      triggerTimeId: null
     };
   },
   components: { "f-icon": Icon },
@@ -45,9 +49,9 @@ export default {
       required: true
     }
   },
-  inject: ["root", "vertical"],
-  mounted(){
-    this.isParentSub = this.$parent.$options.name === 'FlyNav';
+  inject: ["root", "direction"],
+  mounted() {
+    this.isParentSub = this.$parent.$options.name === "FlyNav";
   },
   methods: {
     updateNamePath() {
@@ -60,6 +64,7 @@ export default {
     },
     enter(el, done) {
       el.style.height = `auto`;
+      el.style.overflow = 'hidden';
       const { height } = el.getBoundingClientRect();
       el.style.height = "0px";
       el.getBoundingClientRect();
@@ -70,19 +75,20 @@ export default {
     },
     afterEnter(el) {
       el.style.height = "auto";
+      el.style.overflow = 'unset';
     },
-    leave(el, done) {
-      const { height } = el.getBoundingClientRect();
-      el.style.height = `${height}px`;
-      el.getBoundingClientRect();
-      el.style.height = "0px";
-      el.addEventListener("transitionend", () => {
-        done();
-      });
-    },
-    afterLeave(el) {
-      el.style.height = "auto";
-    },
+    // leave(el, done) {
+    //   const { height } = el.getBoundingClientRect();
+    //   el.style.height = `${height}px`;
+    //   el.getBoundingClientRect();
+    //   el.style.height = "0px";
+    //   el.addEventListener("transitionend", () => {
+    //     done();
+    //   });
+    // },
+    // afterLeave(el) {
+    //   el.style.height = "auto";
+    // },
     open() {
       this.closeTimeId && clearTimeout(this.closeTimeId);
       this.openTimeId = setTimeout(() => {
@@ -99,16 +105,28 @@ export default {
         this.antiRotate180 = true;
       }, 300);
     },
-    clickClose(){
+    clickClose() {
       this.isOpen = false;
       this.rotate180 = false;
       this.antiRotate180 = true;
     },
     mouseenter() {
+      if(this.direction === 'vertical'){return};
       this.open();
     },
     mouseleave() {
+      if(this.direction === 'vertical'){return};
       this.close();
+    },
+    triggerSub(){
+      if(this.triggerTimeId){return};
+      this.triggerTimeId = setTimeout(() => {
+        this.isOpen = !this.isOpen;
+        this.rotate180 = !this.isOpen;
+        this.antiRotate180 = this.isOpen;
+        clearTimeout(this.triggerTimeId);
+        this.triggerTimeId = null;
+      }, 300);
     }
   }
 };
@@ -122,7 +140,7 @@ export default {
     padding: 1em;
     display: block;
     cursor: pointer;
-    &:hover {
+    &:hover,&.active.horizontal{
       color: $active-color;
       .icon {
         fill: $active-color;
@@ -136,17 +154,16 @@ export default {
     left: 0;
     border: 1px solid;
     white-space: nowrap;
-    &.f-vertical {
+    &.vertical {
       position: static;
       border: none;
       overflow: hidden;
     }
   }
-  
 
-  &{
-   .f-sub-nav-icon {
-      margin-left: .3em;
+  & {
+    .f-sub-nav-icon {
+      margin-left: 0.3em;
       .rotate180 {
         transform: rotateZ(180deg);
         transition: transform 0.3s;
@@ -170,7 +187,7 @@ export default {
       position: absolute;
       left: 100%;
       top: 0;
-      &.f-vertical {
+      &.vertical {
         position: static;
         border: none;
       }
@@ -184,14 +201,17 @@ export default {
       }
     }
   }
-  &.isParentSub.active {
+  &.isParentSub.active.horizontal {
     box-shadow: inset 0 -2px 0 $active-color;
   }
 }
 
-.expand-enter-active,
+.expand-enter-active{
+  transition: height 0.3s;
+}
+
 .expand-leave-active {
-  transition: height 0.2s;
+  transition: height 0.1s;
 }
 .expand-enter, .expand-leave-to /* .fade-leave-active below version 2.1.8 */ {
   height: auto;

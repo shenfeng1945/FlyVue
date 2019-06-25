@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    {{selected}}
-    <f-nav :selected.sync="selected">
+    <f-nav :selected.sync="selected" direction="vertical">
+      <f-nav-item name="sports">体育</f-nav-item>
       <f-sub-nav name="news">
         <template slot="title">新闻</template>
         <f-nav-item name="new1">网易新闻</f-nav-item>
@@ -13,27 +13,8 @@
           <f-nav-item name="toutiao3">zzzz</f-nav-item>
         </f-sub-nav>
       </f-sub-nav>
-      <f-nav-item name="sports">体育</f-nav-item>
-      <f-nav-item name="finance">财经</f-nav-item>
+      <f-nav-item name="finance" disabled>财经</f-nav-item>
     </f-nav>
-    <!-- <f-tabs selected="vue" direction="horizontal" :renderActivePanel="true">
-      <f-tabs-nav :animate="true">
-        <f-tabs-item name="react">React</f-tabs-item>
-        <f-tabs-item name="vue">Vue</f-tabs-item>
-        <f-tabs-item name="angular">Angular</f-tabs-item>
-        <f-tabs-item name="backbone" disabled>Backbone</f-tabs-item>
-      </f-tabs-nav>
-      <f-tabs-content>
-        <f-tabs-panel name="react">
-          <h3>Example panel: React</h3>
-          <p>Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology stack, it's easy to try it out on a small feature in an existing project.</p>
-        </f-tabs-panel>
-        <f-tabs-panel name="vue">
-          <input type="text">
-        </f-tabs-panel>
-        <f-tabs-panel name="angular">Angular</f-tabs-panel>
-      </f-tabs-content>
-</f-tabs> -->
   </div>
 </template>
 <script>
@@ -59,12 +40,6 @@ export default {
     "f-nav": Nav,
     "f-nav-item": NavItem,
     "f-sub-nav": SubNav,
-    "f-tabs": Tabs,
-    "f-tabs-content": TabsContent,
-    "f-tabs-panel": TabsPanel,
-    "f-tabs-nav": TabsNav,
-    "f-tabs-item": TabsItem
-    
   },
   data() {
     return {

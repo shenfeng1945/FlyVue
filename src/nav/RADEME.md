@@ -12,3 +12,5 @@
 所有的后代代组件，可以注入它
 inject: ['root']
 ```
+
+2. 做下拉框弹出动画时，如果给类`.f-sub-nav-popover`添加`overflow: hidden`属性，第一层`SubNav`能正常展示，但第二层的`SubNav`便会隐藏，用JS来动态设置可以解决。

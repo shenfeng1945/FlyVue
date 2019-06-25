@@ -1,5 +1,5 @@
 <template>
-  <div class="f-nav-item" :class="{selected,'f-sub-item': subItem}" @click="onClick">
+  <div class="f-nav-item" :class="{selected,'f-sub-item': subItem, disabled}" @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -10,9 +10,13 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
-  inject: ["root"],
+  inject: ["root","direction"],
   data() {
     return {
       selected: false,
@@ -26,11 +30,13 @@ export default {
   },
   methods: {
     onClick() {
+      if(this.disabled){return};
       this.root.namePath = [];
       this.$parent.updateNamePath && this.$parent.updateNamePath();
-      this.$parent.clickClose && this.$parent.clickClose();
+      if(this.direction === 'horizontal'){
+        this.root.$children.forEach(item => item.$options.name === 'FlySubNav' && item.clickClose && item.clickClose());
+      }
       this.$emit("add:selected", this.name);
-      
     }
   }
 };
@@ -49,6 +55,17 @@ export default {
   }
   &.f-sub-item{
     box-shadow: none;
+  }
+  &.disabled{
+    &:hover{
+      color: $grey;
+    }
+    &.selected{
+      box-shadow: none;
+      color: inherit;
+    }
+    cursor: not-allowed;
+    color: $grey;
   }
 }
 </style>

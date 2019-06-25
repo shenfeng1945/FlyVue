@@ -1,5 +1,5 @@
 <template>
-  <div class="f-nav" :class="{'f-vertical': vertical}">
+  <div class="f-nav" :class="direction">
     <slot></slot>
   </div>
 </template>
@@ -15,15 +15,16 @@ export default {
       type: Boolean,
       default: false
     },
-    vertical: {
-      type: Boolean,
-      default: false
+    direction: {
+      type: String,
+      default: 'horizontal',
+      validator(val){return ['horizontal','vertical'].indexOf(val) > -1}
     }
   },
   provide(){
     return {
       root: this,
-      vertical: this.vertical
+      direction: this.direction
     }
   },
   data(){
@@ -72,7 +73,7 @@ export default {
   display: flex;
   user-select: none;
   border-bottom: 1px solid $grey;
-  &.f-vertical{
+  &.vertical{
     flex-direction: column;
     border: 1px solid $grey;
   }
