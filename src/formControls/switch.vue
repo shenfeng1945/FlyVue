@@ -1,9 +1,11 @@
 <template>
     <div class="f-switch">
-        <label class="f-switch-label">
-            <input type="checkbox" class="f-switch-check" :checked="value" @change="onChangeInput">
-            <span class="f-control-indicator" :class="{active: value}">
+        <label class="f-switch-label" :class="{disabled}">
+            <input type="checkbox" class="f-switch-check" :checked="value" @change="onChangeInput" :disabled="disabled">
+            <span class="f-control-indicator" :class="{active: value,large}" :style="getStyle">
             </span>
+            <span v-if="value" style="margin-left: .3em">{{activeText}}</span>
+            <span v-else style="margin-left: .3em">{{inactiveText}}</span>
         </label>
     </div>
 </template>
@@ -14,12 +16,48 @@
         props: {
             value: {
                 type: Boolean
+            },
+            width: {
+                type: [Number,String],
+                default: 30
+            },
+            activeColor: {
+                type: String,
+                default: '#137cbd'
+            },
+            inactiveColor: {
+                type: String,
+                default: 'rgba(167,182,194,.5)'
+            },
+            activeText: {
+               type: String,
+               default: 'On'
+            },
+            inactiveText: {
+               type: String,
+               default: 'Off'
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
+            large: {
+                type: Boolean,
+                default: false
             }
+        },
+        computed: {
+           getStyle(){
+                return {
+                    width: `${this.width}px`,
+                    background: this.value ? this.activeColor : this.inactiveColor
+                }
+            } 
         },
         methods: {
             onChangeInput(e){
                 this.$emit('change', e.target.checked);
-            }
+            },
         }
     }
 </script>
@@ -27,6 +65,13 @@
 <style scoped lang="scss">
     .f-switch{
         &-label{
+          display: inline-flex;
+          align-items: center;
+          cursor: pointer;
+          position: relative;
+          &.disabled{
+              cursor: not-allowed;
+          }
         }
         &-check{
             position: absolute;
@@ -37,14 +82,12 @@
         .f-control-indicator{
             position: relative;
             display: inline-block;
+            vertical-align: middle;
             min-width: 1.75em;
             width: auto;
             height: 1em;
-            background: rgba(167,182,194,.5);
             border-radius: 1.75em;
-            &.active{
-                background: #137cbd;
-            }
+            transition: background-color .3s;
             &::before{
                 display: block;
                 position: absolute;
@@ -59,6 +102,16 @@
             }
             &.active::before{
                 left: calc(100% - 1em);
+            }
+            &.large{
+                height: 1.25em;
+                &::before{
+                  width: 1em;
+                  height: 1em;
+                }
+                &.active::before{
+                  left: calc(100% - 1.2em);
+                }
             }
         }
     }
