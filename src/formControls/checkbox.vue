@@ -35,11 +35,15 @@ export default {
     indeterminate: {
       type: Boolean,
       default: false
+    },
+    label: {
+      
     }
   },
   data(){
     return {
-      indeterminateVal: false
+      indeterminateVal: false,
+      multiple: this.$parent.$options.name === 'FlyCheckboxGroup'
     }
   },
   mounted(){
