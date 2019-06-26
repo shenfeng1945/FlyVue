@@ -1,7 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-      {{value}}
-    <f-switch v-model="value" @change="onChange"></f-switch>
+      <f-checkbox @change="onChange" v-model="value" alignIndicator="right" indeterminate>Allen</f-checkbox>
   </div>
 </template>
 <script>
@@ -9,6 +8,7 @@ import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
 import Switch from "./formControls/switch";
+import Checkbox from "./formControls/checkbox";
 
 export default {
   name: "Demos",
@@ -16,11 +16,12 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-switch": Switch
+    "f-switch": Switch,
+    "f-checkbox": Checkbox
   },
   data() {
     return {
-      value: true
+      value: false,
     };
   },
   created() {
