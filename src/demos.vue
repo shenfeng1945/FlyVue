@@ -1,6 +1,9 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-      <f-table :data-source="dataSource"></f-table>
+      <f-table :data-source="dataSource" 
+               :columns="columns"
+               :numberVisible="true"
+               ></f-table>
      <f-pager background :total-page="10" :current-page.sync="currentPage"></f-pager>
   </div>
 </template>
@@ -27,7 +30,9 @@ export default {
       currentPage: 1,
       dataSource: [
         {id: 1, name: 'curry', score: 100},
-        {id: 2, name: 'james', score: 80}
+        {id: 2, name: 'james', score: 80},
+        {id: 3, name: 'allen', score: 99},
+        {id: 4, name: 'kobe', score: 60},
       ],
       columns: [
         {text: '姓名', field: 'name'},
@@ -41,8 +46,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-* {
+<style lang="scss">
+html,body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -55,17 +60,6 @@ export default {
   font-size: 32px;
   height: 100%;
 }
-.box1{
-  color: white;
-  background: red;
-}
-.box2{
-  color: white;
-  background: yellow;
-}
-.box3{
-  background: blue;
-  color: white;
-}
+
 
 </style>
