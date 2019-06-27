@@ -38,6 +38,11 @@ export default {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+   &:hover{
+    .f-radio-control{
+      background: #f5f8fa;
+    }
+  }
   .f-radio-input {
     cursor: pointer;
     position: absolute;
@@ -49,6 +54,7 @@ export default {
     width: 1em;
     height: 1em;
     border-radius: 50%;
+    background-color: lighten(#f5f8fa, 80%);
     &.f-checked {
       background-color: #137cbd;
       background-image: linear-gradient(
@@ -66,5 +72,6 @@ export default {
       }
     }
   }
+ 
 }
 </style>

@@ -10,6 +10,11 @@ export default {
   props: {
       value: Array,
   },
+  methods: {
+    onChangeGroup(checklist){
+      this.$emit('change',checklist)
+    }
+  }
 };
 </script>
 

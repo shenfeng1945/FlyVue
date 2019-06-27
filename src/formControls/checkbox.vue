@@ -4,11 +4,11 @@
       <input
         type="checkbox"
         class="f-checkbox-input"
-        :checked="value"
+        :checked="getChecked"
         @change="onChange"
         ref="checkbox"
       >
-      <span class="f-checkbox-control" :class="{active: value,indeterminate: indeterminateVal}"></span>
+      <span class="f-checkbox-control" :class="{active: getChecked,indeterminate: indeterminateVal}"></span>
       <span :style="{fontSize: large ? '16px' : '14px'}">
         <slot></slot>
       </span>
@@ -32,18 +32,19 @@ export default {
       type: String,
       default: "right"
     },
+    // checkbox选一半
     indeterminate: {
       type: Boolean,
       default: false
     },
     label: {
-      
+      type: [Number, String],
     }
   },
   data(){
     return {
       indeterminateVal: false,
-      multiple: this.$parent.$options.name === 'FlyCheckboxGroup'
+      existGroup: this.$parent.$options.name === 'FlyCheckboxGroup'
     }
   },
   mounted(){
@@ -62,8 +63,32 @@ export default {
   },
   methods: {
     onChange(e) {
-      this.indeterminateVal = false;
-      this.$emit("change", e.target.checked);
+      const val = e.target.checked;
+      if(this.existGroup){
+        let copyCheckedList = JSON.parse(JSON.stringify(this.$parent.value));
+        if(!this.label){
+          throw new Error('FlyCheckBox not exist label')
+        }
+        if(val){
+          copyCheckedList.push(this.label);
+        }else{
+          const index = copyCheckedList.indexOf(this.label);
+          copyCheckedList.splice(index, 1);
+        }
+        this.$parent.onChangeGroup(copyCheckedList)
+      }else{
+        this.indeterminateVal = false;
+        this.$emit("change", val);
+      }
+    }
+  },
+  computed: {
+    getChecked(){
+      if(this.existGroup){
+        return this.$parent.value.indexOf(this.label) > -1
+      }else{
+        return this.value
+      }
     }
   }
 };

@@ -1,16 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-radio-group v-model="radio" @change="radio = $event">
-      <f-radio :label="1">1</f-radio>
-      <f-radio :label="2">2</f-radio>
-      <f-radio :label="3">3</f-radio>
-    </f-radio-group>
-    <f-checkbox v-model="value" @change="value = $event">hello</f-checkbox>
-    <f-checkbox-group v-model="checklist">
-      <f-checkbox label="A">allen</f-checkbox>
-      <f-checkbox label="B">curry</f-checkbox>
-      <f-checkbox label="C">kobe</f-checkbox>
-    </f-checkbox-group>
+   
   </div>
 </template>
 <script>
@@ -37,18 +27,12 @@ export default {
   },
   data() {
     return {
-      radio: 1,
-      radio1: 5,
-      value: false,
-      checklist: []
+      radio: undefined,
     };
   },
   created() {
   },
   methods: {
-      onChange(val){
-          this.value = val;
-      }
   }
 };
 </script>
