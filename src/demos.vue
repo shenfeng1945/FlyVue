@@ -1,17 +1,13 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-   
+     <f-pager background :total-page="10" :current-page.sync="currentPage"></f-pager>
   </div>
 </template>
 <script>
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import Switch from "./formControls/switch";
-import Checkbox from "./formControls/checkbox";
-import CheckboxGroup from "./formControls/checkboxGroup";
-import Radio from "./formControls/radio";
-import RadioGroup from "./formControls/radioGroup";
+import Pager from "./pager/pager";
 
 export default {
   name: "Demos",
@@ -19,15 +15,11 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-switch": Switch,
-    "f-checkbox": Checkbox,
-    "f-checkbox-group": CheckboxGroup,
-    "f-radio": Radio,
-    "f-radio-group": RadioGroup
+    "f-pager": Pager
   },
   data() {
     return {
-      radio: undefined,
+      currentPage: 1
     };
   },
   created() {
