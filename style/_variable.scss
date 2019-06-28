@@ -48,9 +48,13 @@ $bg-selected: rgba(19,124,189,.2);
 
 // cascader
 $menu-hover-color: rgba(167,182,194,.3);
-$menu-active-color: #409eff;
+$menu-active-color: #137cbd;
 
 $grey: #999;
+
+// table
+$table-header-color: #F5F8FA;
+
 @keyframes spin {
     0% {
         transform: rotate(0deg)
@@ -119,4 +123,10 @@ $grey: #999;
 .expandHeight-leave-active,
 .expandHeight-enter-active{
    transition: height 0.3s;
+}
+
+*{
+  padding:0;
+  margin: 0;
+  box-sizing: border-box;
 }

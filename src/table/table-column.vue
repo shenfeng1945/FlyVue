@@ -9,7 +9,11 @@
         props: {
             text: String,
             field: String,
-            width: [String,Number]
+            width: [String,Number],
+            sortable: {
+                type: Boolean,
+                default: false
+            }
         }
     }
 </script>

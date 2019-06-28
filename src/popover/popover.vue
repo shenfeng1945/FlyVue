@@ -52,7 +52,7 @@ export default {
     this.addTriggerEvent();
   },
   beforeDestroy() {
-    this.putBackContent();
+    this.visiable && this.putBackContent();
     this.removeTriggerEvent();
   },
   computed: {
@@ -93,6 +93,7 @@ export default {
     },
     putBackContent() {
       const { contentWrapper, popover } = this.$refs;
+      console.log(popover,contentWrapper)
       popover.appendChild(contentWrapper);
     },
     onClickDocument(e) {

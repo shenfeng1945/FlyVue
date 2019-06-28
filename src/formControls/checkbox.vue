@@ -55,10 +55,8 @@ export default {
   },
   watch: {
     indeterminate: function(newVal, oldVal) {
-      if (newVal) {
-        this.indeterminateVal = newVal;
-        this.$refs.checkbox.indeterminate = newVal;
-      }
+      this.indeterminateVal = newVal;
+      this.$refs.checkbox.indeterminate = newVal;
     }
   },
   methods: {

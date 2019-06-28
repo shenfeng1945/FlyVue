@@ -1,65 +1,64 @@
 <template>
   <div class="f-table-wrapper" ref="wrapper">
-    <f-scroll :style="{height: height + 'px', marginTop: scrollMarginTop, overflow: 'hidden' }">
+    <div :style="{height: height + 'px', marginTop: scrollMarginTop, overflow: 'hidden' }">
       <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
         <thead class="f-table-thead">
           <tr>
             <th v-if="expandField" style="width:50px"></th>
             <th v-if="checkable" style="width: 50px" class="f-table-center">
-              <label>
-                <input
-                  type="checkbox"
-                  @change="onChangeAllItems"
-                  :checked="isAllSelectedItems"
-                  ref="allSelected"
-                >
-              </label>
+              <f-checkbox
+                @change="onChangeAllItems"
+                :value="isAllSelectedItems"
+                :indeterminate="indeterminate"
+              ></f-checkbox>
             </th>
             <th v-if="numberVisible" style="width: 50px">#</th>
             <th v-for="column in columns" :key="column.field" :style="{width: column.width + 'px'}">
-              <div class="f-table-column">
+              <div
+                class="f-table-column"
+                :class="{'f-table-sorter': column.sortable}"
+                @click="changeOrderBy(column.field)"
+              >
                 {{ column.text }}
-                <span
-                  v-if="column.field in orderBy"
-                  class="f-table-sorter"
-                  @click="changeOrderBy(column.field)"
-                >
-                  <f-icon name="esc" :class="{ active: orderBy[column.field] === 'esc' }"></f-icon>
-                  <f-icon name="desc" :class="{ active: orderBy[column.field] === 'desc' }"></f-icon>
+                <span v-if="column.sortable" class="f-sorter-icons">
+                  <f-icon
+                    name="caret-up"
+                    :class="{ active: orderBy.field === column.field && orderBy.order === 'esc' }"
+                  ></f-icon>
+                  <f-icon
+                    name="caret-down"
+                    :class="{ active: orderBy.field === column.field && orderBy.order === 'desc' }"
+                  ></f-icon>
                 </span>
               </div>
             </th>
-            <th v-if="$scopedSlots.default" ref="actionHeader"></th>
+            <th v-if="$scopedSlots.default" ref="actionHeader">操作</th>
           </tr>
         </thead>
-        <tbody>
-          <template v-for="(item, index) in dataSource">
+        <tbody class="f-table-tbody">
+          <template v-for="(item, index) in renderDataSource">
             <tr :key="item.id">
               <td style="width: 50px" v-if="expandField">
-                <f-icon name="down" v-if="inExpendedIds(item.id) && !!item[expandField]" @click="insertItem(item.id)"></f-icon>
+                <f-icon
+                  name="down"
+                  v-if="inExpendedIds(item.id) && !!item[expandField]"
+                  @click="insertItem(item.id)"
+                ></f-icon>
                 <f-icon name="right" v-else @click="insertItem(item.id)"></f-icon>
               </td>
               <td v-if="checkable" style="width: 50px" class="f-table-center">
-                <label>
-                  <input
-                    type="checkbox"
-                    @change="onChangeItem(item, index, $event)"
-                    :checked="inSelectedItems(item)"
-                  >
-                </label>
+                <f-checkbox
+                  @change="onChangeItem(item, index, $event)"
+                  :value="inSelectedItems(item)"
+                ></f-checkbox>
               </td>
               <td v-if="numberVisible" style="width: 50px">{{ index + 1 }}</td>
               <template v-for="column in columns">
-                <td
-                  :style="{width: column.width + 'px'}"
-                  :key="column.field"
-                >
+                <td :style="{width: column.width + 'px'}" :key="column.field">
                   <template v-if="column.render">
-                      <vnodes :vnodes="column.render(item[column.field])"></vnodes>
+                    <vnodes :vnodes="column.render(item[column.field])"></vnodes>
                   </template>
-                    <template v-else>
-                      {{ item[column.field] }}
-                    </template>
+                  <template v-else>{{ item[column.field] }}</template>
                 </td>
               </template>
               <td v-if="$scopedSlots.default">
@@ -68,13 +67,18 @@
                 </div>
               </td>
             </tr>
-            <tr :key="`${item.id}-expandField`" v-if="inExpendedIds(item.id) && !!item[expandField]">
-               <td :colspan="columns.length + expandedColSpan">{{item[expandField]}}</td>
+            <tr
+              :key="`${item.id}-expandField`"
+              v-if="inExpendedIds(item.id) && !!item[expandField]"
+              class="f-expand-row"
+            >
+              <td></td>
+              <td :colspan="columns.length + expandedColSpan">{{item[expandField]}}</td>
             </tr>
           </template>
         </tbody>
       </table>
-    </f-scroll>
+    </div>
     <div class="f-table-loading" v-if="loading">
       <f-icon name="loading"></f-icon>
     </div>
@@ -84,6 +88,8 @@
 <script>
 import Icon from "../icon/Icon";
 import Scroll from "../scroll/scroll";
+import Checkbox from "../formControls/checkbox";
+import { close } from "fs";
 
 export default {
   name: "FlyTable",
@@ -113,9 +119,10 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否条纹展示
     striped: {
       type: Boolean,
-      default: true
+      default: false
     },
     selectedItems: {
       type: Array,
@@ -139,27 +146,30 @@ export default {
     // 是否可选中
     checkable: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   components: {
     "f-icon": Icon,
-    "vnodes": {
+    vnodes: {
       functional: true,
       render: (h, context) => context.props.vnodes
     },
     "f-scroll": Scroll,
+    "f-checkbox": Checkbox
   },
-  data(){
+  data() {
     return {
       expandedIds: [],
-        columns: [],
-        scrollMarginTop: undefined
-    }
+      columns: [],
+      scrollMarginTop: undefined,
+      // 是否半选
+      indeterminate: false,
+      renderDataSource: null
+    };
   },
   methods: {
-    onChangeItem(item, index, e) {
-      const selected = e.target.checked;
+    onChangeItem(item, index, selected) {
       let copySelected = JSON.parse(JSON.stringify(this.selectedItems));
       if (selected) {
         copySelected.push(item);
@@ -169,8 +179,7 @@ export default {
       }
       this.$emit("update:selectedItems", copySelected);
     },
-    onChangeAllItems(e) {
-      let selected = e.target.checked;
+    onChangeAllItems(selected) {
       this.$emit("update:selectedItems", selected ? this.dataSource : []);
     },
     inSelectedItems(item) {
@@ -181,55 +190,85 @@ export default {
     },
     changeOrderBy(key) {
       let copyOrderBy = JSON.parse(JSON.stringify(this.orderBy));
-      const oldValue = copyOrderBy[key];
-      if (oldValue === "esc") {
-        copyOrderBy[key] = "desc";
-      } else if (oldValue === "desc") {
-        copyOrderBy[key] = true;
-      } else {
-        copyOrderBy[key] = "esc";
+      const oldOrder = copyOrderBy["order"];
+      if (key === copyOrderBy["field"]) {
+        if (oldOrder === "esc") {
+          copyOrderBy["order"] = "desc";
+        } else if (oldOrder === "desc") {
+          copyOrderBy["order"] = true;
+        } else {
+          copyOrderBy["order"] = "esc";
+        }
+      }else{
+        copyOrderBy["order"] = "esc";
       }
+      copyOrderBy["field"] = key;
       this.$emit("update:orderBy", copyOrderBy);
     },
-    insertItem(id){
-      if(this.inExpendedIds(id)){
+    insertItem(id) {
+      if (this.inExpendedIds(id)) {
         this.takeOutItem(id);
-      }else{
+      } else {
         this.expandedIds.push(id);
       }
     },
-    takeOutItem(id){
+    takeOutItem(id) {
       const index = this.expandedIds.findIndex(r => r === id);
-      this.expandedIds.splice(index,1);
+      this.expandedIds.splice(index, 1);
     },
-    inExpendedIds(id){
+    inExpendedIds(id) {
       return this.expandedIds.indexOf(id) >= 0;
     },
-    setActionsWidth(){
+    setActionsWidth() {
       const actionsEle = this.$refs.actions;
-      let {width} = actionsEle[0].getBoundingClientRect();
+      let { width } = actionsEle[0].getBoundingClientRect();
       let actionsParentEle = actionsEle[0].parentNode;
-      let borderLeft = this.getStyleValue(actionsParentEle,'border-left-width');
-      let borderRight = this.getStyleValue(actionsParentEle,'border-right-width');
-      let paddingLeft = this.getStyleValue(actionsParentEle,'padding-left');
-      let paddingRight = this.getStyleValue(actionsParentEle,'padding-right');
-      let actionHeaderWidth = width + parseInt(borderLeft,10) +  parseInt(borderRight,10) +  parseInt(paddingLeft,10) +  parseInt(paddingRight,10) + 'px'
+      let borderLeft = this.getStyleValue(
+        actionsParentEle,
+        "border-left-width"
+      );
+      let borderRight = this.getStyleValue(
+        actionsParentEle,
+        "border-right-width"
+      );
+      let paddingLeft = this.getStyleValue(actionsParentEle, "padding-left");
+      let paddingRight = this.getStyleValue(actionsParentEle, "padding-right");
+      let actionHeaderWidth =
+        width +
+        parseInt(borderLeft, 10) +
+        parseInt(borderRight, 10) +
+        parseInt(paddingLeft, 10) +
+        parseInt(paddingRight, 10) +
+        "px";
       this.$refs.actionHeader.style.width = actionHeaderWidth;
-      actionsEle.forEach(div => div.parentNode.style.width = actionHeaderWidth);
-      
+      actionsEle.forEach(
+        div => (div.parentNode.style.width = actionHeaderWidth)
+      );
     },
-    getStyleValue(el,val){
-       return getComputedStyle(el).getPropertyValue(val)
+    getStyleValue(el, val) {
+      return getComputedStyle(el).getPropertyValue(val);
+    },
+    updateDataSource() {
+      const {field, order} = this.orderBy;
+      let copyDataSource = JSON.parse(JSON.stringify(this.dataSource));
+      this.renderDataSource = copyDataSource.sort((a,b) => {
+        if(order === 'esc'){
+          return a[field] - b[field]
+        }else if(order === 'desc'){
+          return b[field] - a[field]
+        }
+        return true
+      })
     }
   },
   computed: {
     isAllSelectedItems() {
-      if (this.selectedItems.length !== this.dataSource.length) {
+      if (this.selectedItems.length !== this.renderDataSource.length) {
         return false;
       }
       let equal = true;
       const array1 = this.selectedItems.map(item => item.id).sort();
-      const array2 = this.dataSource.map(item => item.id).sort();
+      const array2 = this.renderDataSource.map(item => item.id).sort();
       for (let i = 0; i < array1.length; i++) {
         if (array1[i] !== array2[i]) {
           equal = false;
@@ -238,37 +277,50 @@ export default {
       }
       return equal;
     },
-    expandedColSpan(){
+    expandedColSpan() {
       let num = 0;
-      if(this.checkable){num ++};
-      if(this.expandField){num ++}
-      return num
+      if (this.checkable) {
+        num++;
+      }
+      if (this.expandField) {
+        num++;
+      }
+      return num;
     }
+  },
+  created() {
+    this.updateDataSource();
   },
   mounted() {
     this.columns = this.$slots.default.map(node => {
-      const {text, field , width}  = node.componentOptions.propsData;
+      const { text, field, width, sortable } = node.componentOptions.propsData;
       const render = node.data.scopedSlots && node.data.scopedSlots.default;
-      return {text, field, width ,render}
+      return { text, field, width, render, sortable };
     });
     let cloneTable = this.$refs.table.cloneNode(false);
     cloneTable.classList.add("f-table-copy");
     let tHead = this.$refs.table.children[0];
     let { height } = tHead.getBoundingClientRect();
     // this.$refs.tableWrapper.style.marginTop = height + "px";
-    this.scrollMarginTop = height + 'px';
+    this.scrollMarginTop = height + "px";
     cloneTable.style.marginTop = `-${height}px`;
     cloneTable.appendChild(tHead);
     this.$refs.wrapper.appendChild(cloneTable);
-    
+
     this.$scopedSlots.default && this.setActionsWidth();
   },
   watch: {
     selectedItems() {
       // 半选与全选
-      this.$refs.allSelected.indeterminate =
+      this.indeterminate =
         this.selectedItems.length > 0 &&
-        this.selectedItems.length < this.dataSource.length;
+        this.selectedItems.length < this.renderDataSource.length;
+    },
+    orderBy: {
+      handler: function() {
+        this.updateDataSource();
+      },
+      deep: true
     }
   }
 };
@@ -282,7 +334,6 @@ $grey: darken($grey, 20%);
   .f-table {
     border-collapse: collapse;
     border-spacing: 0;
-    border-bottom: 1px solid $grey;
     width: 100%;
 
     &.bordered {
@@ -294,7 +345,7 @@ $grey: darken($grey, 20%);
     }
     td,
     th {
-      border-bottom: 1px solid $grey;
+      // border-bottom: 1px solid $border-color;
       text-align: left;
       padding: 8px;
     }
@@ -313,21 +364,41 @@ $grey: darken($grey, 20%);
     &-column {
       display: flex;
       align-items: center;
-      .f-table-sorter {
+      user-select: none;
+      &.f-table-sorter {
+        cursor: pointer;
+      }
+      .f-sorter-icons {
         display: inline-flex;
         flex-direction: column;
         justify-content: center;
-        margin: 0 3px;
         svg {
-          width: 10px;
-          height: 10px;
           fill: $grey;
           cursor: pointer;
           &.active {
-            fill: $button-primary-active-bg;
+            fill: #409eff;
           }
         }
+        svg:first-child {
+          margin-bottom: -0.3em;
+        }
+        svg:last-child {
+          margin-top: -0.3em;
+        }
       }
+    }
+  }
+  .f-table-thead {
+    tr {
+      box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
+    }
+  }
+  .f-table-tbody {
+    tr {
+      box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
+    }
+    tr:hover:not(.f-expand-row) {
+      background: $menu-hover-color;
     }
   }
   .f-table-copy {
@@ -355,7 +426,7 @@ $grey: darken($grey, 20%);
       height: 50px;
     }
   }
-  .f-table .f-table-center{
+  .f-table .f-table-center {
     text-align: center;
   }
 }
