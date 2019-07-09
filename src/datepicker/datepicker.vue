@@ -30,7 +30,9 @@
         <div :class="c('content')" v-else-if="mode === 'months'">月</div>
         <div :class="c('content')" v-else>
           <div :class="c('weekdays')">
-            <span v-for="week in weekdays" :key="week">{{ week }}</span>
+            <div v-for="week in weekdays" :class="c('weekday')" :key="week">
+              <abbr>{{ week }}</abbr>
+            </div>
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
             <span
@@ -42,8 +44,10 @@
           </div>
         </div>
       </div>
+      <div :class="c('divider')"></div>
       <div :class="c('actions')">
-        <f-button @click="onClickToday">今天</f-button>
+        <f-button @click="onClickToday" minimal>今天</f-button>
+        <f-button minimal>清空</f-button>
       </div>
     </div>
   </div>
@@ -142,7 +146,7 @@ export default {
       this.popVisible = true;
     },
     onBlurInput() {
-      this.popVisible = false;
+      // this.popVisible = false;
     },
     onClickCell(day) {
       this.$emit("input", day);
@@ -218,17 +222,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "_variable";
 .f-date-picker {
   position: relative;
   user-select: none;
   &-pop {
     position: absolute;
-    border: 1px solid red;
     width: 230px;
     left: 0;
     top: 100%;
     padding: 5px;
     background: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
   }
   &-nav {
     display: flex;
@@ -246,12 +252,16 @@ export default {
   }
   &-content {
     .f-date-picker-weekdays {
-      > span {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 32px;
-        height: 32px;
+      > .f-date-picker-weekday {
+        display: table-cell;
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 1;
+        padding-top: 5px;
+        font-weight: 600;
+        font-size: 14px;
       }
     }
     .f-date-picker-row {
@@ -259,10 +269,12 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         color: rgba(92, 112, 128, 0.5);
+        font-size: 14px;
         cursor: pointer;
+        border-radius: 3px;
         &:hover {
           background: #d8e1e8;
           color: #182026;
@@ -271,12 +283,20 @@ export default {
           color: #182026;
         }
         &.selected {
-          outline: 1px solid red;
+          background-color: #137cbd;
+          color: #fff;
         }
       }
     }
   }
+  &-divider{
+      margin: 5px;
+    border-right: 1px solid rgba(16,22,26,.15);
+    border-bottom: 1px solid rgba(16,22,26,.15);
+  }
   &-actions {
+     display: flex;
+     justify-content: space-between;
   }
 }
 </style>

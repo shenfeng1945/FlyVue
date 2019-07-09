@@ -42,18 +42,34 @@ components: {
 #### 示例
 
 ```js
-<f-table  :data-source="dataSource" :height="300" :striped="true" :bordered="true">
+<f-table :data-source="dataSource" 
+             :numberVisible="false" 
+             :selectedItems.sync="selectedItems"
+             :checkable="false"
+             expandField="description"
+             :orderBy.sync="orderBy"
+             >
       <template slot-scope="data">
-        <button>编辑</button>
-        <button>查看</button>
+         <f-popover trigger="click" :only-target="true" position="left">
+           <f-button>查看</f-button>
+           <template slot="content">
+             <div>
+               <p>
+                 姓名: {{data.item.name}}
+               </p>
+               <p>
+                 分数: {{data.item.score}}
+               </p>
+             </div>
+           </template>
+         </f-popover>
       </template>
-        <f-table-column text="姓名" field="name" width="200">
-          <template slot-scope="props">
-            <a href="#">{{props}}</a>
-          </template>
-        </f-table-column>
-        <f-table-column text="分数" field="score">
-        </f-table-column>
+      <f-table-column text="姓名" field="name" width="200" :sortable="true">
+        <template slot-scope="text">
+          <span>{{text}}</span>
+        </template>
+      </f-table-column>
+      <f-table-column text="分数" field="score" :sortable="true"></f-table-column>
 </f-table>
 
 
@@ -76,5 +92,7 @@ dataSource: [
     { id: 16, name: "kobe", score: 99 },
     { id: 17, name: "allen", score: 95 },
     { id: 18, name: "curry", score: 100 },
-  ]
+  ],
+selectedItems: [],
+orderBy: {field: 'score', order: 'esc'}
 ```

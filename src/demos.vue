@@ -1,46 +1,25 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-table :data-source="dataSource" 
-             :numberVisible="false" 
-             :selectedItems.sync="selectedItems"
-             :checkable="false"
-             expandField="description"
-             :orderBy.sync="orderBy"
-             >
-      <template slot-scope="data">
-         <f-popover trigger="click" :only-target="true" position="left">
-           <f-button>查看</f-button>
-           <template slot="content">
-             <div>
-               <p>
-                 姓名: {{data.item.name}}
-               </p>
-               <p>
-                 分数: {{data.item.score}}
-               </p>
-             </div>
-           </template>
-         </f-popover>
-      </template>
-      <f-table-column text="姓名" field="name" width="200" :sortable="true">
-        <template slot-scope="text">
-          <span>{{text}}</span>
-        </template>
-      </f-table-column>
-      <f-table-column text="分数" field="score" :sortable="true"></f-table-column>
-    </f-table>
-    <f-pager background :total-page="10" :current-page.sync="currentPage"></f-pager>
+     <f-date-picker :value="xxx" @input="xxx = $event"></f-date-picker>
+     {{value}}
+     <f-select :value="value" @update="value = $event">
+       <f-option value="请选择"></f-option>
+       <f-option v-for="item of options" 
+           :key="item.value"
+           :value="item.value"
+           :label="item.label"
+           ></f-option>
+     </f-select>
   </div>
 </template>
 <script>
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import Pager from "./pager/pager";
-import Table from "./table/table";
-import TableColumn from "./table/table-column";
-import Popover from "./popover/popover";
-import Checkbox from "./formControls/checkbox";
+import DatePicker from "./datepicker/datepicker";
+import Select from "./formControls/select";
+import Option from "./formControls/option";
+
 
 export default {
   name: "Demos",
@@ -48,39 +27,26 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-pager": Pager,
-    "f-table": Table,
-    "f-table-column": TableColumn,
-    "f-popover": Popover,
-    "f-checkbox": Checkbox
+    "f-date-picker": DatePicker,
+    "f-option": Option,
+    "f-select": Select
+
   },
   data() {
     return {
-      currentPage: 1,
-      dataSource: [
-        { id: 1, name: "张三", score: 100, description: '我叫张三，今天考试得了100分' },
-        { id: 2, name: "李四", score: 80, description: '我叫李四，今天考试得了80分' },
-        { id: 3, name: "王五", score: 99 },
-        { id: 4, name: "赵六", score: 30 },
-        { id: 5, name: "冯七", score: 59 },
-        { id: 6, name: "张三1", score: 78 },
-        { id: 7, name: "李四1", score: 80 },
-        { id: 8, name: "王五1", score: 99 },
-        { id: 9, name: "赵六1", score: 100 },
-        { id: 10, name: "冯七1", score: 60 },
-      ],
-      selectedItems: [],
-      orderBy: {field: 'score', order: 'esc'}
+      xxx: new Date(),
+      value: '选项1',
+      options: [
+        {value: '选项1', label: '黄金糕'},
+        {value: '选项2', label: '双皮奶'},
+        {value: '选项3', label: '蚵仔煎'},
+        {value: '选项4', label: '龙须面'},
+      ]
     };
   },
   created() {},
   methods: {
-    show(val){
-      console.log(val)
-    },
-    edit(val){
-      console.log(val)
-    }
+   
   }
 };
 </script>
@@ -91,12 +57,8 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-.box {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  height: 100%;
+#app{
+  margin-left: 200px;
+  margin-top: 200px;
 }
 </style>

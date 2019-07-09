@@ -55,6 +55,9 @@ $grey: #999;
 // table
 $table-header-color: #F5F8FA;
 
+// datepicker
+$box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 0 0 rgba(16,22,26,0), 0 1px 1px rgba(16,22,26,.2);
+
 @keyframes spin {
     0% {
         transform: rotate(0deg)
