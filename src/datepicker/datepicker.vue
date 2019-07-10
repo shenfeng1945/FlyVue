@@ -12,17 +12,24 @@
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
-          <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon>
+          <!-- <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon> -->
           <f-icon :class="c('prev-month')" @click="onClickPrevMonth" name="left"></f-icon>
         </span>
         <span :class="c('year-month')">
-          <span @click="onClickYear">{{display.year}}年</span>
+          <!-- <span @click="onClickYear">{{display.year}}年</span> -->
+          <f-select :value="String(display.month+1) + '月'" minimal>
+            <f-option v-for="item of monthOptions" :key="item.value" :value="item.value" :label="item.label"></f-option>
+          </f-select>
           &nbsp;
-          <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span>
+          <!-- <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span> -->
+          <f-select :value="display.year" minimal>
+            <f-option v-for="item of yearOptions" :key="item.value" :label="item.label" :value="item.value"></f-option>
+          </f-select>
         </span>
+        <button></button>
         <span :class="c('next')">
           <f-icon :class="c('next-month')" @click="onClickNextMonth" name="right"></f-icon>
-          <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon>
+          <!-- <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon> -->
         </span>
       </div>
       <div :class="c('panels')">
@@ -59,13 +66,17 @@ import Icon from "../icon/Icon";
 import ClickOutSide from "../cascader/cascader-click-outside";
 import helper from "./helper";
 import Button from "../button/button";
+import Select from '../formControls/select';
+import Option from '../formControls/option';
 
 export default {
   name: "FlyDatePicker",
   components: {
     "f-input": Input,
     "f-icon": Icon,
-    "f-button": Button
+    "f-button": Button,
+    "f-select": Select,
+    "f-option": Option
   },
   directives: {
     "click-outside": ClickOutSide
@@ -90,11 +101,28 @@ export default {
       popVisible: false,
       mode: "days", //months,years
       weekdays: null,
-      display: { year, month }
+      display: { year, month },
+      monthOptions: [
+        {value: '1月', label: '1月'},
+        {value: '2月', label: '2月'},
+        {value: '3月', label: '3月'},
+        {value: '4月', label: '4月'},
+        {value: '5月', label: '5月'},
+        {value: '6月', label: '6月'},
+        {value: '7月', label: '7月'},
+        {value: '8月', label: '8月'},
+        {value: '9月', label: '9月'},
+        {value: '10月', label: '10月'},
+        {value: '11月', label: '11月'},
+        {value: '12月', label: '12月'}
+      ],
+      yearOptions: Array.from({length: 20}, (v,i) => ({label: year - 19 + i, value: year - 19 + i}))
+      
     };
   },
   created() {
     this.initWeekDays();
+    this.popVisible = false;
   },
   computed: {
     visibleDays() {

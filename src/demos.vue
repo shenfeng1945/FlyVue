@@ -1,15 +1,15 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
      <f-date-picker :value="xxx" @input="xxx = $event"></f-date-picker>
-     {{value}}
-     <f-select :value="value" @update="value = $event">
+     <!-- {{value}} -->
+     <!-- <f-select :value="value" @update="value = $event" minimal>
        <f-option value="请选择"></f-option>
        <f-option v-for="item of options" 
            :key="item.value"
            :value="item.value"
            :label="item.label"
            ></f-option>
-     </f-select>
+     </f-select> -->
   </div>
 </template>
 <script>
