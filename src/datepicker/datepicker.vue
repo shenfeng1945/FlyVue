@@ -11,31 +11,20 @@
     />
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
-        <span :class="c('prev')">
-          <!-- <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon> -->
-          <f-icon :class="c('prev-month')" @click="onClickPrevMonth" name="left"></f-icon>
-        </span>
-        <span :class="c('year-month')">
-          <!-- <span @click="onClickYear">{{display.year}}年</span> -->
-          <f-select :value="String(display.month+1) + '月'" minimal>
-            <f-option v-for="item of monthOptions" :key="item.value" :value="item.value" :label="item.label"></f-option>
-          </f-select>
-          &nbsp;
-          <!-- <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span> -->
-          <f-select :value="display.year" minimal>
+        <f-button :class="c('prev-month')" @click="onClickPrevMonth" left-icon="chevron-left" minimal></f-button>
+        <span :class="`${c('year-month')} ${reserveMonthAndYear && 'f-reverse'}`">
+          <f-select :value="display.year" minimal @update="onUpdateYear">
             <f-option v-for="item of yearOptions" :key="item.value" :label="item.label" :value="item.value"></f-option>
           </f-select>
+          <f-select :value="String(display.month+1)" minimal @update="onUpdateMonth">
+            <f-option v-for="item of monthOptions" :key="item.value" :value="item.value" :label="item.label"></f-option>
+          </f-select>
         </span>
-        <button></button>
-        <span :class="c('next')">
-          <f-icon :class="c('next-month')" @click="onClickNextMonth" name="right"></f-icon>
-          <!-- <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon> -->
-        </span>
+        <f-button :class="c('next-month')" @click="onClickNextMonth" left-icon="chevron-right" minimal></f-button>
       </div>
+      <div :class="c('divider')"></div>
       <div :class="c('panels')">
-        <div :class="c('content')" v-if="mode === 'years'">年</div>
-        <div :class="c('content')" v-else-if="mode === 'months'">月</div>
-        <div :class="c('content')" v-else>
+        <div :class="c('content')">
           <div :class="c('weekdays')">
             <div v-for="week in weekdays" :class="c('weekday')" :key="week">
               <abbr>{{ week }}</abbr>
@@ -51,10 +40,10 @@
           </div>
         </div>
       </div>
-      <div :class="c('divider')"></div>
-      <div :class="c('actions')">
+      <div :class="c('divider')" v-if="showActions"></div>
+      <div :class="c('actions')" v-if="showActions">
         <f-button @click="onClickToday" minimal>今天</f-button>
-        <f-button minimal>清空</f-button>
+        <f-button @click="onClickClear" minimal>清空</f-button>
       </div>
     </div>
   </div>
@@ -91,30 +80,42 @@ export default {
       default: "一"
     },
     value: {
-      type: Date,
+      type: Date | Object,
       default: () => new Date()
+    },
+    showActions: {
+      type: Boolean,
+      default: false
+    },
+    reserveMonthAndYear: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
-    const [year, month] = helper.getYearMonthDate(this.value);
+    let year, month;
+    if(this.value){
+      [year, month] = helper.getYearMonthDate(this.value);
+    }else{
+      year = new Date().getUTCFullYear();
+    }
     return {
       popVisible: false,
-      mode: "days", //months,years
       weekdays: null,
       display: { year, month },
       monthOptions: [
-        {value: '1月', label: '1月'},
-        {value: '2月', label: '2月'},
-        {value: '3月', label: '3月'},
-        {value: '4月', label: '4月'},
-        {value: '5月', label: '5月'},
-        {value: '6月', label: '6月'},
-        {value: '7月', label: '7月'},
-        {value: '8月', label: '8月'},
-        {value: '9月', label: '9月'},
-        {value: '10月', label: '10月'},
-        {value: '11月', label: '11月'},
-        {value: '12月', label: '12月'}
+        {value: '1', label: '1月'},
+        {value: '2', label: '2月'},
+        {value: '3', label: '3月'},
+        {value: '4', label: '4月'},
+        {value: '5', label: '5月'},
+        {value: '6', label: '6月'},
+        {value: '7', label: '7月'},
+        {value: '8', label: '8月'},
+        {value: '9', label: '9月'},
+        {value: '10', label: '10月'},
+        {value: '11', label: '11月'},
+        {value: '12', label: '12月'}
       ],
       yearOptions: Array.from({length: 20}, (v,i) => ({label: year - 19 + i, value: year - 19 + i}))
       
@@ -164,25 +165,25 @@ export default {
     c(className) {
       return `f-date-picker-${className}`;
     },
-    onClickYear() {
-      this.mode = "years";
-    },
-    onClickMonth() {
-      this.mode = "months";
-    },
     onFocusInput() {
-      this.popVisible = true;
+      if(!this.value){
+        this.$emit('input',new Date())
+        const [year, month] = helper.getYearMonthDate(new Date());
+        this.display = { year, month };
+      }
+      this.$nextTick(() => this.popVisible = true)
     },
     onBlurInput() {
-      // this.popVisible = false;
+      this.popVisible = false;
     },
     onClickCell(day) {
       this.$emit("input", day);
       const [year, month] = helper.getYearMonthDate(day);
       this.display = { year, month };
-      // this.popVisible = false;
+      this.popVisible = false;
     },
     formatDate(date) {
+      if(!date) return '';
       let [year, month, day] = helper.getYearMonthDate(date);
       month = String(month + 1).padStart(2, "0");
       day = String(day).padStart(2, "0");
@@ -196,10 +197,10 @@ export default {
       this.display = { year, month };
       this.$emit("input", newDate);
     },
-    onClickPrevYear() {
-      const oldDay = helper.getYearMonthDate(this.value)[2];
+    onUpdateMonth(newMonth){
+      const [_,oldMonth,oldDay] = helper.getYearMonthDate(this.value);
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
-      const newDate = helper.addYear(oldDate, -1);
+      const newDate = helper.addMonth(oldDate, parseInt(newMonth) - parseInt(oldMonth) - 1);
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
       this.$emit("input", newDate);
@@ -212,10 +213,10 @@ export default {
       this.display = { year, month };
       this.$emit("input", newDate);
     },
-    onClickNextYear() {
-      const oldDay = helper.getYearMonthDate(this.value)[2];
+    onUpdateYear(newYear){
+      const [oldYear,_,oldDay]= helper.getYearMonthDate(this.value);
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
-      const newDate = helper.addYear(oldDate, 1);
+      const newDate = helper.addYear(oldDate, parseInt(newYear) - parseInt(oldYear));
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
       this.$emit("input", newDate);
@@ -230,6 +231,11 @@ export default {
       const [year, month, day] = helper.getYearMonthDate(date);
       this.display = { year, month };
       this.$emit("input", new Date(year, month, day));
+      this.popVisible = false;
+    },
+    onClickClear(){
+      this.$emit('input', null);
+      this.popVisible = false;
     },
     onInput(value) {
       const reg = /^\d{4}-\d{2}-\d{2}$/g;
@@ -267,16 +273,22 @@ export default {
   &-nav {
     display: flex;
     justify-content: space-between;
+    > .f-reverse{
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+    }
     svg {
       width: 12px;
       height: 12px;
     }
   }
-  &-prev-month {
-    margin-left: 1em;
-  }
-  &-next-month {
-    margin-right: 1em;
+  &-prev-month,&-next-month{
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    color: #5c7080;
+    font-size: 16px;
   }
   &-content {
     .f-date-picker-weekdays {

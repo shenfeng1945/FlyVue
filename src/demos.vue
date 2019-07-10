@@ -1,15 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-     <f-date-picker :value="xxx" @input="xxx = $event"></f-date-picker>
-     <!-- {{value}} -->
-     <!-- <f-select :value="value" @update="value = $event" minimal>
-       <f-option value="请选择"></f-option>
-       <f-option v-for="item of options" 
-           :key="item.value"
-           :value="item.value"
-           :label="item.label"
-           ></f-option>
-     </f-select> -->
+     <f-date-picker :value="value" @input="value = $event" :showActions="false" :reserveMonthAndYear="true"></f-date-picker>
   </div>
 </template>
 <script>
@@ -34,14 +25,7 @@ export default {
   },
   data() {
     return {
-      xxx: new Date(),
-      value: '选项1',
-      options: [
-        {value: '选项1', label: '黄金糕'},
-        {value: '选项2', label: '双皮奶'},
-        {value: '选项3', label: '蚵仔煎'},
-        {value: '选项4', label: '龙须面'},
-      ]
+      value: null,
     };
   },
   created() {},

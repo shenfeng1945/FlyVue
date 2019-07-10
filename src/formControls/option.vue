@@ -7,11 +7,11 @@ export default {
     name: 'FlyOption',
     props: {
         value: {
-            type: String,
+            type: String | Number,
             required: true
         },
         label: {
-            type: String,
+            type: String | Number,
         }
     }
 }

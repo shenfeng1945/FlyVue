@@ -13,7 +13,7 @@ import Icon from "../icon/Icon";
 export default {
   name: "FlySelect",
   props: {
-    value: String,
+    value: String|Number,
     minimal: {
       type: Boolean,
       default: false
