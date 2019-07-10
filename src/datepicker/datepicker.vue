@@ -12,17 +12,24 @@
     <div class="f-date-picker-pop" v-if="popVisible">
       <div class="f-date-picker-nav">
         <span :class="c('prev')">
-          <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon>
+          <!-- <f-icon :class="c('prev-year')" @click="onClickPrevYear" name="dleft"></f-icon> -->
           <f-icon :class="c('prev-month')" @click="onClickPrevMonth" name="left"></f-icon>
         </span>
         <span :class="c('year-month')">
-          <span @click="onClickYear">{{display.year}}年</span>
+          <!-- <span @click="onClickYear">{{display.year}}年</span> -->
+          <f-select :value="String(display.month+1) + '月'" minimal>
+            <f-option v-for="item of monthOptions" :key="item.value" :value="item.value" :label="item.label"></f-option>
+          </f-select>
           &nbsp;
-          <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span>
+          <!-- <span @click="onClickMonth">{{String(display.month+1).padStart(2,'0')}}月</span> -->
+          <f-select :value="display.year" minimal>
+            <f-option v-for="item of yearOptions" :key="item.value" :label="item.label" :value="item.value"></f-option>
+          </f-select>
         </span>
+        <button></button>
         <span :class="c('next')">
           <f-icon :class="c('next-month')" @click="onClickNextMonth" name="right"></f-icon>
-          <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon>
+          <!-- <f-icon :class="c('next-year')" @click="onClickNextYear" name="dright"></f-icon> -->
         </span>
       </div>
       <div :class="c('panels')">
@@ -30,7 +37,9 @@
         <div :class="c('content')" v-else-if="mode === 'months'">月</div>
         <div :class="c('content')" v-else>
           <div :class="c('weekdays')">
-            <span v-for="week in weekdays" :key="week">{{ week }}</span>
+            <div v-for="week in weekdays" :class="c('weekday')" :key="week">
+              <abbr>{{ week }}</abbr>
+            </div>
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
             <span
@@ -42,8 +51,10 @@
           </div>
         </div>
       </div>
+      <div :class="c('divider')"></div>
       <div :class="c('actions')">
-        <f-button @click="onClickToday">今天</f-button>
+        <f-button @click="onClickToday" minimal>今天</f-button>
+        <f-button minimal>清空</f-button>
       </div>
     </div>
   </div>
@@ -55,13 +66,17 @@ import Icon from "../icon/Icon";
 import ClickOutSide from "../cascader/cascader-click-outside";
 import helper from "./helper";
 import Button from "../button/button";
+import Select from '../formControls/select';
+import Option from '../formControls/option';
 
 export default {
   name: "FlyDatePicker",
   components: {
     "f-input": Input,
     "f-icon": Icon,
-    "f-button": Button
+    "f-button": Button,
+    "f-select": Select,
+    "f-option": Option
   },
   directives: {
     "click-outside": ClickOutSide
@@ -86,11 +101,28 @@ export default {
       popVisible: false,
       mode: "days", //months,years
       weekdays: null,
-      display: { year, month }
+      display: { year, month },
+      monthOptions: [
+        {value: '1月', label: '1月'},
+        {value: '2月', label: '2月'},
+        {value: '3月', label: '3月'},
+        {value: '4月', label: '4月'},
+        {value: '5月', label: '5月'},
+        {value: '6月', label: '6月'},
+        {value: '7月', label: '7月'},
+        {value: '8月', label: '8月'},
+        {value: '9月', label: '9月'},
+        {value: '10月', label: '10月'},
+        {value: '11月', label: '11月'},
+        {value: '12月', label: '12月'}
+      ],
+      yearOptions: Array.from({length: 20}, (v,i) => ({label: year - 19 + i, value: year - 19 + i}))
+      
     };
   },
   created() {
     this.initWeekDays();
+    this.popVisible = false;
   },
   computed: {
     visibleDays() {
@@ -142,7 +174,7 @@ export default {
       this.popVisible = true;
     },
     onBlurInput() {
-      this.popVisible = false;
+      // this.popVisible = false;
     },
     onClickCell(day) {
       this.$emit("input", day);
@@ -218,17 +250,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "_variable";
 .f-date-picker {
   position: relative;
   user-select: none;
   &-pop {
     position: absolute;
-    border: 1px solid red;
     width: 230px;
     left: 0;
     top: 100%;
     padding: 5px;
     background: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
   }
   &-nav {
     display: flex;
@@ -246,12 +280,16 @@ export default {
   }
   &-content {
     .f-date-picker-weekdays {
-      > span {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 32px;
-        height: 32px;
+      > .f-date-picker-weekday {
+        display: table-cell;
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 1;
+        padding-top: 5px;
+        font-weight: 600;
+        font-size: 14px;
       }
     }
     .f-date-picker-row {
@@ -259,10 +297,12 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         color: rgba(92, 112, 128, 0.5);
+        font-size: 14px;
         cursor: pointer;
+        border-radius: 3px;
         &:hover {
           background: #d8e1e8;
           color: #182026;
@@ -271,12 +311,20 @@ export default {
           color: #182026;
         }
         &.selected {
-          outline: 1px solid red;
+          background-color: #137cbd;
+          color: #fff;
         }
       }
     }
   }
+  &-divider{
+      margin: 5px;
+    border-right: 1px solid rgba(16,22,26,.15);
+    border-bottom: 1px solid rgba(16,22,26,.15);
+  }
   &-actions {
+     display: flex;
+     justify-content: space-between;
   }
 }
 </style>
