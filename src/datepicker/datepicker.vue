@@ -117,8 +117,6 @@ export default {
         {value: '11', label: '11月'},
         {value: '12', label: '12月'}
       ],
-      yearOptions: Array.from({length: 20}, (v,i) => ({label: year - 19 + i, value: year - 19 + i}))
-      
     };
   },
   created() {
@@ -149,6 +147,9 @@ export default {
       return [0, 1, 2, 3, 4, 5].map(n =>
         panelDaysArray.slice(n * 7, n * 7 + 7)
       );
+    },
+    yearOptions(){
+      return Array.from({length: 20}, (v,i) => ({label: this.display.year - 10 + i, value: this.display.year - 10 + i}))
     }
   },
   methods: {
@@ -260,6 +261,7 @@ export default {
 .f-date-picker {
   position: relative;
   user-select: none;
+  display: inline-block;
   &-pop {
     position: absolute;
     width: 230px;
@@ -269,6 +271,25 @@ export default {
     background: white;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
+    margin-top: .6em;
+    &::before, &::after{
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: 0;
+      transform: translateY(-100%);
+      left: 1em;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+    &::before{
+      border-bottom: 6px solid rgba(16, 22, 26, 0.6);
+    }
+    &::after{
+      border-bottom: 6px solid white;
+      margin-bottom: -1px;
+    }
   }
   &-nav {
     display: flex;
