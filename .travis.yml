@@ -4,6 +4,12 @@ node_js:
 addons:
   chrome: stable
 sudo: required
+cache:
+  directories:
+    - node_modules
+branches:
+  only:
+    - master
 before_script:
   - "sudo chown root /opt/google/chrome/chrome-sandbox"
   - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
