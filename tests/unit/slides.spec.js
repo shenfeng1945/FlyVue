@@ -94,6 +94,7 @@ describe('Slides', () => {
         })
         setTimeout(() => {
             wrapper.find('span[data-index="1"]').trigger('click');
+            done()
         })
     })
 
@@ -156,7 +157,7 @@ describe('Slides', () => {
             }
         })
         setTimeout(() => {
-            wrapper.find('.f-slides-control-right').trigger('click')
+           wrapper.find('.f-slides-control-right').trigger('click')
         })
     })
 

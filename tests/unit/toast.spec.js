@@ -35,11 +35,7 @@ describe('Toast', () => {
             }
         }
     })
-    const vm = wrapper.vm
     wrapper.find('.close').trigger('click')
-    const closeButton = vm.$el.querySelector('.close')
-    closeButton.click()
-    expect(closeButton.textContent).to.eq('关闭')
     expect(callback).to.have.been.called
   })
 //   it('接受 enableHtml 属性', () => {

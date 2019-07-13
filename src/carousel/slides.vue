@@ -73,7 +73,7 @@ export default {
       type: String,
       default: "horizontal",
       validator(val) {
-        return ["horizontal", "vertical"].indexOf(val);
+        return ["horizontal", "vertical"].indexOf(val) > -1;
       }
     }
   },
