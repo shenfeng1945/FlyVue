@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    const ITEM_MIN_HEIGHT = 20;
+    const VIEWPORT_MIN_HEIGHT = 100;
     export default {
         name: "FlyVirtualList",
         props: {
@@ -36,13 +38,36 @@
             }
         },
         data(){
+            const ih = parseInt(this.itemHeight, 10);
+            const isPercent = this.height.indexOf('%') > -1;
+            let vh = parseInt(this.height, 10);
+            if(isPercent){
+                vh = this.height;
+            }else{
+                vh = (Number.isNaN(vh) || vh < VIEWPORT_MIN_HEIGHT) ? VIEWPORT_MIN_HEIGHT : vh;
+            }
+
             return {
                 renderList: [],
+                isPercent,
+                scrollTop: 0,
+
+                ih: (Number.isNaN(ih) || ih < ITEM_MIN_HEIGHT) ? ITEM_MIN_HEIGHT : ih,
+
+                contentHeight: NaN,
             }
         },
         methods: {
             initRenderList(){
-                
+                this.contentHeight = Math.ceil(this.data.length * this.ih);
+                if(this.mode === 'demand'){
+                    this.renderList = this.getDemandList()
+                }
+            },
+            getDemandList(){
+                let list = [];
+                const from = Math.ceil(this.scrollTop / this.contentHeight);
+                return list
             }
         },
         mounted() {
