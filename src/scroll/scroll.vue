@@ -19,7 +19,8 @@
         name: 'FlyScroll',
         data(){
             return {
-                scrollBarVisible: true,
+                scrollBarVisible: false,
+                shouldExistScroll: true,
                 contentTranslateY: 0,
                 barTranslateY: 0,
                 barStartTranslateY: 0,
@@ -30,10 +31,14 @@
             }
         },
         mounted() {
-            this.listenDocument();
             this.parentHeight = this.$refs.parent.getBoundingClientRect().height;
             this.childHeight = this.$refs.child.getBoundingClientRect().height;
-            this.updateScrollBar();
+            if(this.parentHeight < this.childHeight){
+                this.updateScrollBar();
+                this.listenDocument();
+            }else{
+                this.shouldExistScroll = false;
+            }
         },
         methods: {
             listenDocument(){
@@ -63,6 +68,7 @@
                 })
             },
             onMouseWheel(e){
+                if(!this.shouldExistScroll) return;
                 let { deltaY } = e;
                 let translateY = this.contentTranslateY;
                 let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(this.$refs.parent);
@@ -88,7 +94,9 @@
                 this.barTranslateY = this.barStartTranslateY;
             },
             onMouseEnter(){
-                this.scrollBarVisible = true;
+                if(this.shouldExistScroll){
+                    this.scrollBarVisible = true;
+                }
             },
             onMouseLeave(){
                 if(!this.scrollBarMousing){

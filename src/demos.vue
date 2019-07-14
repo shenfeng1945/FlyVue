@@ -1,15 +1,16 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-     <f-date-picker :value="value" @input="value = $event" :showActions="false" :reserveMonthAndYear="true"></f-date-picker>
+    <f-scroll style="width: 400px;height: 400px">
+      <f-virtual-list :data="data"></f-virtual-list>
+    </f-scroll>
   </div>
 </template>
 <script>
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import DatePicker from "./datepicker/datepicker";
-import Select from "./formControls/select";
-import Option from "./formControls/option";
+import Scroll from "./scroll/scroll";
+import VirtualList from "./virtualList/virtualList";
 
 
 export default {
@@ -18,14 +19,12 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-date-picker": DatePicker,
-    "f-option": Option,
-    "f-select": Select
-
+    "f-scroll": Scroll,
+    "f-virtual-list": VirtualList
   },
   data() {
     return {
-      value: null,
+      data: Array.from({length: 30}, (v,i) => i)
     };
   },
   created() {},
@@ -42,7 +41,12 @@ body {
   box-sizing: border-box;
 }
 #app{
-  margin-left: 200px;
-  margin-top: 200px;
+    width: 300px;
 }
+  ul,ol{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
 </style>
