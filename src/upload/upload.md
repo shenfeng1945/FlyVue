@@ -19,11 +19,16 @@
 
 #### 图片上传接口设计
 
-```js
-<f-upload accept="image/*" action="/api/upload" name="avatar" :fileList.sync="fileList">
-  <button>上传</button>
+```vue
+<f-upload
+            name="avatar"
+            action="http://localhost:3000/upload"
+            :parse-response="parseResponse"
+            :file-list.sync="fileList"
+            :multiple="true"
+    >
+    <f-button intent="primary">点击上传</f-button>
 </f-upload>
-<button>保存</button>
 ```
 #### 难点分析
 子组件emit一个事件，父组件能立马得到，这是同步的，父组件将最新数据重新渲染到子组件的过程，是异步的,父组件创建了一个异步的UI更新任务

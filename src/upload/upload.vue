@@ -14,13 +14,11 @@
           <img
             class="f-upload-img"
             :src="file.url"
-            width="32"
-            height="32"
             alt=""
           />
         </template>
         <template v-else>
-          <div style="width:32px;height: 32px;border:1px solid red;">
+          <div style="width:72px;height: 72px;border:1px solid red;">
             <f-icon
               class="f-upload-loading"
               v-if="file.status === 'pending'"
@@ -28,8 +26,8 @@
             ></f-icon>
           </div>
         </template>
-        <span>{{ file.name }}</span>
-        <f-icon name="close" @click="onRemoveFile(file.name)"></f-icon>
+        <span class="f-upload-filename">{{ file.name }}</span>
+        <f-icon class="f-upload-close" name="close" @click="onRemoveFile(file.name)"></f-icon>
       </li>
     </ol>
   </div>
@@ -37,6 +35,7 @@
 
 <script>
 import Icon from "../icon/Icon";
+import Button from '../button/button';
 export default {
   name: "FlyUpload",
   props: {
@@ -51,7 +50,7 @@ export default {
     sizeLimit: { type: Number },
     multiple: { type: Boolean, default: false },
   },
-  components: { "f-icon": Icon },
+  components: { "f-icon": Icon, "f-button": Button },
   methods: {
     onUploadTrigger() {
       let input = this.createInput();
@@ -198,6 +197,32 @@ export default {
     > li {
       display: flex;
       align-items: center;
+      background-color: #fff;
+      border: 1px solid #c0ccda;
+      border-radius: 6px;
+      margin-top: 10px;
+      padding: 10px 10px 10px 10px;
+      height: 92px;
+      position: relative;
+        justify-content: flex-start;
+        .f-upload-img{
+          width: 70px;
+          height: 70px;
+          background-color: #fff;
+        }
+      .f-upload-filename{
+        margin-left: 10px;
+      }
+      .f-upload-close{
+        position: absolute;
+        top: 0.2em;
+        right: 0.2em;
+        cursor: pointer;
+        fill: $border-color;
+        &:hover{
+          fill: $border-color-hover;
+        }
+      }
     }
   }
   &-loading {

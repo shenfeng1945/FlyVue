@@ -1,16 +1,21 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-scroll style="width: 400px;height: 400px" @updateScroll="scrollTop = $event">
-      <f-virtual-list :data="data" :scrollTop="scrollTop"></f-virtual-list>
-    </f-scroll>
+    <f-upload
+            name="avatar"
+            action="http://localhost:3000/upload"
+            :parse-response="parseResponse"
+            :file-list.sync="fileList"
+            :multiple="true"
+    >
+      <f-button intent="primary">点击上传</f-button>
+    </f-upload>
   </div>
 </template>
 <script>
 import Input from "./input/Input";
 import Button from "./button/button";
 import Icon from "./icon/Icon";
-import Scroll from "./scroll/scroll";
-import VirtualList from "./virtualList/virtualList";
+import Upload from './upload/upload';
 
 
 export default {
@@ -19,18 +24,19 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-    "f-scroll": Scroll,
-    "f-virtual-list": VirtualList
+    "f-upload": Upload
   },
   data() {
     return {
-      data: Array.from({length: 30}, (v,i) => i),
-      scrollTop: 0
+      fileList: []
     };
   },
   created() {},
   methods: {
-  
+     parseResponse(res){
+       const {key} = JSON.parse(res);
+       return `http://localhost:3000/preview/${key}`
+     }
   }
 };
 </script>
