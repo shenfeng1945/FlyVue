@@ -92,6 +92,7 @@
                 this.barStartTranslateY = contentTranslateY ? (-parentHeight * contentTranslateY/ childHeight) : 0;
                 this.$refs.scrollBar.style.height = barHeight + 'px';
                 this.barTranslateY = this.barStartTranslateY;
+                this.$emit('updateScroll', Math.abs(contentTranslateY))
             },
             onMouseEnter(){
                 if(this.shouldExistScroll){

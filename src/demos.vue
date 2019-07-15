@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-scroll style="width: 400px;height: 400px">
-      <f-virtual-list :data="data"></f-virtual-list>
+    <f-scroll style="width: 400px;height: 400px" @updateScroll="scrollTop = $event">
+      <f-virtual-list :data="data" :scrollTop="scrollTop"></f-virtual-list>
     </f-scroll>
   </div>
 </template>
@@ -24,12 +24,13 @@ export default {
   },
   data() {
     return {
-      data: Array.from({length: 30}, (v,i) => i)
+      data: Array.from({length: 30}, (v,i) => i),
+      scrollTop: 0
     };
   },
   created() {},
   methods: {
-   
+  
   }
 };
 </script>

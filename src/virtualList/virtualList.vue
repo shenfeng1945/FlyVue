@@ -17,7 +17,7 @@
             },
             height: {
                 type: [Number, String],
-                default: 100,
+                default: 400,
             },
             itemHeight: {
                 type: [Number, String],
@@ -35,11 +35,15 @@
                 type: String,
                 default: 'demand',
                 validator: val => ['demand', 'lazy'].indexOf(val) > -1
+            },
+            scrollTop: {
+                type: Number,
+                default: 0
             }
         },
         data(){
             const ih = parseInt(this.itemHeight, 10);
-            const isPercent = this.height.indexOf('%') > -1;
+            const isPercent = String(this.height).indexOf('%') > -1;
             let vh = parseInt(this.height, 10);
             if(isPercent){
                 vh = this.height;
@@ -50,8 +54,9 @@
             return {
                 renderList: [],
                 isPercent,
-                scrollTop: 0,
+                // scrollTop: 0,
 
+                viewportHeihgt: vh,
                 ih: (Number.isNaN(ih) || ih < ITEM_MIN_HEIGHT) ? ITEM_MIN_HEIGHT : ih,
 
                 contentHeight: NaN,
@@ -64,14 +69,26 @@
                     this.renderList = this.getDemandList()
                 }
             },
+            updateRenderList(){
+                if(this.mode === 'demand'){
+                    this.renderList = this.getDemandList()
+                }
+            },
             getDemandList(){
                 let list = [];
-                const from = Math.ceil(this.scrollTop / this.contentHeight);
+                const from = Math.ceil(this.scrollTop / this.ih);
+                const to = Math.ceil((this.scrollTop + this.viewportHeihgt) / this.ih);
+                list = this.data.slice(from, to);
                 return list
-            }
+            },
         },
         mounted() {
             this.data.length && this.initRenderList();
+        },
+        watch: {
+            scrollTop(){
+              this.updateRenderList()
+            }
         }
     }
 </script>
@@ -80,7 +97,7 @@
 .f-virtual-list{
     li{
         height: 40px;
-        border: 1px solid ;
+        // border: 1px solid ;
     }
 }
 </style>
