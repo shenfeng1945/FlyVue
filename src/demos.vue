@@ -6,6 +6,7 @@
             :parse-response="parseResponse"
             :file-list.sync="fileList"
             :multiple="true"
+            list-style="picture"
     >
       <f-button intent="primary">点击上传</f-button>
     </f-upload>

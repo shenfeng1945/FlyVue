@@ -3,31 +3,27 @@
     <div class="f-upload-trigger" @click="onUploadTrigger">
       <slot></slot>
     </div>
-    <div
-      class="f-upload-files"
-      ref="files"
-      style="width:0;height: 0;overflow: hidden;"
-    ></div>
+    <div class="f-upload-files" ref="files" style="width:0;height: 0;overflow: hidden;"></div>
     <ol class="f-upload-fileList">
-      <li v-for="file in fileList" :key="file.name">
-        <template v-if="file.url">
-          <img
-            class="f-upload-img"
-            :src="file.url"
-            alt=""
-          />
+      <li v-for="file in fileList" :key="file.name" :class="`f-list-${listStyle}`">
+        <template v-if="listStyle === 'picture'">
+          <template v-if="file.url">
+            <img class="f-upload-img" :src="file.url" alt />
+          </template>
+          <template v-else>
+            <div>
+              <f-icon class="f-upload-loading" v-if="file.status === 'pending'" name="loading"></f-icon>
+            </div>
+          </template>
+          <span class="f-upload-filename">{{ file.name }}</span>
         </template>
+
         <template v-else>
-          <div style="width:72px;height: 72px;border:1px solid red;">
-            <f-icon
-              class="f-upload-loading"
-              v-if="file.status === 'pending'"
-              name="loading"
-            ></f-icon>
-          </div>
+          <f-icon class="f-upload-label" name="file"></f-icon>
+          <span class="f-upload-filename">{{ file.name }}</span>
         </template>
-        <span class="f-upload-filename">{{ file.name }}</span>
         <f-icon class="f-upload-close" name="close" @click="onRemoveFile(file.name)"></f-icon>
+        <f-icon class="f-upload-tick" name="tick"></f-icon>
       </li>
     </ol>
   </div>
@@ -35,7 +31,7 @@
 
 <script>
 import Icon from "../icon/Icon";
-import Button from '../button/button';
+import Button from "../button/button";
 export default {
   name: "FlyUpload",
   props: {
@@ -49,6 +45,13 @@ export default {
     removeFile: { type: Function },
     sizeLimit: { type: Number },
     multiple: { type: Boolean, default: false },
+    listStyle: {
+      type: String,
+      default: "default",
+      validator(val) {
+        return ["default", "picture"].indexOf(val) > -1;
+      }
+    }
   },
   components: { "f-icon": Icon, "f-button": Button },
   methods: {
@@ -115,7 +118,12 @@ export default {
     beforeUploadFiles(pureFiles, newNames) {
       let result = true;
       // 生成将要新增数据数组
-      let newFileLists = pureFiles.map((pureFile, i) => ({ name: newNames[i], status: "pending", type: pureFile.type, size: pureFile.size }));
+      let newFileLists = pureFiles.map((pureFile, i) => ({
+        name: newNames[i],
+        status: "pending",
+        type: pureFile.type,
+        size: pureFile.size
+      }));
       // 检测上传文件尺寸限制
       pureFiles.forEach(pureFile => {
         let { size } = pureFile;
@@ -198,37 +206,58 @@ export default {
       display: flex;
       align-items: center;
       background-color: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+      .f-upload-close{display: none;}
+      &:hover{
+        .f-upload-close{display: block;}
+        .f-upload-tick{display: none;}
+      }
+    }
+    > li.f-list-picture {
       border: 1px solid #c0ccda;
       border-radius: 6px;
-      margin-top: 10px;
       padding: 10px 10px 10px 10px;
       height: 92px;
       position: relative;
-        justify-content: flex-start;
-        .f-upload-img{
-          width: 70px;
-          height: 70px;
-          background-color: #fff;
-        }
-      .f-upload-filename{
+      .f-upload-img {
+        width: 70px;
+        height: 70px;
+        background-color: #fff;
+      }
+      .f-upload-filename {
         margin-left: 10px;
       }
-      .f-upload-close{
+      .f-upload-close {
         position: absolute;
         top: 0.2em;
         right: 0.2em;
         cursor: pointer;
-        fill: $border-color;
-        &:hover{
-          fill: $border-color-hover;
-        }
       }
+      .f-upload-tick {
+        position: absolute;
+        top: 0.2em;
+        right: 0.2em;
+        cursor: pointer;
+        fill: $button-success-active-bg;
+      }
+      &:hover {
+        color: $button-success-active-bg;
+      }
+    }
+    > li.f-list-default {
+      line-height: 1.8;
+      border-radius: $border-radius;
+      .f-upload-label {margin-right: 0.2em;}
+      .f-upload-filename {flex: 1;}
+      .f-upload-tick {fill: $button-success-active-bg;margin-right: 10px;}
+      &:hover {background: #ebf1f5;.f-upload-close {margin-right: 10px;}}
     }
   }
   &-loading {
     @include spin;
-    width: 32px;
-    height: 32px;
+    width: 70px;
+    height: 70px;
   }
 }
 </style>
