@@ -1,12 +1,12 @@
 <template>
-  <ul class="f-tree">
+  <div class="f-tree">
     <f-tree-node
       v-for="item of renderData"
       :key="item.id"
       :modelItem="item"
       @update:Data="toogleNode"
     ></f-tree-node>
-  </ul>
+  </div>
 </template>
 
 <script>
