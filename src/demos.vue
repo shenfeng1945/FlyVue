@@ -10,12 +10,12 @@ import Button from "./button/button";
 import Icon from "./icon/Icon";
 import WaterFall from "./waterFall/waterFall";
 
-const mockData = [
-  "https://i.loli.net/2019/07/19/5d319e2ad21b537355.jpeg",
-  "https://i.loli.net/2019/07/19/5d319e2b1e18e63878.jpeg",
-  "https://i.loli.net/2019/07/19/5d319e2b33e6347832.jpeg",
-  "https://i.loli.net/2019/07/19/5d319e2b341aa22555.jpeg",
-  "https://i.loli.net/2019/07/19/5d319e2b35bb333052.jpeg",
+// const mockData = [
+  // "https://i.loli.net/2019/07/19/5d319e2ad21b537355.jpeg",
+  // "https://i.loli.net/2019/07/19/5d319e2b1e18e63878.jpeg",
+  // "https://i.loli.net/2019/07/19/5d319e2b33e6347832.jpeg",
+  // "https://i.loli.net/2019/07/19/5d319e2b341aa22555.jpeg",
+  // "https://i.loli.net/2019/07/19/5d319e2b35bb333052.jpeg",
   // "https://i.loli.net/2019/07/19/5d319e2b35e2753904.jpeg",
   // "https://i.loli.net/2019/07/19/5d319e2b3e04496848.jpeg",
   // "https://i.loli.net/2019/07/19/5d319e2b3e29916110.jpeg",
@@ -29,7 +29,7 @@ const mockData = [
   // "https://i.loli.net/2019/07/19/5d319e929935076314.jpeg",
   // "https://i.loli.net/2019/07/19/5d319e92a946062222.jpeg",
   // "https://i.loli.net/2019/07/19/5d319e92b562b12061.jpeg"
-];
+// ];
 
 export default {
   name: "Demos",
@@ -45,8 +45,8 @@ export default {
     };
   },
   created() {
-    // this.data = Array.from({length: 18}, (v,i) => `src/waterFall/images/${ Math.ceil(Math.random() * 18)}.jpeg`);
-    this.data = mockData
+    this.data = Array.from({length: 18}, (v,i) => `http://localhost:8081/${ Math.ceil(Math.random() * 18)}.jpeg`);
+    // this.data = mockData
   },
   methods: {
     progressEnd() {
