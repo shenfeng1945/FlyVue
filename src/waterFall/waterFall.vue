@@ -1,8 +1,9 @@
 <template>
   <div class="f-water-fall-wrapper">
     <div class="f-water-fall" :style="{'width': containerWidth}">
-      <div class="f-water-fall-pin" v-for="(item, i) of renderList" :key="i" :style="item.style" ref="pin">
-        <img :src="item.src"/>
+      <div class="f-water-fall-pin" v-for="(item, i) of imageLists" :key="i" :style="pinStyle" ref="pin">
+        <img :src="item.src" style="width: 100%"/>
+        <p class="f-description">{{item.name}}</p>
       </div>
     </div>
     <div class="f-loading" v-if="loading">
@@ -52,25 +53,33 @@ export default {
       viewportWidth: 0,
       num: 5,
       pins: null,
-      loading: true
+      loading: true,
+      // 滑到底部图片加载中
+      updating: false
     };
   },
-  created() {
-    this.init();
-  },
   watch: {
-    renderList(){
+    imageLists(v, e){
+      this.$nextTick(() => {
         this.setWaterFall();
+      })
     }
   },
   mounted() {
     this.pins = this.$refs.pin;
+    this.init();
   },
   computed: {
+    pinStyle(){
+      return {
+        width: this.pinWidth + 'px',
+        display: 'none'
+      }
+    }
   },
   methods: {
     init() {
-      this.renderList = this.imageLists.map(item => ({src: item, style: {width: this.pinWidth + 'px',display: 'none'}}));
+      // this.renderList = this.imageLists.length && this.imageLists.map(item => ({src: item, style: {width: this.pinWidth + 'px',display: 'none'}}));
       // 计算有多少列
       this.getColumnNum();
       // 设置 container 居中
@@ -78,8 +87,9 @@ export default {
       // 绑定滚动事件
       this.bindScrollEvent();
 
+      // 如果已经有了图片，设置瀑布流
       if (this.pins && this.pins.length > 0) {
-        this.setPosition()
+        this.setWaterFall()
       }
     },
     getColumnNum() {
@@ -87,31 +97,41 @@ export default {
         this.viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         this.viewportWidth = window.innerWidth || document.documentElement.clientWidth;
         this.num = Math.floor((this.viewportWidth + this.gapWidth) / this.unitWidth);
-        this.columnHeightArr = Array.from({length: this.num}, () => 0)
+        this.initColumnHeightArr();
     },
     resetPosition(){
        this.getColumnNum();
        this.setContainer();
     },
+    initColumnHeightArr(){
+        this.columnHeightArr = Array.from({length: this.num}, () => 0)
+    },
     handleResize(){
         this.resetPosition()
+        this.setPosition();
     },
     bindScrollEvent(){
         window.addEventListener('resize', this.handleResize)
+        window.addEventListener('scroll', this.handleScroll)
     },
     setWaterFall() {
-       const promises = this.pins.map(node => {
+       const promises = this.pins && this.pins.filter(node => getComputedStyle(node).display === 'none').map(node => {
            const img = node.firstChild;
            return new Promise((resolve, reject) => {
-             img.onload = resolve;
+             img.onload = function(){
+               resolve();
+             };
              img.onerror = reject;
            })
        });
-      Promise.all(promises).then(() => this.setPosition()).catch( () => this.loading = false)
+      Promise.all(promises)
+        .then(this.setPosition)
+        .catch(this.setPosition)
     },
     setPosition() {
-      this.loading =false;
-      this.pins.forEach(node => node.style.display = 'block');
+      this.loading = false;
+      this.pins.filter(node => getComputedStyle(node).display === 'none').forEach(node => node.style.display = 'block');
+      this.initColumnHeightArr();
       for (let i = 0; i < this.pins.length; i++) {
         const min = this.getMin();
         const index = utils.indexOf(this.columnHeightArr, min);
@@ -119,6 +139,7 @@ export default {
         this.pins[i].style.top = min + 'px';
         this.columnHeightArr[index] += (this.pins[i].offsetHeight + this.gapHeight)
       }
+      this.updating = false
     },
     setContainer(){
        this.containerWidth = (this.unitWidth * this.num - this.gapWidth) + 'px'
@@ -128,6 +149,14 @@ export default {
     },
     getMax() {
       return Math.max.apply(null, this.columnHeightArr)
+    },
+    handleScroll(){
+      if(this.updating) return;
+      const checkScroll = this.getMin() - (window.pageXOffset || document.documentElement.scrollTop) < this.viewportHeight + this.threshold;
+      if(checkScroll){
+        this.$emit('update:isBottom')
+        this.updating = true
+      }
     }
   }
 };
@@ -147,12 +176,22 @@ export default {
         font-size: 12px;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        transition: opacity 0.4s ease-in-out;
+        transition: left .6s,top .6s;
+        transition-delay: .1s;
+        animation: show-card .4s;
 
         > img {
           display: block;
           margin: 0 auto;
           width: 100%;
+        }
+        .f-description{
+          display: block;
+          padding: 0 16px;
+          margin: 10px 0;
+          line-height: 1.35em;
+          overflow: hidden;
+          word-wrap: break-word;
         }
       }
     }
@@ -191,6 +230,14 @@ export default {
       opacity: 1;
       transform: scale(1);
     }
+}
+@keyframes show-card {
+  0% {
+    transform: scale(0.5)
+  }
+  100% {
+    transform: scale(1)
+  }
 }
 </style>
 

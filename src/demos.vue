@@ -1,6 +1,6 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <f-water-fall :imageLists="data"></f-water-fall>
+    <f-water-fall :imageLists="data" @update:isBottom="updateData"></f-water-fall>
   </div>
 </template>
 
@@ -45,12 +45,19 @@ export default {
     };
   },
   created() {
-    this.data = Array.from({length: 18}, (v,i) => `http://localhost:8081/${ Math.ceil(Math.random() * 18)}.jpeg`);
-    // this.data = mockData
+    this.data = Array.from({length: 10}, (v,i) => {
+      const path = Math.ceil(Math.random() * 18);
+      return {
+        src:`http://localhost:8081/${path}.jpeg`,
+        name: `图片${path}`
+      }
+    });
   },
   methods: {
-    progressEnd() {
-      console.log("end");
+    updateData(){
+       setTimeout(() => {
+         this.data = this.data.concat(Array.from({length: 10}, (v,i) => `http://localhost:8081/${ Math.ceil(Math.random() * 18)}.jpeg`))
+       }, 500)
     }
   }
 };
