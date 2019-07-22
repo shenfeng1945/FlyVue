@@ -2,8 +2,12 @@
   <div class="f-water-fall-wrapper">
     <div class="f-water-fall" :style="{'width': containerWidth}">
       <div class="f-water-fall-pin" v-for="(item, i) of imageLists" :key="i" :style="pinStyle" ref="pin">
-        <img :src="item.src" style="width: 100%"/>
-        <p class="f-description">{{item.name}}</p>
+          <template v-if="$scopedSlots.default">
+            <slot :item="item"></slot>
+          </template>
+          <template v-else>
+              <img :src="item.src" alt="">
+          </template>
       </div>
     </div>
     <div class="f-loading" v-if="loading">
@@ -39,13 +43,11 @@ export default {
     threshold: {
       type: Number,
       default: 100
-    }
+    },
   },
   data() {
     return {
       containerWidth: 0,
-      renderList: [],
-
       // 每列的高度
       columnHeightArr: [],
       unitWidth: 0,
@@ -59,7 +61,7 @@ export default {
     };
   },
   watch: {
-    imageLists(v, e){
+    imageLists(){
       this.$nextTick(() => {
         this.setWaterFall();
       })
@@ -79,7 +81,6 @@ export default {
   },
   methods: {
     init() {
-      // this.renderList = this.imageLists.length && this.imageLists.map(item => ({src: item, style: {width: this.pinWidth + 'px',display: 'none'}}));
       // 计算有多少列
       this.getColumnNum();
       // 设置 container 居中
@@ -107,11 +108,11 @@ export default {
         this.columnHeightArr = Array.from({length: this.num}, () => 0)
     },
     handleResize(){
-        this.resetPosition()
+        this.resetPosition();
         this.setPosition();
     },
     bindScrollEvent(){
-        window.addEventListener('resize', this.handleResize)
+        window.addEventListener('resize', this.handleResize);
         window.addEventListener('scroll', this.handleScroll)
     },
     setWaterFall() {
@@ -139,7 +140,12 @@ export default {
         this.pins[i].style.top = min + 'px';
         this.columnHeightArr[index] += (this.pins[i].offsetHeight + this.gapHeight)
       }
-      this.updating = false
+      this.updating = false;
+
+      // 当图片不能占满页面时，需自动加载
+      if(this.getMin() < this.viewportHeight + this.threshold){
+        this.handleScroll()
+      }
     },
     setContainer(){
        this.containerWidth = (this.unitWidth * this.num - this.gapWidth) + 'px'
@@ -147,14 +153,11 @@ export default {
     getMin() {
       return Math.min.apply(null, this.columnHeightArr)
     },
-    getMax() {
-      return Math.max.apply(null, this.columnHeightArr)
-    },
     handleScroll(){
       if(this.updating) return;
       const checkScroll = this.getMin() - (window.pageXOffset || document.documentElement.scrollTop) < this.viewportHeight + this.threshold;
       if(checkScroll){
-        this.$emit('update:isBottom')
+        this.$emit('scrollReachBottom');
         this.updating = true
       }
     }
@@ -184,14 +187,6 @@ export default {
           display: block;
           margin: 0 auto;
           width: 100%;
-        }
-        .f-description{
-          display: block;
-          padding: 0 16px;
-          margin: 10px 0;
-          line-height: 1.35em;
-          overflow: hidden;
-          word-wrap: break-word;
         }
       }
     }
