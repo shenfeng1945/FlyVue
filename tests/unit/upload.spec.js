@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import Upload from '@/upload/upload.vue'
+import Upload from '@/components/upload/upload.vue'
 import { mount } from '@vue/test-utils'
 chai.use(sinonChai);
 

@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai'
 import Vue from 'vue'
-import Col from '@/grid/col'
+import Col from '@/components/grid/col'
 import { mount } from '@vue/test-utils'
 
 Vue.config.productionTip = false

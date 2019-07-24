@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import Input from "./input/Input";
-import Button from "./button/button";
-import Icon from "./icon/Icon";
-import WaterFall from "./waterFall/waterFall";
+import Input from "@/components/input/Input";
+import Button from "@/components/button/button";
+import Icon from "@/components/icon/Icon";
+import WaterFall from "@/components/waterFall/waterFall";
 export default {
   name: "Demos",
   components: {
@@ -31,7 +31,7 @@ export default {
       this.data = Array.from({length: 10}, () => {
       const path = Math.ceil(Math.random() * 18);
       return {
-          src: require(`./waterFall/images/${path}.jpeg`),
+          src: require(`@/static/images/${path}.jpeg`),
         name: `图片${path}`
       }
     });
@@ -42,7 +42,7 @@ export default {
            this.data = this.data.concat(Array.from({length: 10}, () => {
                const path = Math.ceil(Math.random() * 18);
                return {
-                   src: require(`./waterFall/images/${path}.jpeg`),
+                   src: require(`@/static/images/${path}.jpeg`),
                    name: `图片${path}`
                }
            }))

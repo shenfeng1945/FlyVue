@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Toast from '@/toast/toast'
+import Toast from '@/components/toast/toast'
 import chai, { expect } from 'chai'
 import { mount } from '@vue/test-utils'
 import sinon from 'sinon'

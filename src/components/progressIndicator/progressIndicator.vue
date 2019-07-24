@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import * as utils from "../utils/browser";
+import * as utils from "../../utils/browser";
 export default {
   name: "FlyProgressIndicator",
   data() {

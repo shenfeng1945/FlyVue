@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Popover from '@/popover/popover'
+import Popover from '@/components/popover/popover'
 import { expect } from 'chai'
 import { mount } from '@vue/test-utils'
 

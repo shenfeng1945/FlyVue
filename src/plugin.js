@@ -1,4 +1,4 @@
-import Toast from './toast/toast'
+import Toast from '@/components/toast/toast'
 
 let curToast 
 export default {
