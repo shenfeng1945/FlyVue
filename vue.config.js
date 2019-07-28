@@ -14,5 +14,6 @@ module.exports = {
     chainWebpack: (config)=>{
         config.resolve.alias
             .set('_variable', resolve('style/_variable'))
-    }
+    },
+    productionSourceMap: false
 }
