@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Demos from './demos.vue'
-import plugin from './plugin';
+import plugin from './plugins/toast';
 
 Vue.config.productionTip = false
 Vue.use(plugin);
