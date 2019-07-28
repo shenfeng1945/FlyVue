@@ -31,6 +31,7 @@
 <script>
 import Icon from "../icon/Icon";
 export default {
+  name: 'FlyButton',
   props: {
     leftIcon: String,
     rightIcon: String,
@@ -90,7 +91,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "_variable";
+@import 'style/_variable.scss';
 .f-button {
   font-size: $font-size;
   height: $button-height;

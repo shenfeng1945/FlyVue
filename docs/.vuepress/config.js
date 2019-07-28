@@ -1,3 +1,8 @@
+const path = require('path')
+function resolve (dir) {
+    return path.join(__dirname, dir)
+}
+
 module.exports = {
   title: 'FlyVue',
   base: '/FlyVue/',
@@ -23,9 +28,19 @@ module.exports = {
         title: '组件',
         collapsable: false,
         children: [
-          'views/components/button'
+          {
+            title: 'basic',
+            collapsable: false,
+            children: [
+              'views/components/button'
+            ]
+          }
         ]
       }
     ]
+  },
+  chainWebpack(config){
+    config.resolve.alias
+            .set('@', resolve('../../src'))
   }
 }
