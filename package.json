@@ -1,9 +1,8 @@
 {
-  "name": "FlyVue",
+  "name": "fly-ui-vue",
   "version": "0.0.1",
   "description": "这是一个UI框架",
-  "main": "dist/index.js",
-  "private": true,
+  "main": "dist/flyVue.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "rm -rf dist && vue-cli-service build --target lib --name flyVue src/index.js",
