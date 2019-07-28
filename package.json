@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "rm -rf dist && vue-cli-service build --target lib --name flyVue src/index.js",
     "test:unit": "karma start",
     "test:unit:old": "vue-cli-service test:unit",
     "test": "karma start --single-run",
