@@ -14,27 +14,41 @@
         </div>
       </div>
     </transition>
-    <f-sticky position="bottom" :eventBus="eventBus">
+    <template v-if="codeVisible">
+      <f-sticky position="bottom" :eventBus="eventBus">
+        <div class="docs-control" @click="handerClick">
+          <template v-if="!codeVisible">
+            <f-icon name="caret-down"></f-icon>
+            <span class="docs-span">显示代码</span>
+          </template>
+          <template v-else>
+            <f-icon name="caret-up"></f-icon>
+            <span class="docs-span">隐藏代码</span>
+          </template>
+        </div>
+      </f-sticky>
+    </template>
+    <template v-else>
       <div class="docs-control" @click="handerClick">
-        <template v-if="!codeVisible">
-          <f-icon name="caret-down"></f-icon>
-          <span class="docs-span">显示代码</span>
-        </template>
-        <template v-else>
-          <f-icon name="caret-up"></f-icon>
-          <span class="docs-span">隐藏代码</span>
-        </template>
-      </div>
-    </f-sticky>
+          <template v-if="!codeVisible">
+            <f-icon name="caret-down"></f-icon>
+            <span class="docs-span">显示代码</span>
+          </template>
+          <template v-else>
+            <f-icon name="caret-up"></f-icon>
+            <span class="docs-span">隐藏代码</span>
+          </template>
+        </div>
+    </template>
   </div>
 </template>
 
 <script>
 import Icon from "@/components/icon/Icon";
 import Sticky from "@/components/sticky/sticky";
-import Vue from 'vue';
-import 'highlight.js/styles/color-brewer.css';
-import VueHighlightJS from 'vue-highlightjs';
+import Vue from "vue";
+import "highlight.js/styles/color-brewer.css";
+import VueHighlightJS from "vue-highlightjs";
 
 Vue.use(VueHighlightJS);
 
@@ -71,7 +85,7 @@ export default {
       el.style.height = `${height}px`;
       el.addEventListener("transitionend", () => {
         done();
-        this.eventBus.$emit('forceUpdate')
+        this.eventBus.$emit("forceUpdate");
       });
     },
     leave(el, done) {
@@ -81,7 +95,7 @@ export default {
       el.style.height = "0px";
       el.addEventListener("transitionend", () => {
         done();
-        this.eventBus.$emit('forceUpdate')
+        this.eventBus.$emit("forceUpdate");
       });
     }
   }
