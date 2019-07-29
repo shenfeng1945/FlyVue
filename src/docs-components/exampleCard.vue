@@ -5,9 +5,9 @@
     </div>
     <transition name="expandHeight" @enter="enter" @leave="leave">
       <div class="docs-expand" v-if="codeVisible">
-        <div class="docs-description">hellodldk sdkfjdlf fdlfdj dflkdfj dfjdfd dfkdfk dkfkd</div>
+        <div class="docs-description" v-if="source.desc" v-html="source.desc"></div>
         <div class="docs-code">
-          <pre v-highlightjs="code">
+          <pre v-highlightjs="source.code">
             <code class="html">
             </code>
           </pre>
@@ -33,6 +33,7 @@
 import Icon from "@/components/icon/Icon";
 import Sticky from "@/components/sticky/sticky";
 import Vue from 'vue';
+import 'highlight.js/styles/color-brewer.css';
 import VueHighlightJS from 'vue-highlightjs';
 
 Vue.use(VueHighlightJS);
@@ -43,8 +44,8 @@ export default {
     "f-icon": Icon,
     "f-sticky": Sticky
   },
-  created(){
-
+  props: {
+    source: Object
   },
   data() {
     return {
@@ -89,6 +90,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "style/_variable";
+@import "style/color-brewer";
 .docs-card {
   border: 1px solid #ebebeb;
   border-radius: 3px;
@@ -113,7 +115,13 @@ export default {
       background-color: #fff;
     }
     .docs-code {
-      padding: 24px;
+      padding: 0 24px;
+      pre {
+        padding: 0;
+        margin: 0;
+        border-radius: none;
+        background: #fafafa;
+      }
     }
   }
   .docs-control {
