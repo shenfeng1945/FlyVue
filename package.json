@@ -9,7 +9,7 @@
     "test:unit": "karma start",
     "test:unit:old": "vue-cli-service test:unit",
     "test": "karma start --single-run",
-    "docs:dev": "vuepress dev docs",
+    "docs:dev": "vuepress dev docs --no-cache",
     "docs:build": "vuepress build docs"
   },
   "repository": {
