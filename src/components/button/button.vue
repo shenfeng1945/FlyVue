@@ -6,7 +6,7 @@
       `${intent}`,
       circle && `f-circle`,
       loading && `is-loading`,
-      disabled || loading && `f-disabled`,
+      (disabled || loading) && `f-disabled`,
       minimal && 'f-minimal'
     ]"
     @click="$emit('click')"
@@ -17,7 +17,7 @@
          <f-icon :name="icon" :key="icon" :style="noMargin" style="margin-right: 0.3em;"></f-icon>
       </template>
     </template>
-    <f-icon class="loading" name="loading" v-if="loading" ></f-icon>
+    <f-icon class="loading" name="loading" v-if="loading"></f-icon>
     <div class="button-content">
       <slot></slot>
     </div>
@@ -107,9 +107,6 @@ export default {
     inset 0 -1px 0 rgba(16, 22, 26, 0.1);
   border: none;
   
-  &.f-disabled{
-    cursor: not-allowed;
-  }
 
   &.primary {
     background-color: $button-primary-bg;
@@ -142,6 +139,11 @@ export default {
   &.success.is-loading:active {
     background-color: $button-success-active-bg;
   }
+  &.success.f-disabled,
+  &.success.is-loading.f-disabled{
+    background-color: $button-success-disabled-bg;
+    color: $button-intent-disabled-color;
+  }
 
   &.warn {
     background: $button-warn-bg;
@@ -155,6 +157,11 @@ export default {
   &.warn.is-loading {
     background: $button-warn-active-bg;
   }
+  &.warn.f-disabled,
+  &.warn.f-disabled.is-loading{
+    background-color: $button-warn-disabled-bg;
+    color: $button-intent-disabled-color;
+  }
 
   &.danger {
     background: $button-danger-bg;
@@ -167,6 +174,11 @@ export default {
   &.danger:active,
   &.danger.is-loading {
     background: $button-danger-active-bg;
+  }
+  &.danger.f-disabled,
+  &.danger.f-disabled.is-loading{
+    background-color: rgba(219,55,55,.5);
+    color: $button-intent-disabled-color;
   }
 
   > .icon {
@@ -189,6 +201,11 @@ export default {
   &.is-loading {
     background-color: $button-active-bg;
   }
+  &.f-disabled{
+    background-color: rgba(206,217,224,.5);
+    color: rgba(92,112,128,.6);
+    cursor: not-allowed;
+  }
   &.icon-right {
     > .icon {
       // order: 2;
@@ -201,6 +218,7 @@ export default {
   }
   > .loading {
     animation: spin 1.2s infinite linear;
+    margin-right: .5em;
   }
   &.f-circle {
     border-radius: 50%;
@@ -212,22 +230,27 @@ export default {
     background: white;
     &:hover {background: rgba(167, 182, 194, 0.3);}
     &:active{background: rgba(115,134,148,.3);}
+    &.f-disabled{background: none;color: $disabled-color;}
     
     &.success{color: $button-success-hover-bg;}
     &.success:hover{background: $button-intent-success-hover-bg;}
     &.success:active{background: $button-intent-success-active-bg;}
+    &.success.f-disabled{background: none;color: $button-intent-success-disabled-color;}
     
     &.primary{color: $button-primary-hover-bg;}
     &.primary:hover{background: $button-intent-primary-hover-bg;}
     &.primary:active{background: $button-intent-primary-active-bg;}
+    &.primary.f-disabled{background: none;color: $button-intent-primary-disabled-color;}
     
     &.warn{color: $button-warn-hover-bg;}
     &.warn:hover{background: $button-intent-warn-hover-bg;}
     &.warn:active{background: $button-intent-warn-active-bg;}
+    &.warn.f-disabled{background: none;color: $button-intent-warn-disabled-color;}
     
     &.danger{color: $button-danger-hover-bg;}
     &.danger:hover{background: $button-intent-danger-hover-bg;}
     &.danger:active{background: $button-intent-danger-active-bg;}
+    &.danger.f-disabled{background: none;color: $button-intent-danger-disabled-color;}
   }
 
   > svg {
