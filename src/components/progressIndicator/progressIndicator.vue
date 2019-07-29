@@ -22,6 +22,10 @@ export default {
           type: String,
           default: '#137cbd'
       },
+      zIndex: {
+        type: String,
+        default: '999'
+      }
   },
   mounted(){
     this.init();
@@ -30,7 +34,8 @@ export default {
       getPercentWidthStyle(){
           return {
               width: this.width * 100 + '%',
-              background: this.color
+              background: this.color,
+              'z-index': this.zIndex,
           }
       }
   },
@@ -50,6 +55,7 @@ export default {
       },
       bindScrollEvent(){
          window.requestAnimationFrame(() => {
+             this.calcWidthPercent();
              this.width = Math.min(utils.getScrollOffsetsTop() / this.sHeight, 1)
              if(this.width === 1){
                  this.$emit('update:end')
@@ -64,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '_variable';
+@import 'style/_variable';
 .f-progress-indicator {
   position: fixed;
   top: 0px;
