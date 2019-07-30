@@ -53,7 +53,7 @@ export default {
       this.viewportHeight = getViewPortHeight();
     },
     forceUpdate(){
-      this._windowScrollHandler();
+      this.$refs.wrapper && this._windowScrollHandler();
     },
     topAndHeight() {
       const { top, height } = this.$refs.wrapper.getBoundingClientRect();
