@@ -32,7 +32,8 @@ module.exports = {
             title: 'basic',
             collapsable: false,
             children: [
-              'views/components/button'
+              'views/components/button',
+              'views/components/layout'
             ]
           }
         ]
