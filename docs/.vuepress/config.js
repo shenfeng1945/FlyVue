@@ -33,7 +33,8 @@ module.exports = {
             collapsable: false,
             children: [
               'views/components/button',
-              'views/components/layout'
+              'views/components/layout',
+              'views/components/color',
             ]
           }
         ]
