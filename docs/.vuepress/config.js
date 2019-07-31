@@ -35,6 +35,7 @@ module.exports = {
               'views/components/button',
               'views/components/layout',
               'views/components/color',
+              'views/components/grid'
             ]
           }
         ]
