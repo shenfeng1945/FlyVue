@@ -2,10 +2,15 @@
     <div class="f-switch">
         <label class="f-switch-label" :class="{disabled}">
             <input type="checkbox" class="f-switch-check" :checked="value" @change="onChangeInput" :disabled="disabled">
-            <span class="f-control-indicator" :class="{active: value,large}" :style="getStyle">
+            <span class="f-control-indicator" :class="{active: value, large}" :style="getStyle">
             </span>
-            <span v-if="value" style="margin-left: .3em">{{activeText}}</span>
-            <span v-else style="margin-left: .3em">{{inactiveText}}</span>
+            <span v-if="$slots.default" style="margin-left: .3em">
+               <slot></slot>
+            </span>
+            <template v-else>
+              <span v-if="value" style="margin-left: .3em">{{activeText}}</span>
+              <span v-else style="margin-left: .3em">{{inactiveText}}</span>
+            </template>
         </label>
     </div>
 </template>

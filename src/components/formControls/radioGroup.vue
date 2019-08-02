@@ -1,5 +1,5 @@
 <template>
-    <div class="f-radio-group">
+    <div class="f-radio-group" :class="{'f-inline': inline}">
         <slot></slot>
     </div>
 </template>
@@ -13,6 +13,18 @@ export default {
         name: {
             type: String,
             default: Math.random() + ''
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        inline: {
+            type: Boolean,
+            default: false
+        },
+        large: {
+           type: Boolean,
+           default: false
         }
     },
     data(){
@@ -35,6 +47,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .f-inline {
+      display: flex;
+      align-items: center;
+  }
 </style>
 
