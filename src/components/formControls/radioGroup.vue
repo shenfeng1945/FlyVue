@@ -25,6 +25,10 @@ export default {
         large: {
            type: Boolean,
            default: false
+        },
+        alignRight: {
+           type: Boolean,
+           default: false
         }
     },
     data(){

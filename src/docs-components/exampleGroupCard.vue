@@ -84,16 +84,16 @@ export default {
     "f-icon": Icon,
     "f-sticky": Sticky
   },
+  props: {
+    source: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       codeVisible: false,
       eventBus: new Vue(),
-      source: {
-          desc: 'hello world',
-          code: `
-<div>ehllo worldjlf</div>
-          `
-      }
     };
   },
   methods: {

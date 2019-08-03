@@ -1,23 +1,23 @@
 <template>
   <div
     class="f-radio"
-    :class="{'f-disabled': disabled, 'f-large': large }"
-    :style="!inline ? {'margin-bottom': '10px'} : {'margin-right': '20px'}"
+    :class="{'f-disabled': disabledValue, 'f-large': largeValue }"
+    :style="!inlineValue ? {'margin-bottom': '10px'} : {'margin-right': '20px'}"
   >
-    <label>
+    <label :class="{'f-reverse': alignRightValue}">
       <input
         :name="root.name"
         type="radio"
         class="f-radio-input"
         :checked="checked"
-        :disabled="disabled"
+        :disabled="disabledValue"
         @change="onChangeRadio"
       >
       <span
         class="f-radio-control"
         :class="{'f-checked': checked}"
       ></span>
-      <span style="margin-left: 10px">
+      <span class="f-radio-text">
         <slot></slot>
       </span>
     </label>
@@ -28,21 +28,36 @@
 export default {
   name: "FlyRadio",
   props: {
-    label: [Number, String]
+    label: [Number, String],
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    large: {
+      type: Boolean,
+      default: false
+    },
+    alignRight: {
+      type: Boolean,
+      default: false
+    }
   },
   inject: ["root", "eventBus"],
   computed: {
     checked() {
       return this.root.value === this.label;
     },
-    disabled() {
-      return this.root.disabled;
+    disabledValue() {
+      return this.root.disabled || this.disabled;
     },
-    inline() {
+    inlineValue() {
       return this.root.inline;
     },
-    large() {
-      return this.root.large;
+    largeValue() {
+      return this.root.large || this.large;
+    },
+    alignRightValue(){
+      return this.root.alignRight || this.alignRight;
     }
   },
   methods: {
@@ -60,7 +75,7 @@ export default {
   > label {
     position: relative;
     cursor: pointer;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     font-size: 14px;
     &:hover {
@@ -78,8 +93,8 @@ export default {
     .f-radio-control {
       box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2),
         inset 0 -1px 0 rgba(16, 22, 26, 0.1);
-      width: 1em;
-      height: 1em;
+      width: 1.15em;
+      height: 1.15em;
       border-radius: 50%;
       background-color: lighten(#f5f8fa, 80%);
       &.f-checked {
@@ -93,16 +108,26 @@ export default {
         &::before {
           background-image: radial-gradient(#fff, #fff 28%, transparent 32%);
           display: block;
-          width: 1em;
-          height: 1em;
+          width: 1.15em;
+          height: 1.15em;
           content: "";
         }
       }
+    }
+    .f-radio-text {
+      margin-left: 10px;
     }
   }
   &.f-large {
     > label {
       font-size: 16px;
+    }
+  }
+  > label.f-reverse {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .f-radio-text {
+      margin-left: 0px;
     }
   }
 }
