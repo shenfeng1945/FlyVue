@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import ExampleCard from "@/docs-components/exampleCard";
 import InitDocs from "@/docs-components/initDocs";
 import Radio from "@/components/formControls/radio";
 import RadioGroup from "@/components/formControls/radioGroup";
@@ -37,7 +36,6 @@ import Switch from "@/components/formControls/switch";
 export default {
   name: "RadioDemos",
   components: {
-    "f-card": ExampleCard,
     "f-init-docs": InitDocs,
     "f-radio": Radio,
     "f-radio-group": RadioGroup,
@@ -57,7 +55,7 @@ export default {
     getRadioSource() {
       let propsString = `${this.disabledValue ? "disabled" : ''} ${this.inlineValue ? "inline" : ''} ${this.largeValue ? "large" : ''} ${this.alignRightValue ? 'alignRight' : ''}`;
       return {
-        desc: '结合<code>f-radio-group</code>元素和子元素<code>f-radio</code>可以实现单选组,在<code>f-radio-group</code>设置v-model值，绑定change事件更改v-model值，在<code>f-radio</code>子元素设置label值即可。通过设置<code>disabled</code> <code>inline</code> <code>large</code>属性可以控制单选组的状态。',
+        desc: '结合<code>f-radio-group</code>元素和子元素<code>f-radio</code>可以实现单选组,在<code>f-radio-group</code>设置v-model值，绑定change事件更改v-model值，在<code>f-radio</code>子元素设置label值即可。通过设置<code>disabled</code> <code>inline</code> <code>large</code>和<code>alignRight</code>属性可以控制单选组的状态。',
         code: `
 <f-radio-group v-model="radio" @change="radio = $event" ${propsString.trim()}>
     <f-radio label="Soup">Soup</f-radio>

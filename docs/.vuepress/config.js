@@ -42,7 +42,8 @@ module.exports = {
             title: 'form',
             collapsable: false,
             children: [
-              'views/components/radio'
+              'views/components/radio',
+              'views/components/checkbox'
             ]
           }
         ]

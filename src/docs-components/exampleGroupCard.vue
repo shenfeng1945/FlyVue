@@ -160,6 +160,8 @@ export default {
     background: #fafafa;
     overflow: hidden;
     border-top: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+    border-right: 1px solid #ebebeb;
     .docs-description {
       padding: 20px;
       box-sizing: border-box;

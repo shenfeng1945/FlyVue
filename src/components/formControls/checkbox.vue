@@ -1,15 +1,16 @@
 <template>
-  <div class="f-checkbox">
-    <label class="f-checkbox-label" :class="{large,'reverse': alignIndicator === 'left'}">
+  <div class="f-checkbox" :style="{'margin-right': getInlineValue ? '20px' : 'unset'}">
+    <label class="f-checkbox-label" :class="{large,'reverse': getAlignRightValue,'f-disabled': getDisabledValue}">
       <input
         type="checkbox"
         class="f-checkbox-input"
         :checked="getChecked"
         @change="onChange"
         ref="checkbox"
+        :disabled="getDisabledValue"
       >
-      <span class="f-checkbox-control" :class="{active: getChecked,indeterminate: indeterminateVal}"></span>
-      <span :style="{fontSize: large ? '16px' : '14px'}">
+      <span class="f-checkbox-control" :class="{active: getChecked,indeterminate: indeterminateVal}" :style="{fontSize: getLargeValue ? '20px' : '16px'}"></span>
+      <span class="f-checkbox-text" :style="{fontSize: getLargeValue ? '16px' : '14px'}">
         <slot></slot>
       </span>
     </label>
@@ -28,9 +29,9 @@ export default {
       type: Boolean,
       default: false
     },
-    alignIndicator: {
-      type: String,
-      default: "right"
+    alignRight: {
+      type: Boolean,
+      default: false
     },
     // checkbox选一半
     indeterminate: {
@@ -39,6 +40,10 @@ export default {
     },
     label: {
       type: [Number, String],
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data(){
@@ -47,6 +52,7 @@ export default {
       existGroup: this.$parent.$options.name === 'FlyCheckboxGroup'
     }
   },
+  inject: ['root'],
   mounted(){
     if(this.indeterminate){
       this.indeterminateVal = true;
@@ -87,13 +93,26 @@ export default {
       }else{
         return this.value
       }
-    }
+    },
+    getDisabledValue(){
+      return (this.root && this.root.disabled) || this.disabled;
+    },
+    getInlineValue(){
+      return this.root.inline;
+    },
+    getLargeValue(){
+      return this.root.large || this.large;
+    },
+    getAlignRightValue(){
+      return this.root.alignRight || this.alignRight;
+    },
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .f-checkbox {
+  margin-bottom: 10px;
   &-label {
     position: relative;
     display: inline-flex;
@@ -111,9 +130,11 @@ export default {
     }
     &.reverse {
       flex-direction: row-reverse;
+      justify-content: space-between;
+      width: 100%;
       .f-checkbox-control {
         margin-left: 10px;
-        margin-right: 0px;
+        margin-right: 0;
       }
       .f-checkbox-input {
         left: 100%;
@@ -121,7 +142,6 @@ export default {
       }
     }
   }
-
   &-control {
     display: block;
     background: #f5f8fa;
@@ -150,6 +170,20 @@ export default {
       content: "";
       background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11 7H5c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1z' fill='%23fff'/%3E%3C/svg%3E");
     }
+  }
+  &-label.f-disabled {
+     .f-checkbox-control {
+       box-shadow: none;
+       background: rgba(206,217,224,.5);
+       cursor: not-allowed;
+       &.active {
+         background: rgba(19,124,189,.5);
+       }
+     }
+     .f-checkbox-text {
+       cursor: not-allowed;
+       color: rgba(92,112,128,.6);
+     }
   }
 }
 </style>
