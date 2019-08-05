@@ -2,7 +2,7 @@
    <div class="wrapper" :class="{error}">
        <input type="text" :value="value" :disabled="disabled"
               class="f-input"
-              :class="{'f-inner': clearValue, 'f-suffix-icon': !!suffixIcon, 'f-prefix-icon': !!prefixIcon}"
+              :class="{'f-inner': clearValue, 'f-suffix-icon': !!suffixIcon, 'f-prefix-icon': !!prefixIcon, 'f-round': round, [intent]: intent}"
               :readonly="readonly"
               :placeholder="placeholder"
               ref="input"
@@ -66,11 +66,24 @@ export default {
         prefixIcon: {
             type: String
         },
+        round: {
+           type: Boolean,
+           default: false,
+        },
+        intent: {
+           type: String,
+           default: "default",
+           validator(value) {
+              return (
+                ["default", "primary", "warn", "success", "danger"].indexOf(value) > -1
+              );
+            }
+        },
     },
     components: { 'f-icon': Icon },
     computed: {
         showClear(){
-            return this.clearable && this.value
+            return this.clearable && this.value && !this.disabled
         }
     },
     methods: {
@@ -86,14 +99,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-   $height: 30px;
-   $border-color: #999;
-   $border-color-error: #999;
-   $border-color-hover: #666;
-   $border-color-focus: #409EFF;
-   $font-size: 14px;
-   $box-shadow-color: rgba(0,0,0,.5);
-   $red: #F1453D;
+@import 'style/_variable';
    .wrapper{
        font-size: $font-size;
        display: inline-flex;
@@ -104,15 +110,17 @@ export default {
         //    margin-right: .2em;
        }
        > .f-input {
-           height: $height;
-           border: 1px solid $border-color;
+           height: $input-height;
+           border: none;
+           outline: none;
            border-radius: 4px;
            padding: 0 10px;
            font-size: inherit;
-           line-height: $height;
+           line-height: $input-height;
            font-weight: 400;
            color: #182026;
            width: 100%;
+           box-shadow: 0 0 0 0 rgba(19,124,189,0), 0 0 0 0 rgba(19,124,189,0), inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
            &.f-inner{
                padding-right: 2em;
            }
@@ -125,40 +133,66 @@ export default {
            &.f-inner.f-suffix-icon{
                padding-right: 4em;
            }
-           &:hover{
-               border-color: $border-color-hover;
+           
+           &[disabled]{
+               box-shadow: none;
+               background: rgba(206,217,224,.5);
+               cursor: not-allowed;
+               color: rgba(92,112,128,.6);
+               border: none
+           }
+           &.f-round{
+               border-radius: 30px;
+           }
+           &.primary {
+               box-shadow: 0 0 0 0 rgba(19,124,189,0), 0 0 0 0 rgba(19,124,189,0), inset 0 0 0 1px #137cbd, inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.success {
+               box-shadow: 0 0 0 0 rgba(15,153,96,0), 0 0 0 0 rgba(15,153,96,0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.warn {
+               box-shadow: 0 0 0 0 rgba(217,130,43,0), 0 0 0 0 rgba(217,130,43,0), inset 0 0 0 1px #d9822b, inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.danger {
+               box-shadow: 0 0 0 0 rgba(219,55,55,0), 0 0 0 0 rgba(219,55,55,0), inset 0 0 0 1px #db3737, inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
            }
            &:focus{
-               border-color: $border-color-focus;
-               outline: none;
+               box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19,124,189,.3), inset 0 1px 1px rgba(16,22,26,.2);
            }
-           &[disabled], &[readonly]{
-               border-color: #aaa;
-               color: #aaa;
-               cursor: not-allowed;
+           &.primary:focus {
+                box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19,124,189,.3), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.success:focus {
+                box-shadow: 0 0 0 0 rgba(15,153,96,0), 0 0 0 0 rgba(15,153,96,0), inset 0 0 0 1px #0f9960, inset 0 0 0 1px rgba(16,22,26,.15), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.warn:focus {
+                box-shadow: 0 0 0 1px #d9822b, 0 0 0 3px rgba(217,130,43,.3), inset 0 1px 1px rgba(16,22,26,.2);
+           }
+           &.danger:focus {
+                box-shadow: 0 0 0 1px #db3737, 0 0 0 3px rgba(219,55,55,.3), inset 0 1px 1px rgba(16,22,26,.2);
            }
        }
         &.error{
            > input{
-             border-color: $red;
+             border-color: $red1;
              &:hover{
-                 border-color: $red;
+                 border-color: $red1;
              }
              &:focus{
-                 border-color: $red;
+                 border-color: $red1;
              }
            }
        }
        &.f-round{
            > input{
-               border-radius: $height / 2;
+               border-radius: $input-height / 2;
            }
        }
        .error-icon{
-           fill: $red;
+           fill: $red1;
        }
        .error-message{
-           color: $red;
+           color: $red1;
        }
        .close-icon{
            display: none;

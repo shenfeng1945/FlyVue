@@ -56,6 +56,7 @@ export default {
     outline: none;
     -moz-appearance: none;
     -webkit-appearance: none;
+    width: 100%;
 
     &.f-minimal {
       box-shadow: none;

@@ -43,7 +43,8 @@ module.exports = {
             collapsable: false,
             children: [
               'views/components/radio',
-              'views/components/checkbox'
+              'views/components/checkbox',
+              'views/components/input',
             ]
           }
         ]
