@@ -7,7 +7,7 @@
       class="f-cascader-trigger"
       @click="onTrigger"
     >
-      <f-input v-model="value" :clearable="clearable" @change="onInputValue" class="pointer"></f-input>
+      <f-input v-model="value" :clearable="clearable" @change="onInputValue" class="pointer" :placeholder="placeholder"></f-input>
     </div>
     <div
       class="f-popover-wrapper"
@@ -37,14 +37,14 @@ export default {
   props: {
     sources: Array,
     popoverHeight: String,
-    level: {
-      type: Number,
-      default: 0
-    },
     loadData: Function,
     clearable: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: '请选择'
     }
   },
   directives: { "click-outside": ClickOutside },
@@ -55,6 +55,7 @@ export default {
       selected: [],
       loadingItem: {},
       value: '',
+      level: 0,
     };
   },
   methods: {
@@ -135,7 +136,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .f-cascader {
   position: relative;
   display: inline-block;

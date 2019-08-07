@@ -18,7 +18,7 @@ data(){
 #### 动态加载
 
 ```vue
-<f-cascader :sources="sources" :level="0" clearable/>
+<f-cascader :sources.sync="sources" :load-data="loadData" clearable/>
 
 function ajax(parent_id = 0) {
   return new Promise((resolve, reject) => {

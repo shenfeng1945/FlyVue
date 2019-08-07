@@ -45,6 +45,7 @@ module.exports = {
               'views/components/radio',
               'views/components/checkbox',
               'views/components/input',
+              'views/components/cascader',
             ]
           }
         ]
