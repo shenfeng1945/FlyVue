@@ -7,7 +7,7 @@
       class="f-cascader-trigger"
       @click="onTrigger"
     >
-      <f-input v-model="value" :clearable="clearable" @change="onInputValue" class="pointer" :placeholder="placeholder"></f-input>
+      <f-input v-model="value" :clearable="clearable" readonly @change="onInputValue" class="pointer" :placeholder="placeholder"></f-input>
     </div>
     <div
       class="f-popover-wrapper"

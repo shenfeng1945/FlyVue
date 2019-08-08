@@ -10,3 +10,20 @@ sidebarDepth: 2
 <ClientOnly>
   <cascader-demos />
 </ClientOnly>
+
+### Cascader Attributes
+
+
+| 参数 | 说明 | 类型 | 可选择 | 默认值 |
+| -- | -- | -- | -- | -- |
+| sources | 数据源 | Array | - | [] |
+| popoverHeight | 浮层高度 | String | 如'100px','1vh' | - |
+| clearable | 是否支持清空选项 | Boolean | - | false |
+| placeholder | 输入框占位文本 | String | - | 请选择 |
+| loadData | 是否支持动态加载传递的函数 | Function | - | (item: Object, cb: Function) |
+
+### Cascader Events 
+
+| 参数 | 说明 | 回调参数 | 
+| -- | -- | -- | 
+| update:sources | 更新数据源 | (values: Array) |

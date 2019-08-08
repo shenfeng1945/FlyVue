@@ -15,8 +15,8 @@
 
         <h4>动态加载</h4>
         <p>当选中某一级时，动态加载该级下的选项。</p>
-        <f-card :source="ClearableCascader">
-            <f-cascader :sources.sync="sources1" :load-data="loadData" popoverHeight="180px" clearable/>
+        <f-card :source="loadingCascader">
+            <f-cascader :sources.sync="sources1" :load-data="loadData" popoverHeight="100px" clearable/>
         </f-card>
     </div>
 </template>
@@ -25,8 +25,26 @@
 import InitDocs from "@/docs-components/initDocs";
 import ExampleCard from "@/docs-components/exampleCard";
 import Cascader from "@/components/cascader/cascader";
-import {BasicCascader, ClearableCascader} from "../static/cascader-demos";
-import db from '@/static/fixtures/db';
+import {BasicCascader, ClearableCascader, loadingCascader} from "../static/cascader-demos";
+
+const db = [
+  {id: 1, name: '北京', parent: 0},
+  {id: 2, name: '广东', parent: 0},
+  {id: 3, name: '东城', parent: 1},
+  {id: 4, name: '西城', parent: 1},
+  {id: 5, name: '朝阳', parent: 1},
+  {id: 6, name: '广州', parent: 2},
+  {id: 7, name: '深圳', parent: 2},
+  {id: 8, name: '佛山', parent: 2},
+  {id: 9, name: '越秀', parent: 6},
+  {id: 10, name: '天河', parent: 6},
+  {id: 11, name: '黄埔', parent: 6},
+  {id: 12, name: '罗湖', parent: 7},
+  {id: 13, name: '南山', parent: 7},
+  {id: 14, name: '福田', parent: 7},
+  {id: 15, name: '顺德', parent: 8},
+  {id: 16, name: '三水', parent: 8},
+]
 
 function ajax(parent_id = 0) {
   return new Promise((resolve, reject) => {
@@ -48,6 +66,7 @@ function ajax(parent_id = 0) {
         return {
             BasicCascader,
             ClearableCascader,
+            loadingCascader,
             sources: [
                 {name: "广东省", children: [{ name: "广州市", children: [{ name: "天河区" }]},{name: "深圳市",children: [{name: "南山区" },{ name: "宝安区" },{ name: "罗湖区" }]}]},
                 {name: "湖北省",children: [{name: "武汉市",children: [{ name: "武昌区" }, { name: "江岸区" }]},{name: "荆州市",children: [{ name: "石首市" }, { name: "监利县" }]}]}
