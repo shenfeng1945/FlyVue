@@ -46,6 +46,7 @@ module.exports = {
               'views/components/checkbox',
               'views/components/input',
               'views/components/cascader',
+              'views/components/datePicker',
             ]
           }
         ]
