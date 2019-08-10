@@ -7,6 +7,8 @@
       @focus="onFocusInput"
       :value="formatDate(value)"
       @input="onInput"
+      :clearable="clearable"
+      :readonly="this.readonly"
       @change="onChange"
     />
     <div class="f-date-picker-pop" v-if="popVisible">
@@ -32,7 +34,7 @@
           </div>
           <div :class="c('row')" v-for="(rowDay, r) in visibleDays" :key="r">
             <span
-              :class="[c('cell'),{currentMonth: day.isCurrentMonth, selected: isSelected(day.value)}]"
+              :class="[c('cell'),{currentMonth: day.isCurrentMonth, selected: isSelected(day.value), isToday: isToday(day.value)}]"
               v-for="(day, i) in rowDay"
               :key="i"
               @click="onClickCell(day.value)"
@@ -90,6 +92,18 @@ export default {
     reserveMonthAndYear: {
       type: Boolean,
       default: false
+    },
+    highlightCurrentDay: {
+      type: Boolean,
+      default: false
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -168,11 +182,10 @@ export default {
     },
     onFocusInput() {
       if(!this.value){
-        this.$emit('input',new Date())
         const [year, month] = helper.getYearMonthDate(new Date());
         this.display = { year, month };
       }
-      this.$nextTick(() => this.popVisible = true)
+      this.popVisible = true
     },
     onBlurInput() {
       this.popVisible = false;
@@ -191,38 +204,47 @@ export default {
       return `${year}-${month}-${day}`;
     },
     onClickPrevMonth() {
-      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDay = helper.getYearMonthDate(this.value || new Date())[2];
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addMonth(oldDate, -1);
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
-      this.$emit("input", newDate);
+      if(this.value){
+        this.$emit("input", newDate);
+      }
     },
     onUpdateMonth(newMonth){
-      const [_,oldMonth,oldDay] = helper.getYearMonthDate(this.value);
+      const [_,oldMonth,oldDay] = helper.getYearMonthDate(this.value || new Date());
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addMonth(oldDate, parseInt(newMonth) - parseInt(oldMonth) - 1);
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
-      this.$emit("input", newDate);
+      if(this.value){
+        this.$emit("input", newDate);
+      }
     },
     onClickNextMonth() {
-      const oldDay = helper.getYearMonthDate(this.value)[2];
+      const oldDay = helper.getYearMonthDate(this.value || new Date())[2];
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addMonth(oldDate, 1);
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
-      this.$emit("input", newDate);
+      if(this.value){
+        this.$emit("input", newDate);
+      }
     },
     onUpdateYear(newYear){
-      const [oldYear,_,oldDay]= helper.getYearMonthDate(this.value);
+      const [oldYear,_,oldDay]= helper.getYearMonthDate(this.value || new Date());
       const oldDate = new Date(this.display.year, this.display.month, oldDay);
       const newDate = helper.addYear(oldDate, parseInt(newYear) - parseInt(oldYear));
       const [year, month] = helper.getYearMonthDate(newDate);
       this.display = { year, month };
-      this.$emit("input", newDate);
+      if(this.value){
+        this.$emit("input", newDate);
+      }
     },
     isSelected(data) {
+      if(!this.value) return false;
       const [y, m, d] = helper.getYearMonthDate(data);
       const [y1, m1, d1] = helper.getYearMonthDate(this.value);
       return y === y1 && m === m1 && d === d1;
@@ -239,6 +261,10 @@ export default {
       this.popVisible = false;
     },
     onInput(value) {
+      if(!value){
+       // 清空
+       this.$emit("input", null);
+      }
       const reg = /^\d{4}-\d{2}-\d{2}$/g;
       if (reg.test(value)) {
         const [year, month, day] = value.split("-");
@@ -251,13 +277,19 @@ export default {
       if (!reg.test(value)) {
         this.$refs.fInput.setNativeValue(this.formatDate(this.value));
       }
+    },
+    isToday(value){
+      const [year, month, day] = helper.getYearMonthDate(new Date());
+      const [year1, month1, day1] = helper.getYearMonthDate(value);
+      if(!this.highlightCurrentDay) return false
+      return year === year1 && month === month1 && day === day1;
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-@import "_variable";
+@import "style/_variable";
 .f-date-picker {
   position: relative;
   user-select: none;
@@ -346,6 +378,9 @@ export default {
         &.selected {
           background-color: #137cbd;
           color: #fff;
+        }
+        &.isToday {
+          border: 1px solid rgba(16,22,26,.15);
         }
       }
     }
