@@ -4,6 +4,7 @@
       :class="getClassPosition"
       class="content-wrapper"
       ref="contentWrapper"
+      :style="{width: typeof width === 'number' ? width + 'px' : width}"
       v-if="visiable"
     >
       <slot name="content" :close="close"></slot>
@@ -38,6 +39,10 @@ export default {
     onlyTarget: {
       type: Boolean,
       default: false
+    },
+    width: {
+      type: String | Number,
+      default: '200px'
     }
   },
   data() {
@@ -206,7 +211,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .popover {
   position: relative;
   display: inline-block;
@@ -215,11 +220,11 @@ export default {
   position: absolute;
   box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 2px 4px rgba(16,22,26,.2), 0 8px 24px rgba(16,22,26,.2);
   max-width: 20em;
-  min-width: 5em;
   background: white;
   word-break: break-all;
   border-radius: $border-radius;
   padding: 0.5em 1em;
+  z-index: 10;
   &::before,
   &::after {
     content: "";

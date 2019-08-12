@@ -48,6 +48,13 @@ module.exports = {
               'views/components/cascader',
               'views/components/datePicker',
             ]
+          },
+          {
+            title: 'others',
+            collapsable: false,
+            children: [
+              'views/components/popover',
+            ]
           }
         ]
       }
