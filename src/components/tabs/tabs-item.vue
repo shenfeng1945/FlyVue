@@ -52,7 +52,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '_variable';
+  @import 'style/_variable';
   .tabs-item{
      flex-shrink: 0;
      padding: .5em 0;

@@ -42,7 +42,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .tabs-nav {
   display: flex;
   align-items: center;
