@@ -29,32 +29,39 @@ module.exports = {
         collapsable: false,
         children: [
           {
-            title: 'basic',
+            title: 'Basic',
             collapsable: false,
             children: [
-              'views/components/color',
-              'views/components/button',
-              'views/components/layout',
-              'views/components/grid'
+              'views/components/basic/color',
+              'views/components/basic/button',
+              'views/components/basic/layout',
+              'views/components/basic/grid'
             ]
           },
           {
-            title: 'form',
+            title: 'Form',
             collapsable: false,
             children: [
-              'views/components/radio',
-              'views/components/checkbox',
-              'views/components/input',
-              'views/components/cascader',
-              'views/components/datePicker',
+              'views/components/form/radio',
+              'views/components/form/checkbox',
+              'views/components/form/input',
+              'views/components/form/cascader',
+              'views/components/form/datePicker',
             ]
           },
           {
-            title: 'others',
+            title: 'Navigation',
             collapsable: false,
             children: [
-              'views/components/popover',
-              'views/components/collapse',
+              'views/components/navigation/tabs',
+            ]
+          },
+          {
+            title: 'Others',
+            collapsable: false,
+            children: [
+              'views/components/others/popover',
+              'views/components/others/collapse',
             ]
           }
         ]
