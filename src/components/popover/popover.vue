@@ -98,11 +98,11 @@ export default {
     },
     putBackContent() {
       const { contentWrapper, popover } = this.$refs;
-      console.log(popover,contentWrapper)
       popover.appendChild(contentWrapper);
     },
     onClickDocument(e) {
       const { contentWrapper, triggerWrapper } = this.$refs;
+      if(!contentWrapper || !triggerWrapper) return;
       if (triggerWrapper.contains(e.target)) return;
       if (contentWrapper.contains(e.target)) return;
       this.close();
@@ -155,6 +155,7 @@ export default {
     },
     removeTriggerEvent() {
       const { triggerWrapper, contentWrapper } = this.$refs;
+      if(!triggerWrapper || !contentWrapper) return;
       if (this.trigger === "click") {
         triggerWrapper.removeEventListener("click", this.onClick);
       } else {
