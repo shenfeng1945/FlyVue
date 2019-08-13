@@ -23,7 +23,7 @@ export default {
       type: String,
     },
     name: {
-      type: String,
+      type: String | Number,
       required: true
     }
   },
@@ -77,7 +77,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .collapseItem {
   border-bottom: 1px solid $border-color;
   > .title {
@@ -96,6 +96,11 @@ export default {
     .f-antiRotate90 {
       animation: anti-rotate90 0.5s forwards;
     }
+    > svg {
+      width: 13px;
+      height: 13px;
+      fill: #303133;
+    }
   }
   // &:first-child {
   //   > .title {
@@ -112,6 +117,7 @@ export default {
   .content {
     overflow: hidden;
     box-sizing: border-box;
+    font-size: 14px;
   }
   
 }

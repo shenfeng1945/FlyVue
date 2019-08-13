@@ -50,7 +50,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '_variable';
+@import 'style/_variable';
 .collapse {
   border-top: 1px solid $border-color;
 }

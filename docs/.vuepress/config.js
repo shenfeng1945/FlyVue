@@ -54,6 +54,7 @@ module.exports = {
             collapsable: false,
             children: [
               'views/components/popover',
+              'views/components/collapse',
             ]
           }
         ]
