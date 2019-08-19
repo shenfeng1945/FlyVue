@@ -10,7 +10,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   .tabs-content{
-
+    padding-left: 20px;
   }
 </style>
 

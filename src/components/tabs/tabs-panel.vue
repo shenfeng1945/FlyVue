@@ -35,6 +35,9 @@ export default {
   },
   mounted() {
     this.renderActivePanel = this.$parent.$options.parent.renderActivePanel;
+  },
+  beforeUpdate(){
+    this.renderActivePanel = this.$parent.$options.parent.renderActivePanel;
   }
 };
 </script>

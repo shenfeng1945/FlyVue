@@ -17,13 +17,30 @@ export default {
       default: true
     }
   },
-  data() {
-    return {
-      vertical: this.$parent.direction === "vertical"
-    };
+  computed: {
+    vertical() {
+      return this.$parent.direction === "vertical";
+    }
   },
-  mounted() {
-    this.eventBus.$on("update:selected", (name, vm) => {
+  watch: {
+    vertical(newVal, oldVal) {
+      this.updateLineStyle(newVal);
+    },
+    animate(newVal, oldVal){
+      this.updateLineStyle(this.vertical);
+    }
+  },
+  methods: {
+    updateLineStyle(isVertical) {
+      this.$children.forEach(child => {
+        if (child.active) {
+          this.$nextTick(() => {
+            this.computedLineStyle(child)
+          })
+        }
+      });
+    },
+    computedLineStyle(vm) {
       const { left, top, width, height } = vm.$el.getBoundingClientRect();
       const {
         left: leftParent,
@@ -34,9 +51,16 @@ export default {
         this.$refs.line.style.transform = `translateX(${left - leftParent}px)`;
       } else if (this.animate && this.vertical) {
         this.$nextTick(() => {
-           this.$refs.line.style.transform = `translateY(${vm.$el.getBoundingClientRect().top- topParent}px)`;
-        })
+          this.$refs.line.style.transform = `translateY(${vm.$el.getBoundingClientRect()
+            .top - topParent}px)`;
+          this.$refs.line.style.width = `${width}px`;
+        });
       }
+    }
+  },
+  mounted() {
+    this.eventBus.$on("update:selected", (name, vm) => {
+      this.computedLineStyle(vm);
     });
   }
 };

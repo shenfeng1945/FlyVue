@@ -22,7 +22,7 @@ export default {
              noAnimate: this.noAnimate,
              vertical: this.vertical
          }
-     }
+     },
    },
    props: {
      name: {
@@ -48,6 +48,10 @@ export default {
    mounted(){
        this.noAnimate = !this.$parent.animate;
        this.vertical = this.$parent.vertical;
+   },
+   beforeUpdate(){
+       this.noAnimate = !this.$parent.animate;
+       this.vertical = this.$parent.vertical;
    }
 }
 </script>
@@ -55,18 +59,20 @@ export default {
   @import 'style/_variable';
   .tabs-item{
      flex-shrink: 0;
-     padding: .5em 0;
+    //  padding: .5em 0;
      cursor: pointer;
      display: flex;
      align-items: center;
      line-height: 30px;
+     font-size: 14px;
      &:not(:last-child){
          margin-right: 20px;
      }
      &.vertical{
-        width: 100%;
+        // width: 100%;
         padding: 0 10px;
         margin-right: 0px;
+        width: 167px;
      }
      &.active{
          color: $active-color;

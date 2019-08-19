@@ -21,7 +21,7 @@ export default {
     },
     renderActivePanel: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
