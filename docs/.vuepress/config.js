@@ -47,6 +47,7 @@ module.exports = {
               'views/components/form/input',
               'views/components/form/cascader',
               'views/components/form/datePicker',
+              'views/components/form/upload',
             ]
           },
           {

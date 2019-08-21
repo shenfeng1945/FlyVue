@@ -35,15 +35,14 @@ import Button from "../button/button";
 export default {
   name: "FlyUpload",
   props: {
-    name: { type: String, required: true },
+    name: { type: String, default: 'file' },
     accept: { type: String, default: "image/*" },
     action: { type: String, required: true },
     // 生成图片的Url
     fileList: { type: Array, default: () => [] },
     method: { type: String, default: "POST" },
     parseResponse: { type: Function, required: true },
-    removeFile: { type: Function },
-    sizeLimit: { type: Number },
+    sizeLimit: { type: Number, default: 1024000 },
     multiple: { type: Boolean, default: false },
     listStyle: {
       type: String,
@@ -198,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .f-upload {
   &-fileList {
     list-style: none;
