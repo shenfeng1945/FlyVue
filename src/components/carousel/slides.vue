@@ -31,14 +31,14 @@
           <f-icon name="right"></f-icon>    
         </div>
       </template>
-      <template v-else>
+      <!-- <template v-else>
         <div class="f-slides-control-top" @click="goPrev">
           <f-icon name="top"></f-icon>    
         </div>
         <div class="f-slides-control-bottom" @click="goNext">
           <f-icon name="down"></f-icon>    
         </div>
-      </template>
+      </template> -->
     </div>
 
   </div>

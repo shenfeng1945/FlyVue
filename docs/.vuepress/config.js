@@ -63,6 +63,7 @@ module.exports = {
             children: [
               'views/components/others/popover',
               'views/components/others/collapse',
+              'views/components/others/carousel',
             ]
           }
         ]
