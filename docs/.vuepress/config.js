@@ -51,6 +51,13 @@ module.exports = {
             ]
           },
           {
+            title: 'Data',
+            collapsable: false,
+            children: [
+              'views/components/data/pager',
+            ]
+          },
+          {
             title: 'Navigation',
             collapsable: false,
             children: [
@@ -65,7 +72,7 @@ module.exports = {
               'views/components/others/popover',
               'views/components/others/collapse',
               'views/components/others/carousel',
-              'views/components/others/waterfall',
+              // 'views/components/others/waterfall',
             ]
           }
         ]

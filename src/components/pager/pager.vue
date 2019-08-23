@@ -31,12 +31,12 @@ export default {
     },
     currentPage: {
       type: Number,
-      required: true
+      default: 1,
     },
-    hideIfOnePage: {
-      type: Boolean,
-      default: true
-    },
+    // hideIfOnePage: {
+    //   type: Boolean,
+    //   default: true
+    // },
     onChange: Function,
     background: {
       type: Boolean,
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '_variable';
+  @import 'style/_variable';
   $width: 20px;
   $height: 20px;
   $font-size: 14px;
