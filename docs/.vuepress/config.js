@@ -65,6 +65,7 @@ module.exports = {
               'views/components/others/popover',
               'views/components/others/collapse',
               'views/components/others/carousel',
+              'views/components/others/waterfall',
             ]
           }
         ]
