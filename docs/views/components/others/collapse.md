@@ -16,14 +16,8 @@ sidebarDepth: 2
 
 | 参数 | 说明 | 类型 | 可选择 | 默认值 |
 | -- | -- | -- | -- | -- |
-| selected | 当前激活的面板 | array | - | [] |
+| selected | 当前激活的面板, 支持 .sync 修饰符 | array | - | [] |
 | single | 是否手风琴模式 | boolean | - | false |
-
-#### Collapse Events
-
-| 参数 | 说明 | 回调参数 | 
-| -- | -- | -- | 
-| update:selected | 当前激活面板改变时触发 | (activeValues: array) |
 
 #### CollapseItem Attributes 
 

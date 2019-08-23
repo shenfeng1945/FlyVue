@@ -2,7 +2,7 @@
   <div class="docs-waterFall">
     <f-init-docs></f-init-docs>
     <f-card :source="waterFallSource">
-      <f-water-fall :imageLists="data">
+      <f-water-fall :imageLists="data" class="card" @scrollReachBottom="updateData">
         <template slot-scope="item">
          <img :src="item.item.src" style="width: 50px;" alt="">
          <div class="description">{{item.item.name}}</div>
@@ -65,6 +65,10 @@ export default {
     line-height: 1.35em;
     overflow: hidden;
     word-wrap: break-word;
+}
+.card {
+  height: 300px;
+  overflow: auto;
 }
 </style>
 
