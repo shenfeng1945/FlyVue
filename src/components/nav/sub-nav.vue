@@ -8,7 +8,7 @@
     <span class="f-sub-nav-label" :class="{active}" @click="triggerSub">
       <slot name="title"></slot>
       <span class="f-sub-nav-icon">
-        <f-icon :name="isParentSub || (direction === 'vertical') ? 'down': 'right'" :class="{rotate180,antiRotate180}"></f-icon>
+        <f-icon :name="isParentSub || (direction === 'vertical') ? 'top': 'right'" :class="{rotate180,antiRotate180}"></f-icon>
       </span>
     </span>
     <transition
@@ -132,7 +132,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "_variable";
+@import "style/_variable";
 .f-sub-nav {
   position: relative;
 
@@ -152,12 +152,14 @@ export default {
     position: absolute;
     top: 100%;
     left: 0;
-    border: 1px solid;
+    background: white;
+    @extend .box-shadow;
     white-space: nowrap;
     &.vertical {
       position: static;
       border: none;
       overflow: hidden;
+      box-shadow: none;
     }
   }
 

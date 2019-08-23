@@ -55,6 +55,7 @@ module.exports = {
             collapsable: false,
             children: [
               'views/components/navigation/tabs',
+              'views/components/navigation/navMenu',
             ]
           },
           {

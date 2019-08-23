@@ -26,7 +26,7 @@ export default {
   created() {
     // 获取顶级组件的实例
     this.root.addItems(this);
-    this.subItem = this.$parent.$options.name === 'FlySubNav';
+    this.subItem = this.$parent.$options.name === 'FlySubNav' || this.direction === 'vertical';
   },
   methods: {
     onClick() {
@@ -42,7 +42,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '_variable';
+@import 'style/_variable';
 .f-nav-item {
   padding: 1em;
   cursor: pointer;

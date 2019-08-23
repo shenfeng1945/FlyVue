@@ -68,14 +68,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '_variable';
+@import 'style/_variable';
 .f-nav {
   display: flex;
   user-select: none;
-  border-bottom: 1px solid $grey;
+  border-bottom: 1px solid #e6e6e6;
   &.vertical{
     flex-direction: column;
-    border: 1px solid $grey;
+    border: 1px solid #e6e6e6;
   }
 }
 </style>
