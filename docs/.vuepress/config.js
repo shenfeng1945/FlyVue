@@ -73,6 +73,7 @@ module.exports = {
               'views/components/others/collapse',
               'views/components/others/carousel',
               // 'views/components/others/waterfall',
+              'views/components/others/infinite-scroll',
             ]
           }
         ]
