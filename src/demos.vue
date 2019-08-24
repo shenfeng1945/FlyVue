@@ -1,5 +1,8 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
+    <ul class="infinite-list" v-infinite-scroll="load" :infinite-scroll-distance="10" style="overflow: auto;">
+      <li v-for="i in count" :key="i">{{i}}</li>
+    </ul>
   </div>
 </template>
 
@@ -7,6 +10,7 @@
 import Input from "@/components/input/Input";
 import Button from "@/components/button/button";
 import Icon from "@/components/icon/Icon";
+import InfiniteScroll from './directives/infinite-scroll';
 
 export default {
   name: "Demos",
@@ -15,13 +19,18 @@ export default {
     "f-icon": Icon,
     "f-button": Button,
   },
+  directives: {
+    'infinite-scroll': InfiniteScroll
+  },
   data() {
     return {
+      count: 8,
     };
   },
-  created() {
-  },
   methods: {
+    load(){
+      this.count += 2;
+    },
   }
 };
 </script>
@@ -33,12 +42,19 @@ body {
   box-sizing: border-box;
 }
 
-.description {
-    display: block;
-    padding: 0 16px;
-    margin: 10px 0;
-    line-height: 1.35em;
-    overflow: hidden;
-    word-wrap: break-word;
+.infinite-list {
+  padding: 0;
+  margin: 0;
+  height: 300px;
+  list-style: none;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background: #e8f3fe;
+    margin: 10px;
+    color: #7dbcfc;
+  }
 }
 </style>
