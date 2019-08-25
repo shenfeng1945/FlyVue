@@ -1,8 +1,10 @@
 <template xmlns="http://www.w3.org/1999/XSL/Transform">
   <div id="app">
-    <ul class="infinite-list" v-infinite-scroll="load" :infinite-scroll-distance="10" style="overflow: auto;">
-      <li v-for="i in count" :key="i">{{i}}</li>
-    </ul>
+    <f-pull-down-refresh @onRefresh="onRefresh">
+      <ul class="list">
+        <li v-for="i of count" :key="i">{{i}}</li>
+      </ul>
+    </f-pull-down-refresh>
   </div>
 </template>
 
@@ -10,7 +12,7 @@
 import Input from "@/components/input/Input";
 import Button from "@/components/button/button";
 import Icon from "@/components/icon/Icon";
-import InfiniteScroll from './directives/infinite-scroll';
+import PullDownRefresh from "@/components/pullDownRefresh/pullDownRefresh";
 
 export default {
   name: "Demos",
@@ -18,19 +20,22 @@ export default {
     "f-input": Input,
     "f-icon": Icon,
     "f-button": Button,
-  },
-  directives: {
-    'infinite-scroll': InfiniteScroll
+    'f-pull-down-refresh': PullDownRefresh
   },
   data() {
     return {
-      count: 8,
+      count: 3,
     };
   },
   methods: {
     load(){
       this.count += 2;
     },
+    onRefresh(cb){
+      setTimeout(() => {
+        cb()
+      }, 500)
+    }
   }
 };
 </script>
@@ -42,7 +47,7 @@ body {
   box-sizing: border-box;
 }
 
-.infinite-list {
+.list {
   padding: 0;
   margin: 0;
   height: 300px;
