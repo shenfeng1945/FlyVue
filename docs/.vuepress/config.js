@@ -54,6 +54,7 @@ module.exports = {
             title: 'Data',
             collapsable: false,
             children: [
+              'views/components/data/table',
               'views/components/data/pager',
             ]
           },

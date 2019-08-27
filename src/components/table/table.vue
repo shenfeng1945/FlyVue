@@ -32,7 +32,7 @@
                 </span>
               </div>
             </th>
-            <th v-if="$scopedSlots.default" ref="actionHeader">操作</th>
+            <th v-if="$scopedSlots.$stable" ref="actionHeader">操作</th>
           </tr>
         </thead>
         <tbody class="f-table-tbody">
@@ -61,7 +61,7 @@
                   <template v-else>{{ item[column.field] }}</template>
                 </td>
               </template>
-              <td v-if="$scopedSlots.default">
+              <td v-if="$scopedSlots.$stable">
                 <div ref="actions" style="display:inline-block;">
                   <slot :item="item"></slot>
                 </div>
@@ -292,22 +292,24 @@ export default {
     this.updateDataSource();
   },
   mounted() {
-    this.columns = this.$slots.default.map(node => {
-      const { text, field, width, sortable } = node.componentOptions.propsData;
-      const render = node.data.scopedSlots && node.data.scopedSlots.default;
-      return { text, field, width, render, sortable };
-    });
-    let cloneTable = this.$refs.table.cloneNode(false);
-    cloneTable.classList.add("f-table-copy");
-    let tHead = this.$refs.table.children[0];
-    let { height } = tHead.getBoundingClientRect();
+    this.columns = this.$slots.default
+      .filter(node => node.tag)
+      .map(node => {
+        const { text, field, width, sortable } = node.componentOptions.propsData;
+        const render = node.data.scopedSlots && node.data.scopedSlots.default;
+          return { text, field, width, render, sortable };
+      });
+    // let cloneTable = this.$refs.table.cloneNode(false);
+    // cloneTable.classList.add("f-table-copy");
+    // let tHead = this.$refs.table.children[0];
+    // let { height } = tHead.getBoundingClientRect();
     // this.$refs.tableWrapper.style.marginTop = height + "px";
-    this.scrollMarginTop = height + "px";
-    cloneTable.style.marginTop = `-${height}px`;
-    cloneTable.appendChild(tHead);
-    this.$refs.wrapper.appendChild(cloneTable);
+    // this.scrollMarginTop = height + "px";
+    // cloneTable.style.marginTop = `-${height}px`;
+    // cloneTable.appendChild(tHead);
+    // this.$refs.wrapper.appendChild(cloneTable);
 
-    this.$scopedSlots.default && this.setActionsWidth();
+    this.$scopedSlots.$stable && this.setActionsWidth();
   },
   watch: {
     selectedItems() {
@@ -327,7 +329,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "_variable";
+@import "style/_variable";
 $grey: darken($grey, 20%);
 .f-table-wrapper {
   position: relative;
