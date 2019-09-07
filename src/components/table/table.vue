@@ -1,40 +1,42 @@
 <template>
-  <div class="f-table-wrapper" ref="wrapper">
-    <div :style="{height: height + 'px', marginTop: scrollMarginTop, overflow: 'hidden' }">
-      <table class="f-table" :class="{ bordered, compact, striped }" ref="table">
-        <thead class="f-table-thead">
-          <tr>
-            <th v-if="expandField" style="width:50px"></th>
-            <th v-if="checkable" style="width: 50px" class="f-table-center">
-              <f-checkbox
-                @change="onChangeAllItems"
-                :value="isAllSelectedItems"
-                :indeterminate="indeterminate"
-              ></f-checkbox>
-            </th>
-            <th v-if="numberVisible" style="width: 50px">#</th>
-            <th v-for="column in columns" :key="column.field" :style="{width: column.width + 'px'}">
-              <div
-                class="f-table-column"
-                :class="{'f-table-sorter': column.sortable}"
-                @click="changeOrderBy(column.field)"
-              >
-                {{ column.text }}
-                <span v-if="column.sortable" class="f-sorter-icons">
-                  <f-icon
-                    name="caret-up"
-                    :class="{ active: orderBy.field === column.field && orderBy.order === 'esc' }"
-                  ></f-icon>
-                  <f-icon
-                    name="caret-down"
-                    :class="{ active: orderBy.field === column.field && orderBy.order === 'desc' }"
-                  ></f-icon>
-                </span>
-              </div>
-            </th>
-            <th v-if="$scopedSlots.$stable" ref="actionHeader">操作</th>
-          </tr>
-        </thead>
+  <div class="f-table-wrapper">
+    <table class="f-table" :class="{ bordered, striped }" ref="tableHead">
+      <thead class="f-table-thead">
+        <tr>
+          <th v-if="expandField" style="width:50px"></th>
+          <th v-if="checkable" style="width: 50px" class="f-table-center">
+            <f-checkbox
+              @change="onChangeAllItems"
+              :value="isAllSelectedItems"
+              :indeterminate="indeterminate"
+            ></f-checkbox>
+          </th>
+          <th v-if="numberVisible" style="width: 50px">#</th>
+          <th v-for="column in columns" :key="column.field" :style="{width: column.width + 'px'}">
+            <div
+              class="f-table-column"
+              :class="{'f-table-sorter': column.sortable}"
+              @click="changeOrderBy(column.field)"
+            >
+              {{ column.text }}
+              <span v-if="column.sortable" class="f-sorter-icons">
+                <f-icon
+                  name="caret-up"
+                  :class="{ active: orderBy.field === column.field && orderBy.order === 'esc' }"
+                ></f-icon>
+                <f-icon
+                  name="caret-down"
+                  :class="{ active: orderBy.field === column.field && orderBy.order === 'desc' }"
+                ></f-icon>
+              </span>
+            </div>
+          </th>
+          <th v-if="$scopedSlots.$stable" ref="actionHeader">操作</th>
+        </tr>
+      </thead>
+    </table>
+    <div :style="{height: scrollHeight, overflow: 'scroll' }">
+      <table class="f-table" :class="{ bordered, striped }">
         <tbody class="f-table-tbody">
           <template v-for="(item, index) in renderDataSource">
             <tr :key="item.id">
@@ -43,8 +45,9 @@
                   name="down"
                   v-if="inExpendedIds(item.id) && !!item[expandField]"
                   @click="insertItem(item.id)"
+                  style="cursor: pointer;"
                 ></f-icon>
-                <f-icon name="right" v-else @click="insertItem(item.id)"></f-icon>
+                <f-icon name="right" v-else @click="insertItem(item.id)" style="cursor: pointer;"></f-icon>
               </td>
               <td v-if="checkable" style="width: 50px" class="f-table-center">
                 <f-checkbox
@@ -73,8 +76,25 @@
               class="f-expand-row"
             >
               <td></td>
-              <td :colspan="columns.length + expandedColSpan">{{item[expandField]}}</td>
+              <td
+                :colspan="columns.length + expandedColSpan"
+                style="text-align: left;"
+              >{{item[expandField]}}</td>
             </tr>
+          </template>
+          <template v-if="renderDataSource.length === 0">
+            <div class="f-table__empty-default">
+              <div class="f-table__empty-icon">
+                <div class="f-table__icon--inner">
+                  <span class="inner-rect"></span>
+                  <span class="inner-horizontal-line inner-line1"></span>
+                  <span class="inner-horizontal-line inner-line2"></span>
+                  <span class="inner-horizontal-line inner-line3"></span>
+                  <span class="inner-circle"></span>
+                </div>
+              </div>
+              <span class="f-table__empty-text">No Data</span>
+            </div>
           </template>
         </tbody>
       </table>
@@ -89,21 +109,13 @@
 import Icon from "../icon/Icon";
 import Scroll from "../scroll/scroll";
 import Checkbox from "../formControls/checkbox";
-import { close } from "fs";
 
 export default {
   name: "FlyTable",
   props: {
-    // columns: {
-    //   type: Array,
-    //   required: true
-    // },
     dataSource: {
       type: Array,
-      required: true,
-      validator(array) {
-        return array.filter(item => item.id === undefined).length === 0;
-      }
+      default: () => ([])
     },
     // 头部序号是否展示
     numberVisible: {
@@ -112,10 +124,6 @@ export default {
     },
     // 是否带边框
     bordered: {
-      type: Boolean,
-      default: false
-    },
-    compact: {
       type: Boolean,
       default: false
     },
@@ -162,7 +170,7 @@ export default {
     return {
       expandedIds: [],
       columns: [],
-      scrollMarginTop: undefined,
+      scrollHeight: undefined,
       // 是否半选
       indeterminate: false,
       renderDataSource: null
@@ -199,7 +207,7 @@ export default {
         } else {
           copyOrderBy["order"] = "esc";
         }
-      }else{
+      } else {
         copyOrderBy["order"] = "esc";
       }
       copyOrderBy["field"] = key;
@@ -249,16 +257,29 @@ export default {
       return getComputedStyle(el).getPropertyValue(val);
     },
     updateDataSource() {
-      const {field, order} = this.orderBy;
+      const { field, order } = this.orderBy;
       let copyDataSource = JSON.parse(JSON.stringify(this.dataSource));
-      this.renderDataSource = copyDataSource.sort((a,b) => {
-        if(order === 'esc'){
-          return a[field] - b[field]
-        }else if(order === 'desc'){
-          return b[field] - a[field]
+      this.renderDataSource = copyDataSource.sort((a, b) => {
+        if (order === "esc") {
+          if (typeof a[field] === "number") {
+            return a[field] - b[field];
+          } else if (typeof a[field] === "string") {
+            if (a[field] > b[field]) return 1;
+            if (a[field] < b[field]) return -1;
+            return 0;
+          }
+        } else if (order === "desc") {
+          if (typeof a[field] === "number") {
+            return b[field] - a[field];
+          } else if (typeof a[field] === "string") {
+            if (a[field] > b[field]) return -1;
+            if (a[field] < b[field]) return 1;
+            return 0;
+          }
+        } else {
+          return 0;
         }
-        return true
-      })
+      });
     }
   },
   computed: {
@@ -295,20 +316,16 @@ export default {
     this.columns = this.$slots.default
       .filter(node => node.tag)
       .map(node => {
-        const { text, field, width, sortable } = node.componentOptions.propsData;
+        let { text, field, width, sortable } = node.componentOptions.propsData;
         const render = node.data.scopedSlots && node.data.scopedSlots.default;
-          return { text, field, width, render, sortable };
+        return { text, field, width, render, sortable };
       });
-    // let cloneTable = this.$refs.table.cloneNode(false);
-    // cloneTable.classList.add("f-table-copy");
-    // let tHead = this.$refs.table.children[0];
-    // let { height } = tHead.getBoundingClientRect();
-    // this.$refs.tableWrapper.style.marginTop = height + "px";
-    // this.scrollMarginTop = height + "px";
-    // cloneTable.style.marginTop = `-${height}px`;
-    // cloneTable.appendChild(tHead);
-    // this.$refs.wrapper.appendChild(cloneTable);
-
+    this.$nextTick(() => {
+      if (this.height) {
+        const { height } = this.$refs.tableHead.getBoundingClientRect();
+        this.scrollHeight = this.height - height + "px";
+      }
+    });
     this.$scopedSlots.$stable && this.setActionsWidth();
   },
   watch: {
@@ -330,26 +347,46 @@ export default {
 
 <style scoped lang="scss">
 @import "style/_variable";
-$grey: darken($grey, 20%);
 .f-table-wrapper {
   position: relative;
   .f-table {
     border-collapse: collapse;
+    display: table;
     border-spacing: 0;
     width: 100%;
-
     &.bordered {
-      border: 1px solid $grey;
       td,
       th {
-        border: 1px solid $grey;
+        border-left: 1px solid rgba(16, 22, 26, 0.15);
+        border-right: 1px solid rgba(16, 22, 26, 0.15);
+      }
+      th {
+        border-top: 1px solid rgba(16, 22, 26, 0.15);
       }
     }
     td,
     th {
-      // border-bottom: 1px solid $border-color;
-      text-align: left;
-      padding: 8px;
+      text-align: center;
+      padding: 8px 0;
+      border: none;
+    }
+    .f-table-thead {
+      color: #909399;
+      font-weight: 500;
+      tr {
+        box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
+        border: none;
+      }
+    }
+    .f-table-tbody {
+      tr {
+        box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
+        background: none;
+        border: none;
+      }
+      tr:hover:not(.f-expand-row) {
+        background: $menu-hover-color;
+      }
     }
     &.striped {
       tbody {
@@ -358,14 +395,12 @@ $grey: darken($grey, 20%);
             background: white;
           }
           &:nth-child(even) {
-            background: lighten($grey, 35%);
+            background: $menu-hover-color;
           }
         }
       }
     }
     &-column {
-      display: flex;
-      align-items: center;
       user-select: none;
       &.f-table-sorter {
         cursor: pointer;
@@ -390,28 +425,6 @@ $grey: darken($grey, 20%);
       }
     }
   }
-  .f-table-thead {
-    tr {
-      box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
-    }
-  }
-  .f-table-tbody {
-    tr {
-      box-shadow: inset 0 -1px 0 rgba(16, 22, 26, 0.15);
-    }
-    tr:hover:not(.f-expand-row) {
-      background: $menu-hover-color;
-    }
-  }
-  .f-table-copy {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    > .f-table-thead {
-      background: white;
-    }
-  }
   .f-table-loading {
     position: absolute;
     top: 0;
@@ -430,6 +443,93 @@ $grey: darken($grey, 20%);
   }
   .f-table .f-table-center {
     text-align: center;
+  }
+}
+
+.f-table__empty-default {
+  padding: 2em;
+  border-bottom: 1px solid rgba(16, 22, 26, 0.15);
+  border-left: 1px solid rgba(16, 22, 26, 0.15);
+  border-right: 1px solid rgba(16, 22, 26, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .f-table__empty-icon {
+    position: relative;
+    height: 60px;
+    width: 60px;
+    box-sizing: border-box;
+    background-color: #fff;
+    .f-table__icon--inner {
+      position: relative;
+      height: 52px;
+      width: 55px;
+      box-sizing: border-box;
+      border: 1px solid #c7c7d0;
+      margin: 3px 1px;
+      border-radius: 2px;
+      span {
+        position: absolute;
+        background-color: #fff;
+      }
+      .inner-circle {
+        position: absolute;
+        right: -8px;
+        bottom: -5px;
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        border: 1px solid #c7c7d0;
+        &::before,
+        &::after {
+          position: absolute;
+          content: "";
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        &::before {
+          width: 2px;
+          height: 8px;
+          bottom: 10px;
+          background-color: #c7c7d0;
+        }
+        &::after {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          bottom: 5px;
+          background-color: #c7c7d0;
+        }
+      }
+      .inner-rect {
+        top: -4px;
+        height: 8px;
+        width: 20px;
+        border: 1px solid #c7c7d0;
+        border-radius: 1px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .inner-horizontal-line {
+        background-color: #c7c7d0;
+        height: 2px;
+        transform: scaleY(0.5);
+        left: 15px;
+        &.inner-line1 {
+          width: 20px;
+          top: 15px;
+        }
+        &.inner-line2 {
+          width: 15px;
+          top: 22px;
+        }
+        &.inner-line3 {
+          width: 10px;
+          top: 30px;
+        }
+      }
+    }
   }
 }
 </style>
