@@ -10,9 +10,9 @@
                               :large="largeValue"
                               :alignRight="alignRightValue"
             >
-                <f-checkbox label="Gilad Gray">Gilad Gray</f-checkbox>
-                <f-checkbox label="Jason Killian">Jason Killian</f-checkbox>
-                <f-checkbox label="Antoine Llorca">Antoine Llorca</f-checkbox>
+                <f-checkbox label="Gilad Gray" style="margin-bottom: 10px;">Gilad Gray</f-checkbox>
+                <f-checkbox label="Jason Killian" style="margin-bottom: 10px;">Jason Killian</f-checkbox>
+                <f-checkbox label="Antoine Llorca" style="margin-bottom: 10px;">Antoine Llorca</f-checkbox>
             </f-checkbox-group>
             <template slot="props">
                 <h5 class="f-heading">Props</h5>
