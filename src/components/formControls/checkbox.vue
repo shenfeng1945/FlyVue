@@ -52,7 +52,11 @@ export default {
       existGroup: this.$parent.$options.name === 'FlyCheckboxGroup'
     }
   },
-  inject: ['root'],
+  inject: {
+    root: {
+      default: 'root'
+    }
+  },
   mounted(){
     if(this.indeterminate){
       this.indeterminateVal = true;
@@ -98,13 +102,13 @@ export default {
       return (this.root && this.root.disabled) || this.disabled;
     },
     getInlineValue(){
-      return this.root.inline;
+      return this.root && this.root.inline;
     },
     getLargeValue(){
-      return this.root.large || this.large;
+      return (this.root && this.root.large) || this.large;
     },
     getAlignRightValue(){
-      return this.root.alignRight || this.alignRight;
+      return (this.root && this.root.alignRight) || this.alignRight;
     },
   }
 };
@@ -112,11 +116,12 @@ export default {
 
 <style lang="scss" scoped>
 .f-checkbox {
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   &-label {
     position: relative;
     display: inline-flex;
     align-items: center;
+    vertical-align: middle;
     cursor: pointer;
     .f-checkbox-input {
       position: absolute;
