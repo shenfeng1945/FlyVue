@@ -90,7 +90,7 @@ const componentsArray = [
 const install = Vue => componentsArray.forEach(arr => Vue.component(arr.name, arr.component));
 
 if(typeof window !== 'undefined' && window.Vue){
-  install(window.Vue);
+  window.Vue.use({install})
 }
 
 export {
@@ -99,7 +99,7 @@ export {
   Slides,
   SlidesItem,
   Cascader,
-  Collaspse,
+  Collapse,
   CollaspseItem,
   DatePicker, 
   CheckBox, 
