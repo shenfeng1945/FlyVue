@@ -1,22 +1,24 @@
 <template>
-  <div class="f-back-top" :style="getStyle" v-show="targetVisible" @click="onBackTop">
+  <div class="f-back-top" :style="getStyle" v-show="targetVisible" @click="clickBackTop">
     <template v-if="$slots.default">
       <slot></slot>
     </template>
     <template v-else>
-      <f-button leftIcon="back-top" intent="primary" circle></f-button>
+      <div class="caret-up-wrapper">
+        <f-icon name="caret-up"></f-icon>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import Button from "../button/button";
+import Icon from '../icon/Icon';
 
 const speedObj = {
     'slow': 10,
     'middle': 8,
     'quick': 6
-}
+};
 export default {
   name: "FlyBackTop",
   props: {
@@ -26,7 +28,7 @@ export default {
     },
     visibilityHeight: {
       type: Number,
-      default: 400
+      default: 200
     },
     right: {
       type: Number,
@@ -42,12 +44,15 @@ export default {
         validator(val){return ['slow', 'middle', 'quick'].indexOf(val) > -1}
     }
   },
-  components: { "f-button": Button },
+  components: {'f-icon': Icon },
   created() {
     this.bindEvent();
   },
   mounted() {
     this.onScrollEvent();
+  },
+  beforeDestroy(){
+      document.removeEventListener('scroll', this.onScrollEvent)
   },
   data() {
     return {
@@ -69,11 +74,11 @@ export default {
     onScrollEvent() {
       const targetEle = document.querySelector(this.target);
       const { top } = targetEle.getBoundingClientRect();
-      if (Math.abs(top) > this.visibilityHeight) {
-        this.targetVisible = true;
-      } else {
-        this.targetVisible = false;
-      }
+      this.targetVisible = Math.abs(top) > this.visibilityHeight;
+    },
+    clickBackTop(){
+      this.$emit('click');
+      this.onBackTop()
     },
     onBackTop() {
       const targetEle = document.querySelector(this.target);
@@ -92,8 +97,26 @@ export default {
 .f-back-top {
   position: fixed;
   z-index: 9;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
 }
+.caret-up-wrapper{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(0,0,0,.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      fill: #409eff;
+      width: 20px;
+      height: 20px;
+    }
+    &:hover {
+      background: #f2f6fc;
+    }
+  }
 </style>
 

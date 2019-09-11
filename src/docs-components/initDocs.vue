@@ -1,11 +1,7 @@
 <template>
   <div>
     <f-progress-indicator></f-progress-indicator>
-    <f-back-top :right="100" :bottom="100">
-      <div class="caret-up-wrapper">
-        <f-icon name="caret-up"></f-icon>
-      </div>
-    </f-back-top>
+    <f-back-top :right="100" :bottom="100"></f-back-top>
   </div>
 </template>
 
@@ -24,22 +20,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .caret-up-wrapper{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(0,0,0,.12);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    svg {
-      fill: #409eff;
-      width: 20px;
-      height: 20px;
-    }
-    &:hover {
-      background: #f2f6fc;
-    }
-  }
 </style>
 
