@@ -35,8 +35,8 @@
         </tr>
       </thead>
     </table>
-    <div :style="{height: scrollHeight, overflow: 'scroll' }">
-      <table class="f-table" :class="{ bordered, striped }">
+    <div :style="{height: scrollHeight + 'px', 'overflow-y': scrollY ? 'scroll' : 'unset' }">
+      <table class="f-table" :class="{ bordered, striped }" ref="tableBody">
         <tbody class="f-table-tbody">
           <template v-for="(item, index) in renderDataSource">
             <tr :key="item.id">
@@ -171,6 +171,7 @@ export default {
       expandedIds: [],
       columns: [],
       scrollHeight: undefined,
+      scrollY: false,
       // 是否半选
       indeterminate: false,
       renderDataSource: null
@@ -323,7 +324,9 @@ export default {
     this.$nextTick(() => {
       if (this.height) {
         const { height } = this.$refs.tableHead.getBoundingClientRect();
-        this.scrollHeight = this.height - height + "px";
+        const { height: tBodyHeight } = this.$refs.tableBody.getBoundingClientRect();
+        this.scrollHeight = this.height - height;
+        this.scrollY = tBodyHeight > this.scrollHeight;
       }
     });
     this.$scopedSlots.$stable && this.setActionsWidth();
