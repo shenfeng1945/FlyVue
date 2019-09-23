@@ -23,8 +23,8 @@ export default {
           default: '#137cbd'
       },
       zIndex: {
-        type: String,
-        default: '999'
+        type: Number,
+        default: 999
       }
   },
   mounted(){
@@ -58,7 +58,7 @@ export default {
              this.calcWidthPercent();
              this.width = Math.min(utils.getScrollOffsetsTop() / this.sHeight, 1)
              if(this.width === 1){
-                 this.$emit('update:end')
+                 this.$emit('end')
              }
          })
       }

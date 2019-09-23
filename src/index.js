@@ -4,7 +4,7 @@ import Slides from './components/carousel/slides';
 import SlidesItem from './components/carousel/slides-item';
 import Cascader from './components/cascader/cascader';
 import Collapse from './components/collapse/collapse';
-import CollaspseItem from './components/collapse/collapseItem';
+import CollapseItem from './components/collapse/collapseItem';
 import DatePicker from './components/datepicker/datepicker';
 import CheckBox from './components/formControls/checkbox';
 import CheckBoxGroup from './components/formControls/checkboxGroup';
@@ -49,7 +49,7 @@ const componentsArray = [
   {component: SlidesItem, name: 'f-slides-item'},
   {component: Cascader, name: 'f-cascader'},
   {component: Collapse, name: 'f-collapse'},
-  {component: CollaspseItem, name: 'f-collapse-item'},
+  {component: CollapseItem, name: 'f-collapse-item'},
   {component: DatePicker, name: 'f-datepicker'},
   {component: CheckBox, name: 'f-checkbox'},
   {component: CheckBoxGroup, name: 'f-checkbox-group'},
@@ -100,7 +100,7 @@ export {
   SlidesItem,
   Cascader,
   Collapse,
-  CollaspseItem,
+  CollapseItem,
   DatePicker, 
   CheckBox, 
   CheckBoxGroup,

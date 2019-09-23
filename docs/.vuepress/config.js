@@ -75,6 +75,7 @@ module.exports = {
               'views/components/others/carousel',
               // 'views/components/others/waterfall',
               'views/components/others/backTop',
+              'views/components/others/indicator',
               'views/components/others/infinite-scroll',
             ]
           }
