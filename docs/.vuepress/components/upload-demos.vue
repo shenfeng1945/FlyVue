@@ -6,7 +6,7 @@
       <p>只能上传jpg/png文件，且不超过100kb</p>
       <f-upload
             name="avatar"
-            action="http://shenfeng1945.cn:3000/upload"
+            action="https://shenfeng1945.cn:3000/upload"
             :parse-response="parseResponse"
             :file-list.sync="fileList"
             :multiple="true"
@@ -23,7 +23,7 @@
       <p>只能上传jpg/png文件，且不超过200kb</p>
       <f-upload
             name="avatar"
-            action="http://shenfeng1945.cn:3000/upload"
+            action="https://shenfeng1945.cn:3000/upload"
             :parse-response="parseResponse"
             :file-list.sync="fileList1"
             :multiple="true"
@@ -61,7 +61,7 @@ export default {
   methods: {
     parseResponse(res){
       const {key} = JSON.parse(res);
-      return `http://shenfeng1945.cn:3000/preview/${key}`
+      return `https://shenfeng1945.cn:3000/preview/${key}`
     },
     error(e){
       alert(e)
