@@ -1,6 +1,6 @@
 {
   "name": "fly-ui-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "这是一个UI框架",
   "main": "dist/flyVue.common.js",
   "scripts": {

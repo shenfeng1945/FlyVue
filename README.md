@@ -1,4 +1,12 @@
+### fly-ui-vue
+
+> A Vue.js 2.0 UI Toolkit for Web
+
 [![build pass](https://travis-ci.org/shenfeng1945/FlyVue.svg?branch=master)](https://travis-ci.org/shenfeng1945/FlyVue)
 ![npm-version](https://img.shields.io/npm/v/fly-ui-vue.svg)
 
-#### FlyVue UI组件库
+### Docs
+
+[https://shenfeng1945.github.io/FlyVue/](https://shenfeng1945.github.io/FlyVue/)
+
+

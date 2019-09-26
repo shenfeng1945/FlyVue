@@ -31,26 +31,10 @@ new Vue({
 
 #### 方式二: 按需引入(推荐)
 
-[babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 是一款 babel 插件,它会在编译过程中将 import 的写法自动转换为按需引入的方式
-
-
-```md
-# 安装插件
-yarn add -D babel-plugin-import
-```
-
-在 `.babelrc` 中添加配置
+在 main.js 中全局引入样式：
 
 ```js
-{
-  "plugins": [
-    ["import", {
-      "libraryName": "vant",
-      "libraryDirectory": "es",
-      "style": true
-    }]
-  ]
-}
+import 'fly-ui-vue/dist/flyVue.css';
 ```
 
 在 vue 单文件中引入一个 button 组件
@@ -63,7 +47,7 @@ yarn add -D babel-plugin-import
 </template>
 
 <script>
-import { Button } from 'FlyVue';
+import { Button } from 'fly-ui-vue';
 
 export default {
   components: {
