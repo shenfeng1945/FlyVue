@@ -27,7 +27,7 @@
     <h4>侧栏</h4>
     <p>垂直菜单，可内嵌子菜单。</p>
     <f-card :source="sideNavMenuSource">
-      <f-nav :selected.sync="selected2" direction="vertical" multiple style="width: 200px;">
+      <f-nav :selected.sync="selected2" direction="vertical" style="width: 200px;">
         <f-nav-item name="sports">体育</f-nav-item>
         <f-sub-nav name="news">
           <template slot="title">新闻</template>
