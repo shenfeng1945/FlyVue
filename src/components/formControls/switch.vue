@@ -36,11 +36,11 @@
             },
             activeText: {
                type: String,
-               default: 'On'
+               default: ''
             },
             inactiveText: {
                type: String,
-               default: 'Off'
+               default: ''
             },
             disabled: {
                 type: Boolean,
@@ -54,14 +54,15 @@
         computed: {
            getStyle(){
                 return {
-                    width: `${this.width}px`,
+                    width: `${this.large ? (Number(this.width) < 35 ? 35 : this.width) : this.width}px`,
                     background: this.value ? this.activeColor : this.inactiveColor
                 }
             } 
         },
         methods: {
             onChangeInput(e){
-                this.$emit('change', e.target.checked);
+                this.$emit('input', e.target.checked)
+                this.$emit('change', e.target.checked)
             },
         }
     }
@@ -76,6 +77,9 @@
           position: relative;
           &.disabled{
               cursor: not-allowed;
+              .f-control-indicator{
+                 opacity: .5;
+              }
           }
         }
         &-check{
