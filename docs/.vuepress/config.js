@@ -45,6 +45,7 @@ module.exports = {
               'views/components/form/radio',
               'views/components/form/checkbox',
               'views/components/form/input',
+              'views/components/form/switch',
               'views/components/form/cascader',
               'views/components/form/datePicker',
               'views/components/form/upload',
