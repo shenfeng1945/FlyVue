@@ -5,7 +5,8 @@ function resolve (dir) {
 
 module.exports = {
   title: 'FlyVue',
-  base: '/FlyVue/',
+//   base: '/FlyVue/',
+  base: '/',
   description: '一个好用的UI框架',
   head: [
     ['link', {rel: 'icon',href:'/favicon.ico'}]
