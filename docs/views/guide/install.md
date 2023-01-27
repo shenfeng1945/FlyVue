@@ -3,16 +3,15 @@ title: 安装
 sidebarDepth: 2
 ---
 
-
 ### 安装
 
-#### yarn安装
+#### yarn 安装
 
 ```md
 yarn add -D fly-ui-vue
 ```
 
-#### npm安装
+#### npm 安装
 
 ```md
 npm i -D fly-ui-vue
@@ -20,13 +19,16 @@ npm i -D fly-ui-vue
 
 #### CDN
 
-目前可以通过[unpkg.com/fly-ui-vue](https://unpkg.com/fly-ui-vue)获取到最新版本的资源，在页面上引入js和css文件即可开始使用。
+目前可以通过[unpkg.com/fly-ui-vue@1.0.1](https://unpkg.com/fly-ui-vue@1.0.1)获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
 
 ```md
 // 引入组件库
-<script src="https://unpkg.com/fly-ui-vue/dist/flyVue.umd.min.js"></script>
+
+<script src="https://unpkg.com/fly-ui-vue@1.0.1/dist/flyVue.umd.min.js"></script>
+
 // 引入样式库
-<link href="https://unpkg.com/fly-ui-vue/dist/flyVue.css"></link>
+
+<link href="https://unpkg.com/fly-ui-vue@1.0.1/dist/flyVue.css"></link>
 ```
 
 #### Hello world
@@ -39,4 +41,3 @@ npm i -D fly-ui-vue
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
